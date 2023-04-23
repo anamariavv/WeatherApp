@@ -1,0 +1,1 @@
+C:\Users\anama\AndroidStudioProjects\WeatherApp\buildSrc\build\classes\kotlin\main\Dependencies.class;C:\Users\anama\AndroidStudioProjects\WeatherApp\buildSrc\build\classes\kotlin\main\Versions.class
