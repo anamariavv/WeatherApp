@@ -29,6 +29,7 @@ object Dependencies {
     val composeFoundation = "androidx.compose.foundation:foundation"
     val composeFoundationLayout = "androidx.compose.foundation:foundation-layout"
     val composeMaterial = "androidx.compose.material:material"
+    val composeMaterial3 = "androidx.compose.material3:material3"
     val composeTooling = "androidx.compose.ui:ui-tooling"
     val composeToolingPreview = "androidx.compose.ui:ui-tooling-preview"
     val composeCompiler = "androidx.compose.compiler:compiler:${Versions.composeCompiler}"
@@ -41,7 +42,7 @@ object Dependencies {
 }
 object Plugins {
     val androidApp = "com.android.application"
-    val androidlibrary = "com.android.library"
+    val androidLibrary = "com.android.library"
     val kotlinAndroid = "org.jetbrains.kotlin.android"
     val kotlinKapt = "org.jetbrains.kotlin.kapt"
     val hilt = "com.google.dagger.hilt.android"

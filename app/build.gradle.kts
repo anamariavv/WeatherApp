@@ -29,12 +29,6 @@ android {
         }
     }
 
-    java {
-        toolchain {
-            languageVersion.set(JavaLanguageVersion.of(Versions.java))
-        }
-    }
-
     buildFeatures {
         compose = true
     }
@@ -42,8 +36,11 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = Versions.composeCompiler
     }
+    compileOptions {
+        sourceCompatibility = org.gradle.api.JavaVersion.VERSION_15
+        targetCompatibility = org.gradle.api.JavaVersion.VERSION_15
+    }
 }
-
 
 dependencies {
     val composeBom = platform(Dependencies.composeBom)
@@ -57,6 +54,7 @@ dependencies {
     implementation(Dependencies.composeFoundation)
     implementation(Dependencies.composeFoundationLayout)
     implementation(Dependencies.composeMaterial)
+    implementation(Dependencies.composeMaterial3)
     implementation(Dependencies.composeTooling)
     implementation(Dependencies.composeCompiler)
     implementation(Dependencies.espresso)
@@ -70,4 +68,6 @@ dependencies {
     androidTestImplementation(composeBom)
 
     debugImplementation(Dependencies.composeToolingPreview)
+
+    implementation(project(":domain"))
 }
