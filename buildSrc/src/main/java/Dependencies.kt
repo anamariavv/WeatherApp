@@ -4,6 +4,7 @@ object Versions {
     val targetSdk = 33
     val versionCode = 1
     val versionName = "1.0.0"
+    val java = 15
     val androidxCore = "1.10.0"
     val androidxComposeActivity = "1.7.1"
     val androidxLifecycle = "2.6.1"
@@ -13,6 +14,9 @@ object Versions {
     val espresso = "3.5.1"
     val retrofit = "2.9.0"
     val coroutines = "1.6.4"
+    val hilt = "2.45"
+    val androidGradle = "7.4.2"
+    val kotlin = "1.8.10"
 }
 
 object Dependencies {
@@ -32,4 +36,13 @@ object Dependencies {
     val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"
     val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
     val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
+    val hilt = "com.google.dagger:hilt-android:${Versions.hilt}"
+    val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
+}
+object Plugins {
+    val androidApp = "com.android.application"
+    val androidlibrary = "com.android.library"
+    val kotlinAndroid = "org.jetbrains.kotlin.android"
+    val kotlinKapt = "org.jetbrains.kotlin.kapt"
+    val hilt = "com.google.dagger.hilt.android"
 }

@@ -1,6 +1,8 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    id(Plugins.androidApp)
+    id(Plugins.kotlinAndroid)
+    id(Plugins.kotlinKapt)
+    id(Plugins.hilt)
 }
 
 android {
@@ -26,18 +28,19 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(Versions.java))
+        }
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+
     buildFeatures {
         compose = true
     }
+
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.4"
+        kotlinCompilerExtensionVersion = Versions.composeCompiler
     }
 }
 
@@ -59,6 +62,9 @@ dependencies {
     implementation(Dependencies.espresso)
     implementation(Dependencies.retrofit)
     implementation(Dependencies.coroutines)
+    implementation(Dependencies.hilt)
+
+    kapt(Dependencies.hiltCompiler)
 
     androidTestImplementation(Dependencies.junit_jupiter)
     androidTestImplementation(composeBom)

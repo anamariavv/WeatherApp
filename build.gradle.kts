@@ -1,7 +1,9 @@
 plugins {
-    id("com.android.application") version "7.4.2" apply false
-    id("com.android.library") version "7.4.2" apply false
-    id("org.jetbrains.kotlin.android") version "1.8.10" apply false
+    id(Plugins.androidApp) version Versions.androidGradle apply false
+    id(Plugins.androidlibrary) version Versions.androidGradle apply false
+    id(Plugins.kotlinAndroid) version Versions.kotlin apply false
+    id(Plugins.kotlinKapt) version Versions.kotlin apply false
+    id(Plugins.hilt) version Versions.hilt apply false
 }
 
 
