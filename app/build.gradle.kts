@@ -46,6 +46,7 @@ dependencies {
     val composeBom = platform(Dependencies.composeBom)
 
     implementation(composeBom)
+    implementation(Dependencies.composeNavigation)
     implementation(Dependencies.androidxCore)
     implementation(Dependencies.androidxLifecycle)
     implementation(Dependencies.androidxComposeActivity)

@@ -30,4 +30,6 @@ dependencies {
     implementation(Dependencies.androidxCore)
     implementation(Dependencies.espresso)
     androidTestImplementation(Dependencies.junit_jupiter)
+
+    implementation(project(":data"))
 }

@@ -9,6 +9,7 @@ object Versions {
     val androidxComposeActivity = "1.7.1"
     val androidxLifecycle = "2.6.1"
     val composeBom = "2023.04.01"
+    val composeNavigation = "2.5.3"
     val composeCompiler = "1.4.4"
     val junit_jupiter = "5.9.2"
     val espresso = "3.5.1"
@@ -24,6 +25,7 @@ object Dependencies {
     val androidxComposeActivity = "androidx.activity:activity-compose:${Versions.androidxComposeActivity}"
     val androidxLifecycle = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.androidxLifecycle}"
     val composeBom = "androidx.compose:compose-bom:${Versions.composeBom}"
+    val composeNavigation = "androidx.navigation:navigation-compose:${Versions.composeNavigation}"
     val composeAnimation = "androidx.compose.animation:animation"
     val composeAnimationCore = "androidx.compose.animation:animation-core"
     val composeFoundation = "androidx.compose.foundation:foundation"
@@ -40,6 +42,7 @@ object Dependencies {
     val hilt = "com.google.dagger:hilt-android:${Versions.hilt}"
     val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
 }
+
 object Plugins {
     val androidApp = "com.android.application"
     val androidLibrary = "com.android.library"
