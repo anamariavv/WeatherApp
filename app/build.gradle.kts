@@ -37,8 +37,8 @@ android {
         kotlinCompilerExtensionVersion = Versions.composeCompiler
     }
     compileOptions {
-        sourceCompatibility = org.gradle.api.JavaVersion.VERSION_15
-        targetCompatibility = org.gradle.api.JavaVersion.VERSION_15
+        sourceCompatibility = JavaVersion.VERSION_15
+        targetCompatibility = JavaVersion.VERSION_15
     }
 }
 

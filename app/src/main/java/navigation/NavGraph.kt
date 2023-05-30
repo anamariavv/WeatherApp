@@ -11,7 +11,7 @@ import ui.weekly.WeeklyScreen
 @Composable
 fun NavGraph(navController: NavHostController) {
 
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(navController = navController, startDestination = "route_home") {
         composable(BottomNavItem.Home.route) {
             HomeScreen()
         }
