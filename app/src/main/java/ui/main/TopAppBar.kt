@@ -1,4 +1,4 @@
-package ui.common.component
+package ui.main
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
@@ -20,14 +20,17 @@ import ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBar(titleText: String) {
+fun TopAppBar(
+    titleText: String,
+    onButtonClick: () -> Unit
+) {
 
     CenterAlignedTopAppBar(
         title = {
             Text(titleText, maxLines = 1, style = Typography.h1, color = White)
         },
         actions = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { onButtonClick() }) {
                 Icon(
                     modifier = Modifier.size(dimensionResource(id = R.dimen.large)),
                     imageVector = Icons.Sharp.Add,

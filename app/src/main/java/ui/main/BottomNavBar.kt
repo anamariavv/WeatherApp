@@ -14,7 +14,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.weatherapp.R
 
 @Composable
-fun BottomNavigator(navController: NavController) {
+fun BottomNavBar(navController: NavController) {
 
     val items = listOf(BottomNavItem.Home, BottomNavItem.Weekly, BottomNavItem.Settings)
 

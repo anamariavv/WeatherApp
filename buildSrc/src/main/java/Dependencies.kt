@@ -16,6 +16,7 @@ object Versions {
     val retrofit = "2.9.0"
     val coroutines = "1.6.4"
     val hilt = "2.45"
+    val hiltComposeNavigation = "1.0.0"
     val androidGradle = "7.4.2"
     val kotlin = "1.8.10"
 }
@@ -41,6 +42,7 @@ object Dependencies {
     val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
     val hilt = "com.google.dagger:hilt-android:${Versions.hilt}"
     val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
+    val hiltComposeNavigation = "androidx.hilt:hilt-navigation-compose:${Versions.hiltComposeNavigation}"
 }
 
 object Plugins {
