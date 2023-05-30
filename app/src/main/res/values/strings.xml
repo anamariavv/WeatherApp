@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">Weather App</string>
+
+    <!--Translatable-->
+    <string name="rijeka">Rijeka</string>
+    <string name="manage_cities">Manage cities</string>
+    <string name="home">Home</string>
+    <string name="weekly">Weekly weather</string>
+    <string name="settings">Settings</string>
+
+    <!--Top app bar-->
+    <string name="top_app_bar_button_content_description" translatable="false">@string/manage_cities</string>
+    <string name="top_app_bar_title_placeholder" translatable="false">@string/rijeka</string>
+
+    <!--Bottom navbar-->
+    <string name="bottom_navbar_home_content_description" translatable="false">@string/home</string>
+    <string name="bottom_navbar_weekly_content_description" translatable="false">@string/weekly</string>
+    <string name="bottom_navbar_settings_content_description" translatable="false">@string/settings</string>
+
+    <!--Home screen-->
+    <!--Settings screen-->
+    <!--Weekly screen-->
+
 </resources>

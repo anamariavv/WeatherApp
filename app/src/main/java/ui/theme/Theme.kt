@@ -6,7 +6,6 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import com.example.weatherapp.ui.theme.Shapes
-import com.example.weatherapp.ui.theme.Typography
 
 private val DarkColorPalette = darkColors(
     primary = Blue,
