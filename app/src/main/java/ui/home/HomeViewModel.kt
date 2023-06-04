@@ -1,6 +1,6 @@
 package ui.home
 
-import ui.common.BaseViewModel
+import ui.base.BaseViewModel
 
 class HomeViewModel : BaseViewModel() {
 

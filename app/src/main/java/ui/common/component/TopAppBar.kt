@@ -1,4 +1,4 @@
-package ui.main
+package ui.common
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon

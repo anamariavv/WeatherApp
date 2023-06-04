@@ -1,4 +1,4 @@
-package navigation
+package ui.common.component
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.BottomNavigation
@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.weatherapp.R
+import navigation.BottomNavItem
 
 @Composable
 fun BottomNavBar(navController: NavController) {
