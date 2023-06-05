@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.SharedFlow
 
 interface NavigationDelegate {
 
-    fun navigate(navigationEvent: NavigationEvent)
+    fun navigate(navigationDirection: NavigationDirection)
 
-    fun getNavigationEvents(): SharedFlow<NavigationEvent>
+    fun getNavigationEvents(): SharedFlow<NavigationDirection>
 }

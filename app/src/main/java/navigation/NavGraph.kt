@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import ui.cities.CitiesScreen
 import ui.home.HomeScreen
 import ui.settings.SettingsScreen
 import ui.weekly.WeeklyScreen
@@ -12,16 +13,20 @@ import ui.weekly.WeeklyScreen
 fun NavGraph(navController: NavHostController) {
 
     NavHost(navController = navController, startDestination = "route_home") {
-        composable(BottomNavItem.Home.route) {
+        composable(NavigationDirection.Home.destination) {
             HomeScreen()
         }
 
-        composable(BottomNavItem.Settings.route) {
+        composable(NavigationDirection.Settings.destination) {
             SettingsScreen()
         }
 
-        composable(BottomNavItem.Weekly.route) {
+        composable(NavigationDirection.Weekly.destination) {
             WeeklyScreen()
+        }
+
+        composable(NavigationDirection.Cities.destination) {
+            CitiesScreen()
         }
     }
 }

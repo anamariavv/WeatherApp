@@ -3,18 +3,22 @@ package navigation
 class RouterImpl(private var navigationDelegate: NavigationDelegate) : Router {
 
     override fun showCitiesScreen() {
-        navigationDelegate.navigate(NavigationEvent.Cities)
+        navigate(NavigationDirection.Cities)
     }
 
     override fun showHomeScreen() {
-        navigationDelegate.navigate(NavigationEvent.Home)
+        navigate(NavigationDirection.Home)
     }
 
     override fun showWeeklyScreen() {
-        navigationDelegate.navigate(NavigationEvent.Weekly)
+        navigate(NavigationDirection.Weekly)
     }
 
     override fun showSettingsScreen() {
-        navigationDelegate.navigate(NavigationEvent.Settings)
+        navigate(NavigationDirection.Settings)
+    }
+
+    override fun navigate(navigationDirection: NavigationDirection) {
+        navigationDelegate.navigate(navigationDirection)
     }
 }

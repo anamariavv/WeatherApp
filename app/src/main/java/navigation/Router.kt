@@ -9,4 +9,6 @@ interface Router {
     fun showWeeklyScreen()
 
     fun showSettingsScreen()
+
+    fun navigate(navigationDirection: NavigationDirection)
 }
