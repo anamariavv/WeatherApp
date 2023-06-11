@@ -62,6 +62,7 @@ dependencies {
     implementation(Dependencies.retrofit)
     implementation(Dependencies.coroutines)
     implementation(Dependencies.hilt)
+    implementation(Dependencies.hiltComposeNavigation)
 
     kapt(Dependencies.hiltCompiler)
 
