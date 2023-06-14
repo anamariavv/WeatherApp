@@ -72,4 +72,5 @@ dependencies {
     debugImplementation(Dependencies.composeToolingPreview)
 
     implementation(project(":domain"))
+    implementation(project(":data"))
 }
