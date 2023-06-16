@@ -35,8 +35,7 @@ fun CitiesScreen(viewModel: CitiesViewModel = hiltViewModel()) {
             shape = SearchBarDefaults.inputFieldShape,
             onActiveChange = {},
             placeholder = { Text("City Search") },
-            trailingIcon = { Icon(Icons.Rounded.Search, contentDescription = "City search") }) {
-
+            leadingIcon = { Icon(Icons.Rounded.Search, contentDescription = "ApiCity search") }) {
         }
     }
 }

@@ -63,6 +63,8 @@ dependencies {
     implementation(Dependencies.coroutines)
     implementation(Dependencies.hilt)
     implementation(Dependencies.hiltComposeNavigation)
+    implementation(Dependencies.gson)
+    implementation(Dependencies.gsonConverter)
 
     kapt(Dependencies.hiltCompiler)
 

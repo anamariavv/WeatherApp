@@ -6,6 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import interactor.QueryCitiesInteractor
+import mapper.CityMapper
+import mapper.CityMapperImpl
 import repository.cities.CitiesRepository
 import repository.cities.CitiesRepositoryImpl
 import usecase.cities.QueryCitiesUseCase
@@ -17,13 +19,22 @@ class DomainModule {
 
     @Provides
     @ViewModelScoped
-    fun provideQueryCitiesUseCase(citiesRepository: CitiesRepository) : QueryCitiesUseCase {
+    fun provideQueryCitiesUseCase(citiesRepository: CitiesRepository): QueryCitiesUseCase {
         return QueryCitiesUseCaseImpl(citiesRepository = citiesRepository)
     }
 
     @Provides
     @ViewModelScoped
-    fun provideCitiesRepository(queryCitiesInteractor: QueryCitiesInteractor): CitiesRepository {
-        return CitiesRepositoryImpl(queryCitiesInteractor = queryCitiesInteractor)
+    fun provideCitiesRepository(
+        queryCitiesInteractor: QueryCitiesInteractor,
+        cityMapper: CityMapper
+    ): CitiesRepository {
+        return CitiesRepositoryImpl(queryCitiesInteractor = queryCitiesInteractor, cityMapper)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideCityMapper(): CityMapper {
+        return CityMapperImpl()
     }
 }

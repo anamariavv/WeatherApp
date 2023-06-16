@@ -20,6 +20,8 @@ object Versions {
     val hiltComposeNavigation = "1.0.0"
     val androidGradle = "7.4.2"
     val kotlin = "1.8.10"
+    val gson = "2.10.1"
+    val gsonConverter = "2.9.0"
 }
 
 object Dependencies {
@@ -44,6 +46,8 @@ object Dependencies {
     val hilt = "com.google.dagger:hilt-android:${Versions.hilt}"
     val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
     val hiltComposeNavigation = "androidx.hilt:hilt-navigation-compose:${Versions.hiltComposeNavigation}"
+    val gson = "com.google.code.gson:gson:${Versions.gson}"
+    val gsonConverter = "com.squareup.retrofit2:converter-gson:${Versions.gsonConverter}"
 }
 
 object Plugins {

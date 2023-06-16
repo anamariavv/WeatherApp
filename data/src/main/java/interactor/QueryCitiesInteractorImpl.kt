@@ -1,8 +1,14 @@
 package interactor
 
-class QueryCitiesInteractorImpl: QueryCitiesInteractor {
+import android.util.Log
+import model.ApiCity
+import source.network.LocationsService
 
-    override suspend fun invoke(queryText: String): String {
-        return ""
+class QueryCitiesInteractorImpl(
+    private val locationsService: LocationsService
+) : QueryCitiesInteractor {
+
+    override suspend fun invoke(queryText: String): List<ApiCity> {
+        return locationsService.queryCities(apiKey = "GNGOwBdyEEgIIXzFdlGlqpOg46kVNz6I", queryText=queryText)
     }
 }

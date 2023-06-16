@@ -29,5 +29,8 @@ android {
 dependencies {
     implementation(Dependencies.androidxCore)
     implementation(Dependencies.espresso)
+    implementation(Dependencies.retrofit)
+    implementation(Dependencies.gson)
+    implementation(Dependencies.gsonConverter)
     androidTestImplementation(Dependencies.junit_jupiter)
 }
