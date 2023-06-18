@@ -5,6 +5,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import com.example.weatherapp.ui.theme.Shapes
 
 private val DarkColorPalette = darkColors(
@@ -16,7 +17,9 @@ private val DarkColorPalette = darkColors(
 private val LightColorPalette = lightColors(
     primary = Blue,
     primaryVariant = BlueDark,
-    secondary = Sky
+    secondary = Sky,
+    surface = Color.White,
+    background = Color.White,
 
     /* Other default colors to override
     background = Color.White,
@@ -26,6 +29,7 @@ private val LightColorPalette = lightColors(
     onBackground = Color.Black,
     onSurface = Color.Black,
     */
+
 )
 
 @Composable

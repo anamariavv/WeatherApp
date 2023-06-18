@@ -22,6 +22,7 @@ object Versions {
     val kotlin = "1.8.10"
     val gson = "2.10.1"
     val gsonConverter = "2.9.0"
+    val httpLoggingInterceptor = "4.11.0"
 }
 
 object Dependencies {
@@ -48,6 +49,7 @@ object Dependencies {
     val hiltComposeNavigation = "androidx.hilt:hilt-navigation-compose:${Versions.hiltComposeNavigation}"
     val gson = "com.google.code.gson:gson:${Versions.gson}"
     val gsonConverter = "com.squareup.retrofit2:converter-gson:${Versions.gsonConverter}"
+    val httpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.httpLoggingInterceptor}"
 }
 
 object Plugins {

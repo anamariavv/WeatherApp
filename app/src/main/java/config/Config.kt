@@ -3,6 +3,7 @@ package config
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.DateRange
 import androidx.compose.material.icons.sharp.Home
+import androidx.compose.material.icons.sharp.LocationOn
 import androidx.compose.material.icons.sharp.Settings
 import com.example.weatherapp.R
 import navigation.BottomNavItem
@@ -25,6 +26,11 @@ object Config {
             icon = Icons.Sharp.Settings,
             contentDescriptionId = R.string.bottom_navbar_settings_content_description,
             direction = NavigationDirection.Settings
-        )
+        ),
+        BottomNavItem(
+            icon = Icons.Sharp.LocationOn,
+            contentDescriptionId = R.string.bottom_navbar_cities_content_description,
+            direction = NavigationDirection.Cities
+        ),
     )
 }

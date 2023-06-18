@@ -9,15 +9,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.weatherapp.R
 import navigation.NavGraph
 import ui.common.component.BottomNavBar
 import navigation.NavigationDelegate
-import ui.common.TopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 
@@ -27,7 +24,6 @@ fun MainScreen(
     viewModel: MainViewModel = hiltViewModel(),
 ) {
     val navController: NavHostController = rememberNavController()
-    val titleText: String = stringResource(id = R.string.top_app_bar_title_placeholder)
     val bottomNavBarState by viewModel.bottomNavBarState.collectAsState()
 
     LaunchedEffect(navController) {
@@ -38,12 +34,6 @@ fun MainScreen(
 
     Column {
         Scaffold(
-            topBar = {
-                TopAppBar(
-                    titleText = titleText,
-                    onButtonClick = viewModel::onCityActionButtonClicked
-                )
-            },
             bottomBar = {
                 BottomNavBar(
                     items = bottomNavBarState.items,

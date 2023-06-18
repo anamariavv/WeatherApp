@@ -1,6 +1,5 @@
 package usecase.cities
 
-import android.util.Log
 import model.common.Resource
 import repository.cities.CitiesRepository
 

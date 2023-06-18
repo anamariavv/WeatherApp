@@ -65,6 +65,7 @@ dependencies {
     implementation(Dependencies.hiltComposeNavigation)
     implementation(Dependencies.gson)
     implementation(Dependencies.gsonConverter)
+    implementation(Dependencies.httpLoggingInterceptor)
 
     kapt(Dependencies.hiltCompiler)
 

@@ -32,5 +32,6 @@ dependencies {
     implementation(Dependencies.retrofit)
     implementation(Dependencies.gson)
     implementation(Dependencies.gsonConverter)
+    implementation(Dependencies.httpLoggingInterceptor)
     androidTestImplementation(Dependencies.junit_jupiter)
 }
