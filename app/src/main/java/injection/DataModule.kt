@@ -5,10 +5,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
+import interactor.AddFavouriteCityInteractor
+import interactor.AddFavouriteCityInteractorImpl
 import interactor.GetFavouriteCitiesInteractor
 import interactor.GetFavouriteCitiesInteractorImpl
 import interactor.QueryCitiesInteractor
 import interactor.QueryCitiesInteractorImpl
+import interactor.RemoveFavouriteCityInteractor
+import interactor.RemoveFavouriteCityInteractorImpl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -51,7 +55,7 @@ class DataModule {
 
     @Provides
     @ViewModelScoped
-    fun provideFavouriteCityDao(locationDatabase: LocationDatabase): FavouriteCityDao {
+    fun provideFavouriteCityWithCountryDao(locationDatabase: LocationDatabase): FavouriteCityDao {
         return locationDatabase.favouriteCityDao()
     }
 
@@ -59,5 +63,17 @@ class DataModule {
     @ViewModelScoped
     fun provideGetFavouriteCitiesInteractor(favouriteCityDao: FavouriteCityDao): GetFavouriteCitiesInteractor {
         return GetFavouriteCitiesInteractorImpl(favouriteCityDao)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideAddFavouriteCityInteractor(favouriteCityDao: FavouriteCityDao): AddFavouriteCityInteractor {
+        return AddFavouriteCityInteractorImpl(favouriteCityDao)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideRemoveFavouriteCityInteractor(favouriteCityDao: FavouriteCityDao): RemoveFavouriteCityInteractor {
+        return RemoveFavouriteCityInteractorImpl(favouriteCityDao)
     }
 }

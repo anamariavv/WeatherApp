@@ -1,7 +1,7 @@
 package interactor
 
-import model.local.FavouriteCityWithCountry
+import model.local.FavouriteCity
 
 interface GetFavouriteCitiesInteractor {
-    suspend operator fun invoke(): List<FavouriteCityWithCountry>
+    suspend operator fun invoke(): List<FavouriteCity>
 }

@@ -6,17 +6,16 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import model.local.FavouriteCity
-import model.local.FavouriteCityWithCountry
 
 @Dao
 interface FavouriteCityDao {
     @Transaction
-    @Query("SELECT * FROM favouriteCity")
-    fun getAll(): List<FavouriteCityWithCountry>
+    @Query("SELECT * FROM FavouriteCity")
+    fun getAll(): List<FavouriteCity>
 
     @Insert
-    fun addFavouriteCity(favouriteCity: FavouriteCity)
+    fun addFavouriteCity(city: FavouriteCity)
 
     @Delete
-    fun removeFavouriteCity(favouriteCity: FavouriteCity)
+    fun removeFavouriteCity(city: FavouriteCity)
 }

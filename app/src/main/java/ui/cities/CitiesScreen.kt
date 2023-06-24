@@ -68,7 +68,7 @@ fun listItem(city: City, onButtonClick: (City) -> Unit) {
     Row(modifier = Modifier.fillMaxWidth()) {
         Column(horizontalAlignment = Alignment.Start) {
             Text(city.localizedName, style = Typography.h6)
-            Text(city.country.localizedName, style = Typography.caption, color = Color.LightGray)
+            Text(city.countryLocalizedName, style = Typography.caption, color = Color.LightGray)
         }
         Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
             IconButton(onClick = { onButtonClick(city) }) {

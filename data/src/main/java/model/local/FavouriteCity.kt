@@ -9,5 +9,6 @@ data class FavouriteCity(
     val localizedName: String,
     val rank: Int,
     val type: String,
-    val countryId: String
+    val countryId: String,
+    val countryLocalizedName: String
 )

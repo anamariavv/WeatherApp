@@ -7,13 +7,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import model.City
 import ui.base.BaseViewModel
+import usecase.cities.GetFavouriteCitiesUseCase
 import usecase.cities.QueryCitiesUseCase
 import utils.empty
 import javax.inject.Inject
 
 @HiltViewModel
 class CitiesViewModel @Inject constructor(
-    private val queryCitiesUseCase: QueryCitiesUseCase
+    private val queryCitiesUseCase: QueryCitiesUseCase,
+    private val getFavouriteCitiesUseCase: GetFavouriteCitiesUseCase
 ) : BaseViewModel() {
 
     private val _searchBarState = MutableStateFlow(

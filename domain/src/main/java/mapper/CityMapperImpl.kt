@@ -3,10 +3,7 @@ package mapper
 import model.network.ApiCity
 import model.network.ApiCountry
 import model.City
-import model.Country
 import model.local.FavouriteCity
-import model.local.FavouriteCityWithCountry
-import model.local.FavouriteCountry
 
 class CityMapperImpl : CityMapper {
 
@@ -14,64 +11,43 @@ class CityMapperImpl : CityMapper {
         return City(
             localizedName = apiCity.localizedName,
             locationKey = apiCity.key,
-            country = toCountry(apiCity.country),
+            countryId = apiCity.country.id,
+            countryLocalizedName = apiCity.country.localizedName,
             rank = apiCity.rank,
             type = apiCity.type,
             isFavourite = false
         )
     }
 
-    override fun toCity(favouriteCity: FavouriteCityWithCountry): City {
+    override fun toCity(favouriteCity: FavouriteCity): City {
         return City(
-            localizedName = favouriteCity.city.localizedName,
-            locationKey = favouriteCity.city.locationKey,
-            country = toCountry(favouriteCity.country),
-            rank = favouriteCity.city.rank,
-            type = favouriteCity.city.type,
+            localizedName = favouriteCity.localizedName,
+            locationKey = favouriteCity.locationKey,
+            countryId = favouriteCity.countryId,
+            countryLocalizedName = favouriteCity.countryLocalizedName,
+            rank = favouriteCity.rank,
+            type = favouriteCity.type,
             isFavourite = true
         )
     }
-
-    override fun toFavouriteCityWithCountry(city: City): FavouriteCityWithCountry {
-        return FavouriteCityWithCountry(
-            city = toFavouriteCity(city),
-            country = toFavouriteCountry(city.country)
-        )
-    }
-
     override fun toApiCity(city: City): ApiCity {
         return ApiCity(
             localizedName = city.localizedName,
             key = city.locationKey,
-            country = toApiCountry(city.country),
+            country = ApiCountry(city.countryId, city.countryLocalizedName),
             rank = city.rank,
             type = city.type
         )
     }
 
-    private fun toCountry(favouriteCountry: FavouriteCountry): Country {
-        return Country(id = favouriteCountry.id, localizedName = favouriteCountry.localizedName)
-    }
-
-    private fun toFavouriteCity(city: City): FavouriteCity {
+    override fun toFavouriteCity(city: City): FavouriteCity {
         return FavouriteCity(
             locationKey = city.locationKey,
             localizedName = city.localizedName,
             rank = city.rank,
             type = city.type,
-            countryId = city.country.id
+            countryId = city.countryId,
+            countryLocalizedName = city.countryLocalizedName
         )
-    }
-
-    private fun toFavouriteCountry(country: Country): FavouriteCountry {
-        return FavouriteCountry(id = country.id, localizedName = country.localizedName)
-    }
-
-    private fun toCountry(apiCountry: ApiCountry): Country {
-        return Country(id = apiCountry.id, localizedName = apiCountry.localizedName)
-    }
-
-    private fun toApiCountry(country: Country): ApiCountry {
-        return ApiCountry(id = country.id, localizedName = country.localizedName)
     }
 }
