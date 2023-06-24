@@ -1,6 +1,7 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    id(Plugins.androidLibrary)
+    id(Plugins.kotlinAndroid)
+    id(Plugins.kotlinKapt)
 }
 
 android {
@@ -33,5 +34,10 @@ dependencies {
     implementation(Dependencies.gson)
     implementation(Dependencies.gsonConverter)
     implementation(Dependencies.httpLoggingInterceptor)
+    implementation(Dependencies.room)
+    implementation(Dependencies.roomKotlin)
+
     androidTestImplementation(Dependencies.junit_jupiter)
+
+    kapt(Dependencies.roomCompiler)
 }

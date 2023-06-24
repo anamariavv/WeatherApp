@@ -5,23 +5,21 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
+import interactor.GetFavouriteCitiesInteractor
+import interactor.GetFavouriteCitiesInteractorImpl
 import interactor.QueryCitiesInteractor
 import interactor.QueryCitiesInteractorImpl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import source.local.FavouriteCityDao
+import source.local.LocationDatabase
 import source.network.LocationsService
 
 @Module
 @InstallIn(ViewModelComponent::class)
 class DataModule {
-
-    @Provides
-    @ViewModelScoped
-    fun provideQueryCitiesInteractor(locationsService: LocationsService): QueryCitiesInteractor {
-        return QueryCitiesInteractorImpl(locationsService)
-    }
 
     @Provides
     @ViewModelScoped
@@ -43,5 +41,23 @@ class DataModule {
     @ViewModelScoped
     fun provideLocationService(retrofit: Retrofit): LocationsService {
         return retrofit.create(LocationsService::class.java)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideQueryCitiesInteractor(locationsService: LocationsService): QueryCitiesInteractor {
+        return QueryCitiesInteractorImpl(locationsService)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideFavouriteCityDao(locationDatabase: LocationDatabase): FavouriteCityDao {
+        return locationDatabase.favouriteCityDao()
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetFavouriteCitiesInteractor(favouriteCityDao: FavouriteCityDao): GetFavouriteCitiesInteractor {
+        return GetFavouriteCitiesInteractorImpl(favouriteCityDao)
     }
 }

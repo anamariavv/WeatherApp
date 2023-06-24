@@ -1,13 +1,18 @@
 package injection
 
+import android.content.Context
+import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import navigation.NavigationDelegate
 import navigation.NavigationDelegateImpl
 import navigation.Router
 import navigation.RouterImpl
+import source.local.LocationDatabase
+import source.local.LocationDatabaseImpl
 import javax.inject.Singleton
 
 @Module
@@ -16,10 +21,16 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideRouter(navigationDelegate: NavigationDelegate): Router = RouterImpl(navigationDelegate)
+    fun provideRouter(navigationDelegate: NavigationDelegate): Router =
+        RouterImpl(navigationDelegate)
 
     @Provides
     @Singleton
     fun provideNavigationDelegate(): NavigationDelegate = NavigationDelegateImpl()
 
+    @Provides
+    @Singleton
+    fun provideRoomDatabase(@ApplicationContext appContext: Context): LocationDatabase {
+        return Room.databaseBuilder(appContext, LocationDatabaseImpl::class.java, "locationDatabase").build()
+    }
 }

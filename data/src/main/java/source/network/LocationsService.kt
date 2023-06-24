@@ -1,6 +1,6 @@
 package source.network
 
-import model.ApiCity
+import model.network.ApiCity
 import retrofit2.http.GET
 import retrofit2.http.Query
 

@@ -66,7 +66,10 @@ dependencies {
     implementation(Dependencies.gson)
     implementation(Dependencies.gsonConverter)
     implementation(Dependencies.httpLoggingInterceptor)
+    implementation(Dependencies.room)
+    implementation(Dependencies.roomKotlin)
 
+    kapt(Dependencies.roomCompiler)
     kapt(Dependencies.hiltCompiler)
 
     androidTestImplementation(Dependencies.junit_jupiter)

@@ -49,7 +49,6 @@ class CitiesViewModel @Inject constructor(
     }
 
     private fun searchSuccess(response: QueryCitiesUseCase.QueryCitiesUseCaseResponse) {
-        response.autocompleteCities.forEach { Log.d("city", it.toString()) }
         _searchBarState.update { it.copy(queryResult = response.autocompleteCities) }
     }
 

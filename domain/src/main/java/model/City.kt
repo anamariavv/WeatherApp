@@ -5,5 +5,6 @@ data class City(
     val locationKey: String,
     val country: Country,
     val rank: Int,
-    val type: String
+    val type: String,
+    val isFavourite: Boolean
 )
