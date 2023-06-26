@@ -1,21 +1,20 @@
 package ui.cities
 
-import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import model.City
 import ui.base.BaseViewModel
-import usecase.cities.GetFavouriteCitiesUseCase
-import usecase.cities.QueryCitiesUseCase
+import usecase.city.QueryCitiesUseCase
+import usecase.city.ToggleFavouriteCityUseCase
 import utils.empty
 import javax.inject.Inject
 
 @HiltViewModel
 class CitiesViewModel @Inject constructor(
     private val queryCitiesUseCase: QueryCitiesUseCase,
-    private val getFavouriteCitiesUseCase: GetFavouriteCitiesUseCase
+    private val toggleFavouriteCityUseCase: ToggleFavouriteCityUseCase
 ) : BaseViewModel() {
 
     private val _searchBarState = MutableStateFlow(
@@ -34,8 +33,15 @@ class CitiesViewModel @Inject constructor(
     }
 
     fun updateCurrentCity(city: City) {
-        //TODO: save city in shared prefs
-        Log.d("cityy", city.localizedName)
+        //TODO: save city
+    }
+
+    fun toggleFavouriteCity(city: City) {
+        runSuspend { toggleFavouriteCityInternal(city) }
+    }
+
+    private suspend fun toggleFavouriteCityInternal(city: City) {
+        toggleFavouriteCityUseCase(city)
     }
 
     fun onActiveChange(isActive: Boolean) {

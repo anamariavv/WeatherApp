@@ -1,5 +1,6 @@
-package mapper
+package mapper.impl
 
+import mapper.CityMapper
 import model.network.ApiCity
 import model.network.ApiCountry
 import model.City
@@ -30,6 +31,7 @@ class CityMapperImpl : CityMapper {
             isFavourite = true
         )
     }
+
     override fun toApiCity(city: City): ApiCity {
         return ApiCity(
             localizedName = city.localizedName,

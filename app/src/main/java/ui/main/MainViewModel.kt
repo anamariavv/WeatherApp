@@ -5,7 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import navigation.BottomNavItem
+import navigation.component.BottomNavItem
 import ui.base.BaseViewModel
 import ui.common.BottomNavBarState
 import javax.inject.Inject

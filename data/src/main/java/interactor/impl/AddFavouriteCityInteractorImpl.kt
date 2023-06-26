@@ -1,5 +1,6 @@
-package interactor
+package interactor.impl
 
+import interactor.AddFavouriteCityInteractor
 import model.local.FavouriteCity
 import source.local.FavouriteCityDao
 

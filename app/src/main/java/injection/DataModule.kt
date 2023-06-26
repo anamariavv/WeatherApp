@@ -1,18 +1,19 @@
 package injection
 
+import config.Config
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import interactor.AddFavouriteCityInteractor
-import interactor.AddFavouriteCityInteractorImpl
+import interactor.impl.AddFavouriteCityInteractorImpl
 import interactor.GetFavouriteCitiesInteractor
-import interactor.GetFavouriteCitiesInteractorImpl
+import interactor.impl.GetFavouriteCitiesInteractorImpl
 import interactor.QueryCitiesInteractor
-import interactor.QueryCitiesInteractorImpl
+import interactor.impl.QueryCitiesInteractorImpl
 import interactor.RemoveFavouriteCityInteractor
-import interactor.RemoveFavouriteCityInteractorImpl
+import interactor.impl.RemoveFavouriteCityInteractorImpl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -37,8 +38,14 @@ class DataModule {
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
-        return Retrofit.Builder().baseUrl("http://dataservice.accuweather.com")
+        return Retrofit.Builder().baseUrl(Config.retrofitBaseUrl)
             .addConverterFactory(gsonConverterFactory).client(okHttpClient).build()
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideFavouriteCityWithCountryDao(locationDatabase: LocationDatabase): FavouriteCityDao {
+        return locationDatabase.favouriteCityDao()
     }
 
     @Provides
@@ -47,16 +54,11 @@ class DataModule {
         return retrofit.create(LocationsService::class.java)
     }
 
+
     @Provides
     @ViewModelScoped
     fun provideQueryCitiesInteractor(locationsService: LocationsService): QueryCitiesInteractor {
         return QueryCitiesInteractorImpl(locationsService)
-    }
-
-    @Provides
-    @ViewModelScoped
-    fun provideFavouriteCityWithCountryDao(locationDatabase: LocationDatabase): FavouriteCityDao {
-        return locationDatabase.favouriteCityDao()
     }
 
     @Provides

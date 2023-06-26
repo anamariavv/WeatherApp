@@ -1,4 +1,4 @@
-package usecase.cities
+package usecase.city
 
 import model.City
 

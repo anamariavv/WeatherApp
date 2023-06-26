@@ -1,6 +1,7 @@
 package navigation
 
 import kotlinx.coroutines.flow.SharedFlow
+import navigation.component.NavigationDirection
 
 interface NavigationDelegate {
 

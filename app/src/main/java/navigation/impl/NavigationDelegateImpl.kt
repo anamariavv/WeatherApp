@@ -1,8 +1,10 @@
-package navigation
+package navigation.impl
 
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import navigation.NavigationDelegate
+import navigation.component.NavigationDirection
 
 class NavigationDelegateImpl : NavigationDelegate {
 

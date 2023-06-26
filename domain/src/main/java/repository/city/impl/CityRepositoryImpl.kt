@@ -1,4 +1,4 @@
-package repository.cities
+package repository.city.impl
 
 import interactor.AddFavouriteCityInteractor
 import interactor.GetFavouriteCitiesInteractor
@@ -6,14 +6,15 @@ import interactor.QueryCitiesInteractor
 import interactor.RemoveFavouriteCityInteractor
 import mapper.CityMapper
 import model.City
+import repository.city.CityRepository
 
-class CitiesRepositoryImpl(
+class CityRepositoryImpl(
     private val queryCitiesInteractor: QueryCitiesInteractor,
     private val getFavouriteCitiesInteractor: GetFavouriteCitiesInteractor,
     private val addFavouriteCityInteractor: AddFavouriteCityInteractor,
     private val removeFavouriteCityInteractor: RemoveFavouriteCityInteractor,
     private val cityMapper: CityMapper
-) : CitiesRepository {
+) : CityRepository {
 
     override suspend fun queryCities(queryText: String): List<City> {
         return queryCitiesInteractor(queryText).map { cityMapper.toCity(it) }

@@ -6,10 +6,12 @@ import androidx.compose.material.icons.sharp.Home
 import androidx.compose.material.icons.sharp.LocationOn
 import androidx.compose.material.icons.sharp.Settings
 import com.example.weatherapp.R
-import navigation.BottomNavItem
-import navigation.NavigationDirection
+import navigation.component.BottomNavItem
+import navigation.component.NavigationDirection
 
 object Config {
+    const val databaseName = "locationDatabase"
+    const val retrofitBaseUrl = "http://dataservice.accuweather.com"
 
     val BOTTOM_NAV_BAR_ITEMS = listOf(
         BottomNavItem(

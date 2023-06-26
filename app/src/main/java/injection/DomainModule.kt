@@ -10,17 +10,19 @@ import interactor.GetFavouriteCitiesInteractor
 import interactor.QueryCitiesInteractor
 import interactor.RemoveFavouriteCityInteractor
 import mapper.CityMapper
-import mapper.CityMapperImpl
-import repository.cities.CitiesRepository
-import repository.cities.CitiesRepositoryImpl
-import usecase.cities.AddFavouriteCityUseCase
-import usecase.cities.AddFavouriteCityUseCaseImpl
-import usecase.cities.GetFavouriteCitiesUseCase
-import usecase.cities.GetFavouriteCitiesUseCaseImpl
-import usecase.cities.QueryCitiesUseCase
-import usecase.cities.QueryCitiesUseCaseImpl
-import usecase.cities.RemoveFavouriteCityUseCase
-import usecase.cities.RemoveFavouriteCityUseCaseImpl
+import mapper.impl.CityMapperImpl
+import repository.city.CityRepository
+import repository.city.impl.CityRepositoryImpl
+import usecase.city.AddFavouriteCityUseCase
+import usecase.city.impl.AddFavouriteCityUseCaseImpl
+import usecase.city.GetFavouriteCitiesUseCase
+import usecase.city.impl.GetFavouriteCitiesUseCaseImpl
+import usecase.city.QueryCitiesUseCase
+import usecase.city.impl.QueryCitiesUseCaseImpl
+import usecase.city.RemoveFavouriteCityUseCase
+import usecase.city.impl.RemoveFavouriteCityUseCaseImpl
+import usecase.city.ToggleFavouriteCityUseCase
+import usecase.city.impl.ToggleFavouriteCityUseCaseImpl
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -28,28 +30,33 @@ class DomainModule {
 
     @Provides
     @ViewModelScoped
-    fun provideQueryCitiesUseCase(citiesRepository: CitiesRepository): QueryCitiesUseCase {
-        return QueryCitiesUseCaseImpl(citiesRepository)
+    fun provideQueryCitiesUseCase(cityRepository: CityRepository): QueryCitiesUseCase {
+        return QueryCitiesUseCaseImpl(cityRepository)
     }
 
     @Provides
     @ViewModelScoped
-    fun provideGetFavouriteCitiesUseCase(citiesRepository: CitiesRepository): GetFavouriteCitiesUseCase {
-        return GetFavouriteCitiesUseCaseImpl(citiesRepository)
+    fun provideGetFavouriteCitiesUseCase(cityRepository: CityRepository): GetFavouriteCitiesUseCase {
+        return GetFavouriteCitiesUseCaseImpl(cityRepository)
     }
 
     @Provides
     @ViewModelScoped
-    fun provideAddFavouriteCityUseCase(citiesRepository: CitiesRepository): AddFavouriteCityUseCase {
-        return AddFavouriteCityUseCaseImpl(citiesRepository)
+    fun provideAddFavouriteCityUseCase(cityRepository: CityRepository): AddFavouriteCityUseCase {
+        return AddFavouriteCityUseCaseImpl(cityRepository)
     }
 
     @Provides
     @ViewModelScoped
-    fun provideRemoveFavouriteCityUseCase(citiesRepository: CitiesRepository): RemoveFavouriteCityUseCase {
-        return RemoveFavouriteCityUseCaseImpl(citiesRepository)
+    fun provideRemoveFavouriteCityUseCase(cityRepository: CityRepository): RemoveFavouriteCityUseCase {
+        return RemoveFavouriteCityUseCaseImpl(cityRepository)
     }
 
+    @Provides
+    @ViewModelScoped
+    fun provideToggleFavouriteCityUseCase(cityRepository: CityRepository): ToggleFavouriteCityUseCase {
+        return ToggleFavouriteCityUseCaseImpl(cityRepository)
+    }
 
     @Provides
     @ViewModelScoped
@@ -59,8 +66,8 @@ class DomainModule {
         addFavouriteCityInteractor: AddFavouriteCityInteractor,
         removeFavouriteCityInteractor: RemoveFavouriteCityInteractor,
         cityMapper: CityMapper
-    ): CitiesRepository {
-        return CitiesRepositoryImpl(
+    ): CityRepository {
+        return CityRepositoryImpl(
             queryCitiesInteractor,
             getFavouriteCitiesInteractor,
             addFavouriteCityInteractor,

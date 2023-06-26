@@ -1,9 +1,10 @@
-package navigation
+package navigation.graph
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import navigation.component.NavigationDirection
 import ui.cities.CitiesScreen
 import ui.home.HomeScreen
 import ui.settings.SettingsScreen

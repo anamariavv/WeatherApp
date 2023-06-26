@@ -1,8 +1,8 @@
-package usecase.cities
+package usecase.city
 
 import model.City
 
-interface AddFavouriteCityUseCase {
+interface ToggleFavouriteCityUseCase {
 
     suspend operator fun invoke(city: City)
 }

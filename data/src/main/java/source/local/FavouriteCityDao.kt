@@ -11,11 +11,11 @@ import model.local.FavouriteCity
 interface FavouriteCityDao {
     @Transaction
     @Query("SELECT * FROM FavouriteCity")
-    fun getAll(): List<FavouriteCity>
+    suspend fun getAll(): List<FavouriteCity>
 
     @Insert
-    fun addFavouriteCity(city: FavouriteCity)
+    suspend fun addFavouriteCity(city: FavouriteCity)
 
     @Delete
-    fun removeFavouriteCity(city: FavouriteCity)
+    suspend fun removeFavouriteCity(city: FavouriteCity)
 }

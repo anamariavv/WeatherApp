@@ -1,4 +1,8 @@
-package navigation
+package navigation.impl
+
+import navigation.NavigationDelegate
+import navigation.component.NavigationDirection
+import navigation.Router
 
 class RouterImpl(private var navigationDelegate: NavigationDelegate) : Router {
 

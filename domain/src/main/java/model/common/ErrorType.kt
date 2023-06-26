@@ -1,3 +1,3 @@
 package model.common
 
-interface ErrorType {}
+interface ErrorType

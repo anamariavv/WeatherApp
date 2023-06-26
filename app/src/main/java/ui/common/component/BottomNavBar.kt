@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import com.example.weatherapp.R
-import navigation.BottomNavItem
+import navigation.component.BottomNavItem
 
 @Composable
 fun BottomNavBar(
