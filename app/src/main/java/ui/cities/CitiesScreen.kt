@@ -6,15 +6,18 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
@@ -36,7 +39,10 @@ import ui.theme.Typography
 @Composable
 fun CitiesScreen(viewModel: CitiesViewModel = hiltViewModel()) {
 
+    //TODO cleanup
+
     val searchBarState by viewModel.searchBarState.collectAsState()
+    val favouriteCityListState by viewModel.favouriteCityListState.collectAsState()
 
     Column(
         Modifier
@@ -49,6 +55,18 @@ fun CitiesScreen(viewModel: CitiesViewModel = hiltViewModel()) {
             active = searchBarState.isActive,
             shape = SearchBarDefaults.inputFieldShape,
             onActiveChange = viewModel::onActiveChange,
+            trailingIcon = {
+                if (searchBarState.isActive) {
+                    IconButton(
+                        onClick = viewModel::onSearchbarCloseButtonClick,
+                    ) {
+                        Icon(
+                            Icons.Rounded.Close,
+                            contentDescription = stringResource(id = R.string.cities_screen_close_searchbar_icon_content_description)
+                        )
+                    }
+                }
+            },
             placeholder = {
                 Text(
                     stringResource(id = R.string.cities_screen_search_bar_placeholder)
@@ -77,6 +95,25 @@ fun CitiesScreen(viewModel: CitiesViewModel = hiltViewModel()) {
                 }
             }
         }
+
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(dimensionResource(id = R.dimen.list_content_padding)),
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.list_item_spacing))
+        ) {
+            items(favouriteCityListState.cities) {
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Column {
+                        Text(it.localizedName)
+                        Text(it.countryLocalizedName)
+                    }
+                }
+            }
+        }
+
+        OutlinedButton(onClick = { /*TODO get location by coords*/ }) {
+            Text("Where am I?")
+        }
     }
 }
 
@@ -88,11 +125,13 @@ fun listItem(city: City, onButtonClick: () -> Unit) {
 
     when (city.isFavourite) {
         true -> {
-            contentDescription = stringResource(id = R.string.cities_screen_remove_from_favourites_icon_content_description)
+            contentDescription =
+                stringResource(id = R.string.cities_screen_remove_from_favourites_icon_content_description)
             icon = Icons.Filled.Favorite
         }
         false -> {
-            contentDescription = stringResource(id = R.string.cities_screen_add_to_favourites_icon_content_description)
+            contentDescription =
+                stringResource(id = R.string.cities_screen_add_to_favourites_icon_content_description)
             icon = Icons.Outlined.FavoriteBorder
         }
     }

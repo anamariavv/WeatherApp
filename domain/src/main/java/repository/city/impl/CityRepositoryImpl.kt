@@ -18,6 +18,7 @@ class CityRepositoryImpl(
 ) : CityRepository {
 
     override suspend fun queryCities(queryText: String): List<City> {
+        //todo find a more efficient way
         val favouriteCities = getFavouriteCities()
 
         return queryCitiesInteractor(queryText).map { filterAndMapToCity(it, favouriteCities) }

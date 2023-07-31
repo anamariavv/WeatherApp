@@ -2,6 +2,7 @@ package usecase.city.impl
 
 import model.common.Resource
 import repository.city.CityRepository
+import usecase.city.QueryCitiesResponse
 import usecase.city.QueryCitiesUseCase
 
 class QueryCitiesUseCaseImpl(private val cityRepository: CityRepository) : QueryCitiesUseCase {
@@ -16,6 +17,6 @@ class QueryCitiesUseCaseImpl(private val cityRepository: CityRepository) : Query
             )
         }
 
-        return Resource.Success(QueryCitiesUseCase.QueryCitiesUseCaseResponse(list))
+        return Resource.Success(QueryCitiesResponse(list))
     }
 }
