@@ -6,7 +6,7 @@ import model.local.FavouriteCity
 
 interface CityMapper {
 
-    fun toCity(apiCity: ApiCity): City
+    fun toCity(apiCity: ApiCity, isFavourite: Boolean): City
 
     fun toCity(favouriteCity: FavouriteCity): City
 

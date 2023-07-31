@@ -8,7 +8,7 @@ import model.local.FavouriteCity
 
 class CityMapperImpl : CityMapper {
 
-    override fun toCity(apiCity: ApiCity): City {
+    override fun toCity(apiCity: ApiCity, isFavourite: Boolean): City {
         return City(
             localizedName = apiCity.localizedName,
             locationKey = apiCity.key,
@@ -16,7 +16,7 @@ class CityMapperImpl : CityMapper {
             countryLocalizedName = apiCity.country.localizedName,
             rank = apiCity.rank,
             type = apiCity.type,
-            isFavourite = false
+            isFavourite = isFavourite
         )
     }
 

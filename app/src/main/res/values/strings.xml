@@ -9,6 +9,7 @@
     <string name="settings">Settings</string>
     <string name="city_search">City search</string>
     <string name="add_to_favourites">Add to favourites</string>
+    <string name="remove_from_favourites">Remove from favourites</string>
 
     <!--Bottom navbar-->
     <string name="bottom_navbar_home_content_description" translatable="false">@string/home</string>
@@ -24,4 +25,5 @@
     <string name="cities_screen_search_bar_placeholder" translatable="false">@string/city_search</string>
     <string name="cities_screen_search_bar_icon_content_description" translatable="false">@string/city_search</string>
     <string name="cities_screen_add_to_favourites_icon_content_description" translatable="false">@string/add_to_favourites</string>
+    <string name="cities_screen_remove_from_favourites_icon_content_description" translatable="false">@string/remove_from_favourites</string>
 </resources>

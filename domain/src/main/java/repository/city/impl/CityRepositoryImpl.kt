@@ -6,6 +6,7 @@ import interactor.QueryCitiesInteractor
 import interactor.RemoveFavouriteCityInteractor
 import mapper.CityMapper
 import model.City
+import model.network.ApiCity
 import repository.city.CityRepository
 
 class CityRepositoryImpl(
@@ -17,7 +18,21 @@ class CityRepositoryImpl(
 ) : CityRepository {
 
     override suspend fun queryCities(queryText: String): List<City> {
-        return queryCitiesInteractor(queryText).map { cityMapper.toCity(it) }
+        val favouriteCities = getFavouriteCities()
+
+        return queryCitiesInteractor(queryText).map { filterAndMapToCity(it, favouriteCities) }
+    }
+
+    private fun filterAndMapToCity(queryCity: ApiCity, favouriteCities: List<City>): City {
+        var isFavourite = false
+
+        favouriteCities.forEach { favCity ->
+            if (queryCity.key == favCity.locationKey) {
+                isFavourite = true
+            }
+        }
+
+        return cityMapper.toCity(queryCity, isFavourite)
     }
 
     override suspend fun getFavouriteCities(): List<City> {

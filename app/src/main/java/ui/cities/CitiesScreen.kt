@@ -6,8 +6,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Divider
@@ -23,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -64,8 +66,10 @@ fun CitiesScreen(viewModel: CitiesViewModel = hiltViewModel()) {
                 contentPadding = PaddingValues(dimensionResource(id = R.dimen.list_content_padding)),
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.list_item_spacing))
             ) {
-                items(searchBarState.queryResult) {
-                    listItem(city = it, onButtonClick = viewModel::toggleFavouriteCity)
+                itemsIndexed(searchBarState.queryResult) { index, it ->
+                    listItem(
+                        city = it,
+                        onButtonClick = { viewModel.toggleFavouriteCity(it, index) })
                     Divider(
                         color = Color.LightGray,
                         thickness = dimensionResource(id = R.dimen.divider_thickness)
@@ -78,17 +82,31 @@ fun CitiesScreen(viewModel: CitiesViewModel = hiltViewModel()) {
 
 
 @Composable
-fun listItem(city: City, onButtonClick: (City) -> Unit) {
+fun listItem(city: City, onButtonClick: () -> Unit) {
+    val icon: ImageVector
+    val contentDescription: String
+
+    when (city.isFavourite) {
+        true -> {
+            contentDescription = stringResource(id = R.string.cities_screen_remove_from_favourites_icon_content_description)
+            icon = Icons.Filled.Favorite
+        }
+        false -> {
+            contentDescription = stringResource(id = R.string.cities_screen_add_to_favourites_icon_content_description)
+            icon = Icons.Outlined.FavoriteBorder
+        }
+    }
+
     Row(modifier = Modifier.fillMaxWidth()) {
         Column(horizontalAlignment = Alignment.Start) {
             Text(city.localizedName, style = Typography.h6)
             Text(city.countryLocalizedName, style = Typography.caption, color = Color.LightGray)
         }
         Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-            IconButton(onClick = { onButtonClick(city) }) {
+            IconButton(onClick = onButtonClick) {
                 Icon(
-                    Icons.Outlined.FavoriteBorder,
-                    contentDescription = stringResource(id = R.string.cities_screen_add_to_favourites_icon_content_description)
+                    icon,
+                    contentDescription
                 )
             }
         }

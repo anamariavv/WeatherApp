@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import model.City
+import model.common.ErrorData
 import ui.base.BaseViewModel
 import usecase.city.QueryCitiesUseCase
 import usecase.city.ToggleFavouriteCityUseCase
@@ -32,16 +33,29 @@ class CitiesViewModel @Inject constructor(
         performSearch(queryText)
     }
 
-    fun updateCurrentCity(city: City) {
-        //TODO: save city
-    }
+    fun toggleFavouriteCity(city: City, cityIndex: Int) {
+         _searchBarState.update {
+             it.copy(queryResult = _searchBarState.value.queryResult.mapIndexed { index, city ->
+                 if (index == cityIndex) city.copy(isFavourite = !city.isFavourite) else city
+             })
+         }
 
-    fun toggleFavouriteCity(city: City) {
         runSuspend { toggleFavouriteCityInternal(city) }
     }
 
     private suspend fun toggleFavouriteCityInternal(city: City) {
-        toggleFavouriteCityUseCase(city)
+        toggleFavouriteCityUseCase(city).onFinished(this::toggleFavouriteCitySuccess, this::toggleFavouriteCityError)
+    }
+
+    private fun toggleFavouriteCitySuccess() {
+        //move ui update here
+    }
+
+    private fun toggleFavouriteCityError(errorData: ErrorData) {
+        /* when(errorData.errorType) {
+            ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError.ADD_FAVOURITE_CITY_ERROR -> _,
+            ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError.REMOVE_FAVOURITE_CITY_ERROR -> _
+        }*/
     }
 
     fun onActiveChange(isActive: Boolean) {
