@@ -8,11 +8,11 @@ typealias GetFavouriteCitiesResponse = GetFavouriteCitiesUseCase.GetFavouriteCit
 
 interface GetFavouriteCitiesUseCase {
 
-    suspend operator fun invoke(): Resource<GetFavouriteCitiesResponse>
+	suspend operator fun invoke(): Resource<GetFavouriteCitiesResponse>
 
-    data class GetFavouriteCitiesUseCaseResponse(val list: List<City>)
+	data class GetFavouriteCitiesUseCaseResponse(val list: List<City>)
 
-    enum class GetFavouriteCitiesError : ErrorType {
-        ERROR_GETTING_LIST
-    }
+	enum class GetFavouriteCitiesError : ErrorType {
+		ERROR_GETTING_LIST
+	}
 }

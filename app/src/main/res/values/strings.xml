@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Weather App</string>
 
     <!--Translatable-->
@@ -11,6 +11,7 @@
     <string name="add_to_favourites">Add to favourites</string>
     <string name="remove_from_favourites">Remove from favourites</string>
     <string name="close">Close</string>
+    <string name="where_am_i">Where am i <xliff:g>?</xliff:g></string>
 
     <!--Bottom navbar-->
     <string name="bottom_navbar_home_content_description" translatable="false">@string/home</string>
@@ -28,4 +29,5 @@
     <string name="cities_screen_add_to_favourites_icon_content_description" translatable="false">@string/add_to_favourites</string>
     <string name="cities_screen_remove_from_favourites_icon_content_description" translatable="false">@string/remove_from_favourites</string>
     <string name="cities_screen_close_searchbar_icon_content_description" translatable="false">@string/close</string>
+    <string name="cities_screen_get_city_by_location_button_text" translatable="false">@string/where_am_i</string>
 </resources>

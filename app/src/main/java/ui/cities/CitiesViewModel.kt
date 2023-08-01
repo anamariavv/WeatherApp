@@ -16,95 +16,83 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CitiesViewModel @Inject constructor(
-    private val queryCitiesUseCase: QueryCitiesUseCase,
-    private val toggleFavouriteCityUseCase: ToggleFavouriteCityUseCase,
-    private val getFavouriteCitiesUseCase: GetFavouriteCitiesUseCase
+	private val queryCitiesUseCase: QueryCitiesUseCase,
+	private val toggleFavouriteCityUseCase: ToggleFavouriteCityUseCase,
+	private val getFavouriteCitiesUseCase: GetFavouriteCitiesUseCase
 ) : BaseViewModel() {
 
-    private val _searchBarState = MutableStateFlow(
-        SearchBarState(
-            queryText = String.empty(),
-            isActive = false,
-            isEnabled = true,
-            queryResult = listOf()
-        )
-    )
-    val searchBarState = _searchBarState.asStateFlow()
+	private val _searchBarState = MutableStateFlow(
+		SearchBarState(queryText = String.empty(), isActive = false, isEnabled = true, queryResult = listOf())
+	)
+	val searchBarState = _searchBarState.asStateFlow()
 
-    private val _favouriteCityListState =
-        MutableStateFlow(FavouriteCityListState(cities = listOf()))
-    val favouriteCityListState = _favouriteCityListState.asStateFlow()
+	private val _favouriteCityListState = MutableStateFlow(FavouriteCityListState(cities = listOf()))
+	val favouriteCityListState = _favouriteCityListState.asStateFlow()
 
-    init {
-        getFavouriteCityList()
-    }
+	init {
+		getFavouriteCityList()
+	}
 
-    private fun getFavouriteCityList() {
-        runSuspend { getFavouriteCityListInternal() }
-    }
+	private fun getFavouriteCityList() {
+		runSuspend { getFavouriteCityListInternal() }
+	}
 
-    private suspend fun getFavouriteCityListInternal() {
-        getFavouriteCitiesUseCase().onFinished(
-            this::getFavouriteCityListSuccess,
-            this::handleErrors
-        )
-    }
+	private suspend fun getFavouriteCityListInternal() {
+		getFavouriteCitiesUseCase().onFinished(this::getFavouriteCityListSuccess, this::handleErrors)
+	}
 
-    private fun getFavouriteCityListSuccess(response: GetFavouriteCitiesResponse) {
-        _favouriteCityListState.update { it.copy(cities = response.list) }
-    }
+	private fun getFavouriteCityListSuccess(response: GetFavouriteCitiesResponse) {
+		_favouriteCityListState.update { it.copy(cities = response.list) }
+	}
 
-    fun onActiveChange(isActive: Boolean) {
-        _searchBarState.update { it.copy(isActive = isActive) }
-    }
+	fun onActiveChange(isActive: Boolean) {
+		_searchBarState.update { it.copy(isActive = isActive) }
+	}
 
-    fun onSearchbarCloseButtonClick() {
-        _searchBarState.update { it.copy(queryText = String.empty(), isActive = false) }
-    }
+	fun onSearchbarCloseButtonClick() {
+		_searchBarState.update { it.copy(queryText = String.empty(), isActive = false) }
+	}
 
-    fun updateQueryAndSearch(queryText: String) {
-        _searchBarState.update { it.copy(queryText = queryText, isActive = true, isEnabled = true) }
-        performSearch(queryText)
-    }
+	fun updateQueryAndSearch(queryText: String) {
+		_searchBarState.update { it.copy(queryText = queryText, isActive = true, isEnabled = true) }
+		performSearch(queryText)
+	}
 
-    fun performSearch(queryText: String) {
-        runSuspend { performSearchInternal(queryText) }
-    }
+	fun performSearch(queryText: String) {
+		runSuspend { performSearchInternal(queryText) }
+	}
 
-    private suspend fun performSearchInternal(queryText: String) {
-        queryCitiesUseCase(queryText).onFinished(this::searchSuccess, this::handleErrors)
-    }
+	private suspend fun performSearchInternal(queryText: String) {
+		queryCitiesUseCase(queryText).onFinished(this::searchSuccess, this::handleErrors)
+	}
 
-    private fun searchSuccess(response: QueryCitiesUseCase.QueryCitiesUseCaseResponse) {
-        _searchBarState.update { it.copy(queryResult = response.autocompleteCities) }
-    }
+	private fun searchSuccess(response: QueryCitiesUseCase.QueryCitiesUseCaseResponse) {
+		_searchBarState.update { it.copy(queryResult = response.autocompleteCities) }
+	}
 
-    fun toggleFavouriteCity(city: City, cityIndex: Int) {
-        _searchBarState.update {
-            it.copy(queryResult = _searchBarState.value.queryResult.mapIndexed { index, city ->
-                if (index == cityIndex) city.copy(isFavourite = !city.isFavourite) else city
-            })
-        }
+	fun toggleFavouriteCity(city: City, cityIndex: Int) {
+		_searchBarState.update {
+			it.copy(queryResult = _searchBarState.value.queryResult.mapIndexed { index, city ->
+				if (index == cityIndex) city.copy(isFavourite = !city.isFavourite) else city
+			})
+		}
 
-        runSuspend { toggleFavouriteCityInternal(city) }
-    }
+		runSuspend { toggleFavouriteCityInternal(city) }
+	}
 
-    private suspend fun toggleFavouriteCityInternal(city: City) {
-        toggleFavouriteCityUseCase(city).onFinished(
-            this::toggleFavouriteCitySuccess,
-            this::handleErrors
-        )
-    }
+	private suspend fun toggleFavouriteCityInternal(city: City) {
+		toggleFavouriteCityUseCase(city).onFinished(this::toggleFavouriteCitySuccess, this::handleErrors)
+	}
 
-    private fun toggleFavouriteCitySuccess() {
-        getFavouriteCityList()
-    }
+	private fun toggleFavouriteCitySuccess() {
+		getFavouriteCityList()
+	}
 
-    private fun handleErrors(errorData: ErrorData) {
-        //todo show popup
-        /* when(errorData.errorType) {
-            ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError.ADD_FAVOURITE_CITY_ERROR -> _,
-            ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError.REMOVE_FAVOURITE_CITY_ERROR -> _
-        }*/
-    }
+	private fun handleErrors(errorData: ErrorData) {
+		when (errorData.errorType) {
+			ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError.ADD_FAVOURITE_CITY_ERROR -> showError("A")
+			ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError.REMOVE_FAVOURITE_CITY_ERROR -> showError("R")
+			GetFavouriteCitiesUseCase.GetFavouriteCitiesError.ERROR_GETTING_LIST -> showError("G")
+		}
+	}
 }
