@@ -2,6 +2,12 @@
 
 package ui.cities
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -31,8 +37,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.core.content.ContextCompat
 import ui.common.component.dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.weatherapp.R
@@ -44,6 +52,9 @@ fun CitiesScreen(viewModel: CitiesViewModel = hiltViewModel()) {
 	val searchBarState by viewModel.searchBarState.collectAsState()
 	val favouriteCityListState by viewModel.favouriteCityListState.collectAsState()
 	val dialogState by viewModel.dialogState.collectAsState()
+	val context = LocalContext.current
+
+	val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission(), onResult = viewModel::onLocationPermissionRequestResult)
 
 	Column(
 		Modifier
@@ -67,9 +78,7 @@ fun CitiesScreen(viewModel: CitiesViewModel = hiltViewModel()) {
 
 		favouriteCityList(favouriteCityListState.cities)
 
-		OutlinedButton(onClick = { }) {
-			Text(stringResource(id = R.string.cities_screen_get_city_by_location_button_text))
-		}
+		whereAmIButton(context, launcher, viewModel::getCurrentCity)
 
 		dialog(dialogState, viewModel::onDialogDismissed)
 	}
@@ -167,7 +176,7 @@ fun listItem(city: City, onButtonClick: () -> Unit) {
 				stringResource(id = R.string.cities_screen_remove_from_favourites_icon_content_description)
 			icon = Icons.Filled.Favorite
 		}
-		false -> {
+		else -> {
 			contentDescription =
 				stringResource(id = R.string.cities_screen_add_to_favourites_icon_content_description)
 			icon = Icons.Outlined.FavoriteBorder
@@ -187,5 +196,22 @@ fun listItem(city: City, onButtonClick: () -> Unit) {
 				)
 			}
 		}
+	}
+}
+
+@Composable
+fun whereAmIButton(context: Context, launcher: ManagedActivityResultLauncher<String, Boolean>, onPermissionGranted: () -> Unit) {
+	OutlinedButton(
+		onClick = {
+			when (PackageManager.PERMISSION_GRANTED) {
+				ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) -> {
+					onPermissionGranted()
+				}
+				else -> {
+					launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+				}
+			}
+		}) {
+		Text(stringResource(id = R.string.cities_screen_get_city_by_location_button_text))
 	}
 }

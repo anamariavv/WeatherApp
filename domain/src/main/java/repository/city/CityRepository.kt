@@ -10,4 +10,6 @@ interface CityRepository {
     suspend fun addFavouriteCity(city: City)
 
     suspend fun removeFavouriteCity(city: City)
+
+    suspend fun getCurrentCity(): City
 }

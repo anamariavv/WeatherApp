@@ -1,5 +1,6 @@
 package ui.cities
 
+import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -7,10 +8,13 @@ import kotlinx.coroutines.flow.update
 import model.City
 import model.common.ErrorData
 import ui.base.BaseViewModel
-import usecase.city.GetFavouriteCitiesResponse
+import usecase.city.GetFavouriteCitiesUseCase.GetFavouriteCitiesUseCaseResponse
 import usecase.city.GetFavouriteCitiesUseCase
 import usecase.city.QueryCitiesUseCase
+import usecase.city.QueryCitiesUseCase.QueryCitiesUseCaseResponse
+import usecase.location.GetCurrentCityUseCase.GetCurrentCityUseCaseResponse
 import usecase.city.ToggleFavouriteCityUseCase
+import usecase.location.GetCurrentCityUseCase
 import utils.empty
 import javax.inject.Inject
 
@@ -18,7 +22,8 @@ import javax.inject.Inject
 class CitiesViewModel @Inject constructor(
 	private val queryCitiesUseCase: QueryCitiesUseCase,
 	private val toggleFavouriteCityUseCase: ToggleFavouriteCityUseCase,
-	private val getFavouriteCitiesUseCase: GetFavouriteCitiesUseCase
+	private val getFavouriteCitiesUseCase: GetFavouriteCitiesUseCase,
+	private val getCurrentCityUseCase: GetCurrentCityUseCase
 ) : BaseViewModel() {
 
 	private val _searchBarState = MutableStateFlow(
@@ -41,7 +46,7 @@ class CitiesViewModel @Inject constructor(
 		getFavouriteCitiesUseCase().onFinished(this::getFavouriteCityListSuccess, this::handleErrors)
 	}
 
-	private fun getFavouriteCityListSuccess(response: GetFavouriteCitiesResponse) {
+	private fun getFavouriteCityListSuccess(response: GetFavouriteCitiesUseCaseResponse) {
 		_favouriteCityListState.update { it.copy(cities = response.list) }
 	}
 
@@ -66,18 +71,21 @@ class CitiesViewModel @Inject constructor(
 		queryCitiesUseCase(queryText).onFinished(this::searchSuccess, this::handleErrors)
 	}
 
-	private fun searchSuccess(response: QueryCitiesUseCase.QueryCitiesUseCaseResponse) {
+	private fun searchSuccess(response: QueryCitiesUseCaseResponse) {
 		_searchBarState.update { it.copy(queryResult = response.autocompleteCities) }
 	}
 
 	fun toggleFavouriteCity(city: City, cityIndex: Int) {
+		updateFavouriteCityListState(cityIndex)
+		runSuspend { toggleFavouriteCityInternal(city) }
+	}
+
+	private fun updateFavouriteCityListState(cityIndex: Int) {
 		_searchBarState.update {
 			it.copy(queryResult = _searchBarState.value.queryResult.mapIndexed { index, city ->
 				if (index == cityIndex) city.copy(isFavourite = !city.isFavourite) else city
 			})
 		}
-
-		runSuspend { toggleFavouriteCityInternal(city) }
 	}
 
 	private suspend fun toggleFavouriteCityInternal(city: City) {
@@ -88,11 +96,33 @@ class CitiesViewModel @Inject constructor(
 		getFavouriteCityList()
 	}
 
+	fun onLocationPermissionRequestResult(isGranted: Boolean) {
+		if (isGranted) {
+			getCurrentCity()
+		} else {
+			showInfo("Location permission is necessary in order to use this functionality. Please enable it in app settings.")
+		}
+	}
+
+	fun getCurrentCity() {
+		runSuspend { getCurrentCityInternal() }
+	}
+
+	private suspend fun getCurrentCityInternal() {
+		getCurrentCityUseCase().onFinished(this::onGetCurrentCitySuccess, this::handleErrors)
+	}
+
+	private fun onGetCurrentCitySuccess(response: GetCurrentCityUseCaseResponse) {
+		Log.d("currentLocation!:", response.city.toString())
+	}
+
 	private fun handleErrors(errorData: ErrorData) {
 		when (errorData.errorType) {
 			ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError.ADD_FAVOURITE_CITY_ERROR -> showError("A")
 			ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError.REMOVE_FAVOURITE_CITY_ERROR -> showError("R")
 			GetFavouriteCitiesUseCase.GetFavouriteCitiesError.ERROR_GETTING_LIST -> showError("G")
+			QueryCitiesUseCase.QueryCitiesError.GET_CITY_LIST_ERROR -> showError("E")
+			GetCurrentCityUseCase.GetCurrentCityUseCaseError.ERROR_GETTING_LOCATION -> showError(errorData.throwable.localizedMessage)
 		}
 	}
 }

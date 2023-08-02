@@ -68,6 +68,8 @@ dependencies {
     implementation(Dependencies.httpLoggingInterceptor)
     implementation(Dependencies.room)
     implementation(Dependencies.roomKotlin)
+    implementation(Dependencies.playServicesLocation)
+    implementation(Dependencies.coroutinesPlayServices)
 
     kapt(Dependencies.roomCompiler)
     kapt(Dependencies.hiltCompiler)

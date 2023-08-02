@@ -2,17 +2,18 @@ package usecase.city.impl
 
 import model.common.Resource
 import repository.city.CityRepository
-import usecase.city.GetFavouriteCitiesResponse
+import usecase.city.GetFavouriteCitiesUseCase.GetFavouriteCitiesUseCaseResponse
+import usecase.city.GetFavouriteCitiesUseCase.GetFavouriteCitiesError
 import usecase.city.GetFavouriteCitiesUseCase
 
 class GetFavouriteCitiesUseCaseImpl(private val cityRepository: CityRepository) :
-    GetFavouriteCitiesUseCase {
+	GetFavouriteCitiesUseCase {
 
-    override suspend fun invoke(): Resource<GetFavouriteCitiesResponse> {
-        return Resource.Success(
-            GetFavouriteCitiesResponse(
-                cityRepository.getFavouriteCities()
-            )
-        )
-    }
+	override suspend fun invoke(): Resource<GetFavouriteCitiesUseCaseResponse> {
+		return try {
+			Resource.Success(GetFavouriteCitiesUseCaseResponse(cityRepository.getFavouriteCities()))
+		} catch (throwable: Throwable) {
+			Resource.Error(GetFavouriteCitiesError.ERROR_GETTING_LIST, throwable)
+		}
+	}
 }

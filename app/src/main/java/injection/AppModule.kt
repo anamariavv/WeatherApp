@@ -2,6 +2,8 @@ package injection
 
 import android.content.Context
 import androidx.room.Room
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import config.Config
 import dagger.Module
 import dagger.Provides
@@ -37,5 +39,11 @@ class AppModule {
             LocationDatabaseImpl::class.java,
             Config.databaseName
         ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFusedLocationProviderClient(@ApplicationContext appContext: Context): FusedLocationProviderClient {
+        return LocationServices.getFusedLocationProviderClient(appContext)
     }
 }

@@ -13,21 +13,25 @@ import javax.inject.Inject
 
 abstract class BaseViewModel : ViewModel() {
 
-    @Inject
-    protected lateinit var router: Router
+	@Inject
+	protected lateinit var router: Router
 
-    private val _dialogState = MutableStateFlow(DialogState(message = String.empty(), isVisible = false))
-    val dialogState = _dialogState.asStateFlow()
+	private val _dialogState = MutableStateFlow(DialogState(message = String.empty(), isVisible = false))
+	val dialogState = _dialogState.asStateFlow()
 
-    protected fun runSuspend(job: suspend () -> Unit) {
-        viewModelScope.launch { job() }
-    }
+	protected fun runSuspend(job: suspend () -> Unit) {
+		viewModelScope.launch { job() }
+	}
 
-    protected fun showError(message: String) {
-        _dialogState.update { it.copy(message = message, isVisible = true) }
-    }
+	protected fun showError(message: String) {
+		_dialogState.update { it.copy(message = message, isVisible = true) }
+	}
 
-   fun onDialogDismissed() {
-        _dialogState.update { it.copy(message = String.empty(), isVisible = false) }
-   }
+	protected fun showInfo(message: String) {
+		_dialogState.update { it.copy(message = message, isVisible = true) }
+	}
+
+	fun onDialogDismissed() {
+		_dialogState.update { it.copy(message = String.empty(), isVisible = false) }
+	}
 }

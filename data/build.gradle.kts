@@ -36,6 +36,8 @@ dependencies {
     implementation(Dependencies.httpLoggingInterceptor)
     implementation(Dependencies.room)
     implementation(Dependencies.roomKotlin)
+    implementation(Dependencies.playServicesLocation)
+    implementation(Dependencies.coroutinesPlayServices)
 
     androidTestImplementation(Dependencies.junit_jupiter)
 

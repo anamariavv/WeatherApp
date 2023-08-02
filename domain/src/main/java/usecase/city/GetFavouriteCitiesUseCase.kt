@@ -4,11 +4,9 @@ import model.City
 import model.common.ErrorType
 import model.common.Resource
 
-typealias GetFavouriteCitiesResponse = GetFavouriteCitiesUseCase.GetFavouriteCitiesUseCaseResponse
-
 interface GetFavouriteCitiesUseCase {
 
-	suspend operator fun invoke(): Resource<GetFavouriteCitiesResponse>
+	suspend operator fun invoke(): Resource<GetFavouriteCitiesUseCaseResponse>
 
 	data class GetFavouriteCitiesUseCaseResponse(val list: List<City>)
 

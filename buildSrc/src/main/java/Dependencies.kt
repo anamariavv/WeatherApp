@@ -24,6 +24,8 @@ object Versions {
     const val gsonConverter = "2.9.0"
     const val httpLoggingInterceptor = "4.11.0"
     const val room = "2.5.2"
+    const val playServicesLocation = "21.0.1"
+    const val coroutinesPlayServices = "1.7.3"
 }
 
 object Dependencies {
@@ -54,6 +56,8 @@ object Dependencies {
     const val room = "androidx.room:room-runtime:${Versions.room}"
     const val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
     const val roomKotlin = "androidx.room:room-ktx:${Versions.room}"
+    const val playServicesLocation = "com.google.android.gms:play-services-location:${Versions.playServicesLocation}"
+    const val coroutinesPlayServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:${Versions.coroutinesPlayServices}"
 }
 
 object Plugins {
