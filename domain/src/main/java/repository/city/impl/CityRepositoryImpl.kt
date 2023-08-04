@@ -1,7 +1,7 @@
 package repository.city.impl
 
 import interactor.AddFavouriteCityInteractor
-import interactor.GetCityBasedOnCoordsInteractor
+import interactor.GetCityBasedOnCoordinatesInteractor
 import interactor.GetCurrentGeoLocationInteractor
 import interactor.GetFavouriteCitiesInteractor
 import interactor.QueryCitiesInteractor
@@ -17,7 +17,7 @@ class CityRepositoryImpl(
 	private val addFavouriteCityInteractor: AddFavouriteCityInteractor,
 	private val removeFavouriteCityInteractor: RemoveFavouriteCityInteractor,
 	private val getCurrentGeoLocationInteractor: GetCurrentGeoLocationInteractor,
-	private val getCityBasedOnCoordsInteractor: GetCityBasedOnCoordsInteractor,
+	private val getCityBasedOnCoordinatesInteractor: GetCityBasedOnCoordinatesInteractor,
 	private val cityMapper: CityMapper
 ) : CityRepository {
 
@@ -53,9 +53,8 @@ class CityRepositoryImpl(
 	}
 
 	override suspend fun getCurrentCity(): City {
-		//todo: error handling so i know exactly where error happened
 		val coordinates = getCurrentCoordinates()
-		val city = getCityBasedOnCoordsInteractor(String.format("%f,%f", coordinates.first, coordinates.second))
+		val city = getCityBasedOnCoordinatesInteractor(String.format("%f,%f", coordinates.first, coordinates.second))
 
 		return filterAndMapToCity(city, getFavouriteCities())
 	}

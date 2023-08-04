@@ -6,7 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import interactor.AddFavouriteCityInteractor
-import interactor.GetCityBasedOnCoordsInteractor
+import interactor.GetCityBasedOnCoordinatesInteractor
 import interactor.GetCurrentGeoLocationInteractor
 import interactor.GetFavouriteCitiesInteractor
 import interactor.QueryCitiesInteractor
@@ -76,7 +76,7 @@ class DomainModule {
 		addFavouriteCityInteractor: AddFavouriteCityInteractor,
 		removeFavouriteCityInteractor: RemoveFavouriteCityInteractor,
 		getCurrentGeoLocationInteractor: GetCurrentGeoLocationInteractor,
-		getCityBasedOnCoordsInteractor: GetCityBasedOnCoordsInteractor,
+		getCityBasedOnCoordinatesInteractor: GetCityBasedOnCoordinatesInteractor,
 		cityMapper: CityMapper
 	): CityRepository {
 		return CityRepositoryImpl(
@@ -85,7 +85,7 @@ class DomainModule {
 			addFavouriteCityInteractor,
 			removeFavouriteCityInteractor,
 			getCurrentGeoLocationInteractor,
-			getCityBasedOnCoordsInteractor,
+			getCityBasedOnCoordinatesInteractor,
 			cityMapper
 		)
 	}

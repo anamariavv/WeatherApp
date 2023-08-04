@@ -8,7 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import interactor.AddFavouriteCityInteractor
-import interactor.GetCityBasedOnCoordsInteractor
+import interactor.GetCityBasedOnCoordinatesInteractor
 import interactor.GetCurrentGeoLocationInteractor
 import interactor.impl.AddFavouriteCityInteractorImpl
 import interactor.GetFavouriteCitiesInteractor
@@ -16,7 +16,7 @@ import interactor.impl.GetFavouriteCitiesInteractorImpl
 import interactor.QueryCitiesInteractor
 import interactor.impl.QueryCitiesInteractorImpl
 import interactor.RemoveFavouriteCityInteractor
-import interactor.impl.GetCityBasedOnCoordsInteractorImpl
+import interactor.impl.GetCityBasedOnCoordinatesInteractorImpl
 import interactor.impl.GetCurrentGeoLocationInteractorImpl
 import interactor.impl.RemoveFavouriteCityInteractorImpl
 import okhttp3.OkHttpClient
@@ -100,7 +100,7 @@ class DataModule {
 
     @Provides
     @ViewModelScoped
-    fun provideGetCityBasedOnCoordsInteractor(locationsService: LocationsService): GetCityBasedOnCoordsInteractor {
-        return GetCityBasedOnCoordsInteractorImpl(locationsService)
+    fun provideGetCityBasedOnCoordsInteractor(locationsService: LocationsService): GetCityBasedOnCoordinatesInteractor {
+        return GetCityBasedOnCoordinatesInteractorImpl(locationsService)
     }
 }

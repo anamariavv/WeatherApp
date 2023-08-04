@@ -1,3 +1,3 @@
 package ui.base.model
 
-data class DialogState(val message: String, val isVisible: Boolean)
+data class DialogState(val message: String, val isVisible: Boolean, val isLoading: Boolean)

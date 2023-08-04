@@ -13,21 +13,24 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -40,11 +43,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import ui.common.component.dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.weatherapp.R
 import model.City
+import ui.theme.Shapes
 import ui.theme.Typography
 
 @Composable
@@ -57,10 +62,8 @@ fun CitiesScreen(viewModel: CitiesViewModel = hiltViewModel()) {
 	val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission(), onResult = viewModel::onLocationPermissionRequestResult)
 
 	Column(
-		Modifier
-				.fillMaxWidth()
+		Modifier.fillMaxWidth(), Arrangement.Center, Alignment.CenterHorizontally
 	) {
-
 		customSearchbar(
 			searchBarState.queryText,
 			viewModel::updateQueryAndSearch,
@@ -76,11 +79,12 @@ fun CitiesScreen(viewModel: CitiesViewModel = hiltViewModel()) {
 			stringResource(id = R.string.cities_screen_close_searchbar_icon_content_description)
 		)
 
-		favouriteCityList(favouriteCityListState.cities)
+		favouriteCityList(favouriteCityListState.cities, viewModel::removeFavouriteCity)
 
 		whereAmIButton(context, launcher, viewModel::getCurrentCity)
-
-		dialog(dialogState, viewModel::onDialogDismissed)
+	}
+	Column(Modifier.fillMaxWidth(), Arrangement.Center, Alignment.CenterHorizontally) {
+		dialog(dialogState, viewModel::dismissDialog)
 	}
 }
 
@@ -126,9 +130,12 @@ fun customSearchbar(
 				contentDescription = leadingIconContentDescription
 			)
 		},
+		modifier = Modifier.padding(10.dp)
 	) {
 		LazyColumn(
-			modifier = Modifier.fillMaxWidth(),
+			modifier = Modifier
+					.fillMaxWidth()
+					.padding(0.dp),
 			contentPadding = PaddingValues(dimensionResource(id = R.dimen.list_content_padding)),
 			verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.list_item_spacing))
 		) {
@@ -147,19 +154,36 @@ fun customSearchbar(
 }
 
 @Composable
-fun favouriteCityList(cities: List<City>) {
+fun favouriteCityList(cities: List<City>, onButtonClick: (City, Int) -> Unit) {
 	LazyColumn(
-		modifier = Modifier.fillMaxWidth(),
-		contentPadding = PaddingValues(dimensionResource(id = R.dimen.list_content_padding)),
+		modifier = Modifier
+				.fillMaxWidth()
+				.padding(top = 20.dp, bottom = 20.dp),
+		contentPadding = PaddingValues(10.dp),
 		verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.list_item_spacing))
 	) {
-		items(cities) {
-			Row(modifier = Modifier.fillMaxWidth()) {
-				Column {
-					Text(it.localizedName)
-					Text(it.countryLocalizedName)
+		itemsIndexed(cities) { index, city ->
+			Surface(
+				shape = Shapes.medium, shadowElevation = 5.dp, modifier = Modifier
+						.fillMaxWidth()
+			) {
+				Row(
+					modifier = Modifier
+							.fillMaxWidth()
+							.padding(20.dp)
+				) {
+					Column(horizontalAlignment = Alignment.Start) {
+						Text(city.localizedName, style = Typography.h6)
+						Text(city.countryLocalizedName, style = Typography.subtitle2)
+					}
+					Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
+						IconButton(onClick = { onButtonClick(city, index) }) {
+							Icon(Icons.Filled.Delete, "Delete from favourites", tint = MaterialTheme.colorScheme.primary)
+						}
+					}
 				}
 			}
+
 		}
 	}
 }
@@ -185,7 +209,7 @@ fun listItem(city: City, onButtonClick: () -> Unit) {
 
 	Row(modifier = Modifier.fillMaxWidth()) {
 		Column(horizontalAlignment = Alignment.Start) {
-			Text(city.localizedName, style = Typography.h6)
+			Text(city.localizedName, style = Typography.h1)
 			Text(city.countryLocalizedName, style = Typography.caption, color = Color.LightGray)
 		}
 		Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
@@ -200,18 +224,20 @@ fun listItem(city: City, onButtonClick: () -> Unit) {
 }
 
 @Composable
-fun whereAmIButton(context: Context, launcher: ManagedActivityResultLauncher<String, Boolean>, onPermissionGranted: () -> Unit) {
-	OutlinedButton(
+fun whereAmIButton(
+	context: Context,
+	launcher: ManagedActivityResultLauncher<String, Boolean>,
+	onPermissionGranted: () -> Unit
+) {
+	Button(
 		onClick = {
-			when (PackageManager.PERMISSION_GRANTED) {
-				ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) -> {
-					onPermissionGranted()
-				}
-				else -> {
-					launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-				}
+			if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+				onPermissionGranted()
+			} else {
+				launcher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
 			}
-		}) {
+		}, Modifier.padding(20.dp)
+	) {
 		Text(stringResource(id = R.string.cities_screen_get_city_by_location_button_text))
 	}
 }
