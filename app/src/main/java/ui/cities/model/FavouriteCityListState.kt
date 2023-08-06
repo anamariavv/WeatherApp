@@ -1,4 +1,4 @@
-package ui.cities
+package ui.cities.model
 
 import model.City
 

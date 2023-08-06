@@ -7,6 +7,9 @@ import kotlinx.coroutines.flow.update
 import model.City
 import model.common.ErrorData
 import ui.base.BaseViewModel
+import ui.cities.model.CityScreenMessages
+import ui.cities.model.FavouriteCityListState
+import ui.cities.model.SearchBarState
 import usecase.city.GetFavouriteCitiesUseCase.GetFavouriteCitiesUseCaseResponse
 import usecase.city.GetFavouriteCitiesUseCase
 import usecase.city.QueryCitiesUseCase
@@ -97,7 +100,7 @@ class CitiesViewModel @Inject constructor(
 		if (isGranted) {
 			getCurrentCity()
 		} else {
-			showInfo("Location permission is necessary in order to use this functionality. Please enable it in app settings.")
+			showInfo(CityScreenMessages.LOCATION_PERMISSION_NEEDED)
 		}
 	}
 
@@ -111,7 +114,7 @@ class CitiesViewModel @Inject constructor(
 	}
 
 	private fun onGetCurrentCitySuccess(response: GetCurrentCityUseCaseResponse) {
-		showInfo(String.format("You are currently in %s, %s", response.city.localizedName, response.city.countryLocalizedName))
+		showInfo(CityScreenMessages.LOCATION_RESULT_INFO(response.city.localizedName, response.city.countryLocalizedName))
 	}
 
 	fun removeFavouriteCity(city: City, index: Int) {
@@ -124,12 +127,13 @@ class CitiesViewModel @Inject constructor(
 	}
 
 	private fun handleErrors(errorData: ErrorData) {
+		//todo: better error titles
 		when (errorData.errorType) {
-			ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError.ADD_FAVOURITE_CITY_ERROR -> showError("A")
-			ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError.REMOVE_FAVOURITE_CITY_ERROR -> showError("R")
-			GetFavouriteCitiesUseCase.GetFavouriteCitiesError.ERROR_GETTING_LIST -> showError("G")
-			QueryCitiesUseCase.QueryCitiesError.GET_CITY_LIST_ERROR -> showError("E")
-			GetCurrentCityUseCase.GetCurrentCityUseCaseError.ERROR_GETTING_LOCATION -> showError("C")
+			ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError.ADD_FAVOURITE_CITY_ERROR -> showError(CityScreenMessages.ADD_FAVOURITE_CITY_ERROR)
+			ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError.REMOVE_FAVOURITE_CITY_ERROR -> showError(CityScreenMessages.REMOVE_FAVOURITE_CITY_ERROR)
+			GetFavouriteCitiesUseCase.GetFavouriteCitiesError.GET_FAVOURITES_ERROR -> showError(CityScreenMessages.GET_FAVOURITES_ERROR)
+			QueryCitiesUseCase.QueryCitiesError.QUERY_CITIES_ERROR -> showError(CityScreenMessages.QUERY_CITIES_ERROR)
+			GetCurrentCityUseCase.GetCurrentCityUseCaseError.GET_LOCATION_ERROR -> showError(CityScreenMessages.GET_LOCATION_ERROR)
 		}
 	}
 }

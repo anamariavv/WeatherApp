@@ -13,7 +13,7 @@ class GetFavouriteCitiesUseCaseImpl(private val cityRepository: CityRepository) 
 		return try {
 			Resource.Success(GetFavouriteCitiesUseCaseResponse(cityRepository.getFavouriteCities()))
 		} catch (throwable: Throwable) {
-			Resource.Error(GetFavouriteCitiesError.ERROR_GETTING_LIST, throwable)
+			Resource.Error(GetFavouriteCitiesError.GET_FAVOURITES_ERROR, throwable)
 		}
 	}
 }

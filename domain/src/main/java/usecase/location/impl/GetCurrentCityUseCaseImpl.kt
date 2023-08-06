@@ -13,7 +13,7 @@ class GetCurrentCityUseCaseImpl(private val cityRepository: CityRepository) : Ge
 			val city = cityRepository.getCurrentCity()
 			Resource.Success(GetCurrentCityUseCaseResponse(city))
 		} catch (throwable: Throwable) {
-			Resource.Error(GetCurrentCityUseCaseError.ERROR_GETTING_LOCATION, throwable)
+			Resource.Error(GetCurrentCityUseCaseError.GET_LOCATION_ERROR, throwable)
 		}
 	}
 }

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import navigation.Router
 import ui.base.model.DialogState
-import utils.empty
+import ui.common.model.Message
 import javax.inject.Inject
 
 abstract class BaseViewModel : ViewModel() {
@@ -16,26 +16,26 @@ abstract class BaseViewModel : ViewModel() {
 	@Inject
 	protected lateinit var router: Router
 
-	private val _dialogState = MutableStateFlow(DialogState(message = String.empty(), isVisible = false, isLoading = false))
+	private val _dialogState = MutableStateFlow<DialogState>(DialogState.None())
 	val dialogState = _dialogState.asStateFlow()
 
 	protected fun runSuspend(job: suspend () -> Unit) {
 		viewModelScope.launch { job() }
 	}
 
-	protected fun showError(message: String) {
-		_dialogState.update { it.copy(message = message, isVisible = true, isLoading = false) }
+	protected fun showError(message: Message) {
+		_dialogState.update { DialogState.Error(message = message) }
 	}
 
-	protected fun showInfo(message: String) {
-		_dialogState.update { it.copy(message = message, isVisible = true, isLoading = false) }
+	protected fun showInfo(message: Message) {
+		_dialogState.update { DialogState.Info(message = message) }
 	}
 
 	protected fun showLoading() {
-		_dialogState.update { it.copy(message="Loading..", isVisible = true, isLoading = true) }
+		_dialogState.update { DialogState.Loading() }
 	}
 
 	fun dismissDialog() {
-		_dialogState.update { it.copy(message = String.empty(), isVisible = false, isLoading = false) }
+		_dialogState.update { DialogState.None() }
 	}
 }

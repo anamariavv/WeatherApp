@@ -11,6 +11,6 @@ interface GetFavouriteCitiesUseCase {
 	data class GetFavouriteCitiesUseCaseResponse(val list: List<City>)
 
 	enum class GetFavouriteCitiesError : ErrorType {
-		ERROR_GETTING_LIST
+		GET_FAVOURITES_ERROR
 	}
 }

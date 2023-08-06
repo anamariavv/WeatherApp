@@ -11,6 +11,6 @@ interface GetCurrentCityUseCase {
 	class GetCurrentCityUseCaseResponse(val city: City)
 
 	enum class GetCurrentCityUseCaseError : ErrorType {
-		ERROR_GETTING_LOCATION
+		GET_LOCATION_ERROR
 	}
 }

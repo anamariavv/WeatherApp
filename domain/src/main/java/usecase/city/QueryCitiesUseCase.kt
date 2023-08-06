@@ -10,6 +10,6 @@ interface QueryCitiesUseCase {
     class QueryCitiesUseCaseResponse(val autocompleteCities: List<City>)
 
     enum class QueryCitiesError : ErrorType {
-        GET_CITY_LIST_ERROR
+        QUERY_CITIES_ERROR
     }
 }

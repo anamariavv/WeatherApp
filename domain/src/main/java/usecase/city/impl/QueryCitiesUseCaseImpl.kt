@@ -12,7 +12,7 @@ class QueryCitiesUseCaseImpl(private val cityRepository: CityRepository) : Query
 		return try {
 			Resource.Success(QueryCitiesUseCaseResponse(cityRepository.queryCities(queryText)))
 		} catch (throwable: Throwable) {
-			return Resource.Error(QueryCitiesError.GET_CITY_LIST_ERROR, throwable)
+			return Resource.Error(QueryCitiesError.QUERY_CITIES_ERROR, throwable)
 		}
 	}
 }
