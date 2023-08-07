@@ -43,7 +43,7 @@ fun dialog(
 					)
 					Text(text = state.message?.getMessageId()?.let { messageId ->
 						state.message.getArguments()?.let {
-							stringResource(id = messageId, it.toTypedArray())
+							stringResource(id = messageId, *it.toTypedArray())
 						} ?: stringResource(id = messageId)
 					} ?: String.empty(),
 						 style = Typography.bodyMedium,

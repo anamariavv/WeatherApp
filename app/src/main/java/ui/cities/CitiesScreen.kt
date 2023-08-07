@@ -51,40 +51,31 @@ import model.City
 import ui.theme.Shapes
 import ui.theme.Typography
 
-@Composable
-fun CitiesScreen(viewModel: CitiesViewModel = hiltViewModel()) {
+@Composable fun CitiesScreen(viewModel: CitiesViewModel = hiltViewModel()) {
 	val searchBarState by viewModel.searchBarState.collectAsState()
 	val favouriteCityListState by viewModel.favouriteCityListState.collectAsState()
 	val dialogState by viewModel.dialogState.collectAsState()
 	val context = LocalContext.current
 
-	val launcher = rememberLauncherForActivityResult(
-		contract = ActivityResultContracts.RequestPermission(),
-		onResult = viewModel::onLocationPermissionRequestResult
-	)
+	val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission(),
+	                                                 onResult = viewModel::onLocationPermissionRequestResult)
 
 	Column(Modifier.fillMaxWidth(), Arrangement.Center, Alignment.CenterHorizontally) {
-		Column(
-			Modifier
-					.fillMaxWidth()
-					.weight(1f), Arrangement.Center, Alignment.CenterHorizontally
-		) {
+		Column(Modifier.fillMaxWidth().weight(1f), Arrangement.Center, Alignment.CenterHorizontally) {
 			Text(stringResource(id = R.string.cities_screen_title), style = Typography.headlineSmall, modifier = Modifier.padding(20.dp))
 
-			customSearchbar(
-				searchBarState.queryText,
-				viewModel::updateQueryAndSearch,
-				viewModel::performSearch,
-				searchBarState.isActive,
-				SearchBarDefaults.inputFieldShape,
-				viewModel::onActiveChange,
-				viewModel::onSearchbarCloseButtonClick,
-				viewModel::toggleFavouriteCity,
-				searchBarState.queryResult,
-				stringResource(id = R.string.cities_screen_search_bar_placeholder),
-				stringResource(id = R.string.cities_screen_search_bar_icon_content_description),
-				stringResource(id = R.string.cities_screen_close_searchbar_icon_content_description)
-			)
+			customSearchbar(searchBarState.queryText,
+			                viewModel::updateQueryAndSearch,
+			                viewModel::performSearch,
+			                searchBarState.isActive,
+			                SearchBarDefaults.inputFieldShape,
+			                viewModel::onActiveChange,
+			                viewModel::onSearchbarCloseButtonClick,
+			                viewModel::toggleFavouriteCity,
+			                searchBarState.queryResult,
+			                stringResource(id = R.string.cities_screen_search_bar_placeholder),
+			                stringResource(id = R.string.cities_screen_search_bar_icon_content_description),
+			                stringResource(id = R.string.cities_screen_close_searchbar_icon_content_description))
 
 			favouriteCityList(favouriteCityListState.cities, viewModel::removeFavouriteCity)
 
@@ -92,136 +83,100 @@ fun CitiesScreen(viewModel: CitiesViewModel = hiltViewModel()) {
 		}
 
 		Column(Modifier.fillMaxWidth(), Arrangement.Center, Alignment.CenterHorizontally) {
-			whereAmIButton(context, launcher, viewModel::getCurrentCity)
+			locationButton(context, launcher, viewModel::getCurrentCity)
 		}
 	}
 
 }
 
 
-@Composable
-fun customSearchbar(
-	queryText: String,
-	onQueryChange: (String) -> Unit,
-	onSearch: (String) -> Unit,
-	isActive: Boolean,
-	shape: Shape,
-	onActiveChange: (Boolean) -> Unit,
-	onTrailingButtonClick: () -> Unit,
-	onSearchResultItemClicked: (City, Int) -> Unit,
-	queryResult: List<City>,
-	placeholder: String,
-	leadingIconContentDescription: String,
-	trailingIconContentDescription: String,
+@Composable fun customSearchbar(
+		queryText: String,
+		onQueryChange: (String) -> Unit,
+		onSearch: (String) -> Unit,
+		isActive: Boolean,
+		shape: Shape,
+		onActiveChange: (Boolean) -> Unit,
+		onTrailingButtonClick: () -> Unit,
+		onSearchResultItemClicked: (City, Int) -> Unit,
+		queryResult: List<City>,
+		placeholder: String,
+		leadingIconContentDescription: String,
+		trailingIconContentDescription: String,
 ) {
-	SearchBar(
-		query = queryText,
-		onQueryChange = onQueryChange,
-		onSearch = onSearch,
-		active = isActive,
-		shape = shape,
-		onActiveChange = onActiveChange,
-		trailingIcon = {
-			if (isActive) {
-				IconButton(
-					onClick = onTrailingButtonClick,
-				) {
-					Icon(
-						Icons.Rounded.Close,
-						contentDescription = trailingIconContentDescription
-					)
-				}
-			}
-		},
-		placeholder = { Text(placeholder) },
-		leadingIcon = {
-			Icon(
-				Icons.Rounded.Search,
-				contentDescription = leadingIconContentDescription
-			)
-		}
+	SearchBar(query = queryText,
+	          onQueryChange = onQueryChange,
+	          onSearch = onSearch,
+	          active = isActive,
+	          shape = shape,
+	          onActiveChange = onActiveChange,
+	          trailingIcon = {
+		          if (isActive) {
+			          IconButton(
+					          onClick = onTrailingButtonClick,
+			          ) {
+				          Icon(Icons.Rounded.Close, contentDescription = trailingIconContentDescription)
+			          }
+		          }
+	          },
+	          placeholder = { Text(placeholder) },
+	          leadingIcon = { Icon(Icons.Rounded.Search, contentDescription = leadingIconContentDescription) }
 	) {
-		LazyColumn(
-			modifier = Modifier
-					.fillMaxWidth()
-					.padding(0.dp),
-			contentPadding = PaddingValues(dimensionResource(id = R.dimen.list_content_padding)),
-			verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.list_item_spacing))
-		) {
+		LazyColumn(modifier = Modifier.fillMaxWidth().padding(0.dp),
+		           contentPadding = PaddingValues(dimensionResource(id = R.dimen.list_content_padding)),
+		           verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.list_item_spacing))) {
 			itemsIndexed(queryResult) { index, it ->
-				listItem(
-					city = it,
-					onButtonClick = { onSearchResultItemClicked(it, index) }
-				)
+				listItem(city = it, onButtonClick = { onSearchResultItemClicked(it, index) })
 			}
 		}
 	}
 }
 
-@Composable
-fun listItem(city: City, onButtonClick: () -> Unit) {
+@Composable fun listItem(city: City, onButtonClick: () -> Unit) {
 	val icon: ImageVector
 	val contentDescription: String
 
 	when (city.isFavourite) {
 		true -> {
-			contentDescription =
-				stringResource(id = R.string.cities_screen_remove_from_favourites_icon_content_description)
+			contentDescription = stringResource(id = R.string.cities_screen_remove_from_favourites_icon_content_description)
 			icon = Icons.Filled.Favorite
 		}
 		else -> {
-			contentDescription =
-				stringResource(id = R.string.cities_screen_add_to_favourites_icon_content_description)
+			contentDescription = stringResource(id = R.string.cities_screen_add_to_favourites_icon_content_description)
 			icon = Icons.Outlined.FavoriteBorder
 		}
 	}
 
-	Row(
-		modifier = Modifier
-				.fillMaxWidth()
-				.padding(10.dp)
-	) {
+	Row(modifier = Modifier.fillMaxWidth().padding(10.dp)) {
 		Column(horizontalAlignment = Alignment.Start) {
 			Text(city.localizedName, style = Typography.titleMedium)
 			Text(city.countryLocalizedName, style = Typography.labelLarge, color = Color.Gray)
 		}
 		Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
 			IconButton(onClick = onButtonClick) {
-				Icon(
-					icon,
-					contentDescription
-				)
+				Icon(icon, contentDescription)
 			}
 		}
 	}
 }
 
-@Composable
-fun favouriteCityList(cities: List<City>, onButtonClick: (City, Int) -> Unit) {
-	LazyColumn(
-		modifier = Modifier
-				.fillMaxWidth()
-				.padding(top = 20.dp, bottom = 20.dp),
-		contentPadding = PaddingValues(10.dp),
-		verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.list_item_spacing))
+@Composable fun favouriteCityList(cities: List<City>, onButtonClick: (City, Int) -> Unit) {
+	LazyColumn(modifier = Modifier.fillMaxWidth().padding(top = 20.dp, bottom = 20.dp),
+	           contentPadding = PaddingValues(10.dp),
+	           verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.list_item_spacing))
 	) {
 		itemsIndexed(cities) { index, city ->
-			Surface(
-				shape = Shapes.medium, shadowElevation = 5.dp, modifier = Modifier
-						.fillMaxWidth()
-			) {
-				Row(
-					modifier = Modifier
-							.fillMaxWidth()
-							.padding(20.dp)
-				) {
+			Surface(shape = Shapes.medium, shadowElevation = 5.dp, modifier = Modifier.fillMaxWidth()) {
+				Row(modifier = Modifier.fillMaxWidth().padding(20.dp)) {
 					Column(horizontalAlignment = Alignment.Start) {
 						Text(city.localizedName, style = Typography.titleMedium)
 						Text(city.countryLocalizedName, style = Typography.labelLarge, color = Color.Gray)
 					}
 					Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
 						IconButton(onClick = { onButtonClick(city, index) }) {
-							Icon(Icons.Filled.Delete, stringResource(id = R.string.cities_screen_remove_from_favourites_icon_content_description), tint = MaterialTheme.colorScheme.primary)
+							Icon(Icons.Filled.Delete,
+							     stringResource(id = R.string.cities_screen_remove_from_favourites_icon_content_description),
+							     tint = MaterialTheme.colorScheme.primary)
 						}
 					}
 				}
@@ -231,21 +186,14 @@ fun favouriteCityList(cities: List<City>, onButtonClick: (City, Int) -> Unit) {
 	}
 }
 
-@Composable
-fun whereAmIButton(
-	context: Context,
-	launcher: ManagedActivityResultLauncher<String, Boolean>,
-	onPermissionGranted: () -> Unit
-) {
-	Button(
-		onClick = {
-			if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-				onPermissionGranted()
-			} else {
-				launcher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
-			}
-		}, Modifier.padding(20.dp)
-	) {
+@Composable fun locationButton(context: Context, launcher: ManagedActivityResultLauncher<String, Boolean>, onPermissionGranted: () -> Unit) {
+	Button(onClick = {
+		if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+			onPermissionGranted()
+		} else {
+			launcher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+		}
+	}, modifier = Modifier.padding(10.dp)) {
 		Text(stringResource(id = R.string.cities_screen_get_city_by_location_button_text))
 	}
 }

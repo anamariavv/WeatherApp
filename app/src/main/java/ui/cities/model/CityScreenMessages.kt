@@ -3,43 +3,43 @@ package ui.cities.model
 import com.example.weatherapp.R
 import ui.common.model.Message
 
-enum class CityScreenMessage(vararg val args: String) : Message {
-	ADD_FAVOURITE_CITY_ERROR,
-	REMOVE_FAVOURITE_CITY_ERROR,
-	GET_FAVOURITES_ERROR,
-	QUERY_CITIES_ERROR,
-	GET_LOCATION_ERROR,
-	LOCATION_RESULT_INFO,
-	LOCATION_PERMISSION_NEEDED;
+sealed class CityScreenMessages(vararg val args: String) : Message {
+	object AddFavouriteCityError : CityScreenMessages()
+	object RemoveFavouriteCityError : CityScreenMessages()
+	object GetFavouritesError : CityScreenMessages()
+	object QueryCitiesError : CityScreenMessages()
+	object GetLocationError : CityScreenMessages()
+	class LocationResultInfo(city: String, country: String) : CityScreenMessages(args = arrayOf(city, country))
+	object LocationPermissionNeeded : CityScreenMessages()
 
 	override fun getTitleId(): Int {
 		return when (this) {
-			ADD_FAVOURITE_CITY_ERROR -> R.string.cities_screen_error_adding_to_favourites_title
-			REMOVE_FAVOURITE_CITY_ERROR -> R.string.cities_screen_error_removing_from_favourites_title
-			GET_FAVOURITES_ERROR -> R.string.cities_screen_error_getting_favourites_title
-			QUERY_CITIES_ERROR -> R.string.cities_screen_error_querying_cities_title
-			GET_LOCATION_ERROR -> R.string.cities_screen_error_getting_location_title
-			LOCATION_RESULT_INFO -> R.string.cities_screen_location_result_title
-			LOCATION_PERMISSION_NEEDED -> R.string.cities_screen_location_permission_dialog_title
+			is AddFavouriteCityError -> R.string.cities_screen_error_adding_to_favourites_title
+			is RemoveFavouriteCityError -> R.string.cities_screen_error_removing_from_favourites_title
+			is GetFavouritesError -> R.string.cities_screen_error_getting_favourites_title
+			is QueryCitiesError -> R.string.cities_screen_error_querying_cities_title
+			is GetLocationError -> R.string.cities_screen_error_getting_location_title
+			is LocationResultInfo -> R.string.cities_screen_location_result_title
+			is LocationPermissionNeeded -> R.string.cities_screen_location_permission_dialog_title
 		}
 	}
 
 	override fun getMessageId(): Int {
 		return when (this) {
-			ADD_FAVOURITE_CITY_ERROR -> R.string.cities_screen_error_adding_to_favourites_message
-			REMOVE_FAVOURITE_CITY_ERROR -> R.string.cities_screen_error_removing_from_favourites_message
-			GET_FAVOURITES_ERROR -> R.string.cities_screen_error_getting_favourites_message
-			QUERY_CITIES_ERROR -> R.string.cities_screen_error_querying_cities_message
-			GET_LOCATION_ERROR -> R.string.cities_screen_error_getting_location_message
-			LOCATION_RESULT_INFO -> R.string.cities_screen_location_result_message
-			LOCATION_PERMISSION_NEEDED -> R.string.cities_screen_location_permission_dialog_message
+			is AddFavouriteCityError -> R.string.cities_screen_error_adding_to_favourites_message
+			is RemoveFavouriteCityError -> R.string.cities_screen_error_removing_from_favourites_message
+			is GetFavouritesError -> R.string.cities_screen_error_getting_favourites_message
+			is QueryCitiesError -> R.string.cities_screen_error_querying_cities_message
+			is GetLocationError -> R.string.cities_screen_error_getting_location_message
+			is LocationResultInfo -> R.string.cities_screen_location_result_message
+			is LocationPermissionNeeded -> R.string.cities_screen_location_permission_dialog_message
 		}
 	}
 
 	override fun getArguments(): List<String>? {
-		return when(this) {
-			LOCATION_RESULT_INFO -> args.asList()
-			else -> {null}
+		return when (this) {
+			is LocationResultInfo -> args.asList()
+			else -> { null }
 		}
 	}
 }

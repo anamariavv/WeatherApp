@@ -23,15 +23,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CitiesViewModel @Inject constructor(
-	private val queryCitiesUseCase: QueryCitiesUseCase,
-	private val toggleFavouriteCityUseCase: ToggleFavouriteCityUseCase,
-	private val getFavouriteCitiesUseCase: GetFavouriteCitiesUseCase,
-	private val getCurrentCityUseCase: GetCurrentCityUseCase,
-	private val removeFavouriteCitiesUseCase: RemoveFavouriteCityUseCase
+		private val queryCitiesUseCase: QueryCitiesUseCase,
+		private val toggleFavouriteCityUseCase: ToggleFavouriteCityUseCase,
+		private val getFavouriteCitiesUseCase: GetFavouriteCitiesUseCase,
+		private val getCurrentCityUseCase: GetCurrentCityUseCase,
+		private val removeFavouriteCitiesUseCase: RemoveFavouriteCityUseCase
 ) : BaseViewModel() {
 
 	private val _searchBarState = MutableStateFlow(
-		SearchBarState(queryText = String.empty(), isActive = false, isEnabled = true, queryResult = listOf())
+			SearchBarState(queryText = String.empty(), isActive = false, isEnabled = true, queryResult = listOf())
 	)
 	val searchBarState = _searchBarState.asStateFlow()
 
@@ -100,7 +100,7 @@ class CitiesViewModel @Inject constructor(
 		if (isGranted) {
 			getCurrentCity()
 		} else {
-			showInfo(CityScreenMessages.LOCATION_PERMISSION_NEEDED)
+			showInfo(CityScreenMessages.LocationPermissionNeeded)
 		}
 	}
 
@@ -114,7 +114,7 @@ class CitiesViewModel @Inject constructor(
 	}
 
 	private fun onGetCurrentCitySuccess(response: GetCurrentCityUseCaseResponse) {
-		showInfo(CityScreenMessages.LOCATION_RESULT_INFO(response.city.localizedName, response.city.countryLocalizedName))
+		showInfo(CityScreenMessages.LocationResultInfo(response.city.localizedName, response.city.countryLocalizedName))
 	}
 
 	fun removeFavouriteCity(city: City, index: Int) {
@@ -129,11 +129,11 @@ class CitiesViewModel @Inject constructor(
 	private fun handleErrors(errorData: ErrorData) {
 		//todo: better error titles
 		when (errorData.errorType) {
-			ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError.ADD_FAVOURITE_CITY_ERROR -> showError(CityScreenMessages.ADD_FAVOURITE_CITY_ERROR)
-			ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError.REMOVE_FAVOURITE_CITY_ERROR -> showError(CityScreenMessages.REMOVE_FAVOURITE_CITY_ERROR)
-			GetFavouriteCitiesUseCase.GetFavouriteCitiesError.GET_FAVOURITES_ERROR -> showError(CityScreenMessages.GET_FAVOURITES_ERROR)
-			QueryCitiesUseCase.QueryCitiesError.QUERY_CITIES_ERROR -> showError(CityScreenMessages.QUERY_CITIES_ERROR)
-			GetCurrentCityUseCase.GetCurrentCityUseCaseError.GET_LOCATION_ERROR -> showError(CityScreenMessages.GET_LOCATION_ERROR)
+			ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError.ADD_FAVOURITE_CITY_ERROR -> showError(CityScreenMessages.AddFavouriteCityError)
+			ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError.REMOVE_FAVOURITE_CITY_ERROR -> showError(CityScreenMessages.RemoveFavouriteCityError)
+			GetFavouriteCitiesUseCase.GetFavouriteCitiesError.GET_FAVOURITES_ERROR -> showError(CityScreenMessages.GetFavouritesError)
+			QueryCitiesUseCase.QueryCitiesError.QUERY_CITIES_ERROR -> showError(CityScreenMessages.QueryCitiesError)
+			GetCurrentCityUseCase.GetCurrentCityUseCaseError.GET_LOCATION_ERROR -> showError(CityScreenMessages.GetLocationError)
 		}
 	}
 }
