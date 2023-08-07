@@ -24,6 +24,7 @@
     <string name="you_are_currently_in_city_country">You are currently in <xliff:g>%1$s, %2$s</xliff:g></string>
     <string name="location_permission_is_necessary_in_order_to_use_this_functionality">Location permission is necessary in order to use this functionality</string>
     <string name="permission_necessary">Permission necessary</string>
+    <string name="daily_weather">Daily weather</string>
 
     <!--Common -->
     <string name="dialog_dismiss_button" translatable="false">@string/dismiss</string>

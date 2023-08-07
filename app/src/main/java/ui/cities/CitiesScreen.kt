@@ -122,7 +122,7 @@ import ui.theme.Typography
 	          placeholder = { Text(placeholder) },
 	          leadingIcon = { Icon(Icons.Rounded.Search, contentDescription = leadingIconContentDescription) }
 	) {
-		LazyColumn(modifier = Modifier.fillMaxWidth().padding(0.dp),
+		LazyColumn(modifier = Modifier.fillMaxWidth(),
 		           contentPadding = PaddingValues(dimensionResource(id = R.dimen.list_content_padding)),
 		           verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.list_item_spacing))) {
 			itemsIndexed(queryResult) { index, it ->
