@@ -1,4 +1,4 @@
-package navigation
+package navigation.component
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

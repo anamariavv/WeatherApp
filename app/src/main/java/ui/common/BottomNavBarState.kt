@@ -1,6 +1,6 @@
 package ui.common
 
-import navigation.BottomNavItem
+import navigation.component.BottomNavItem
 
 data class BottomNavBarState(
     val isVisible: Boolean,

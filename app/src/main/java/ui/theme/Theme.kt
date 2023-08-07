@@ -1,31 +1,34 @@
 package ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import com.example.weatherapp.ui.theme.Shapes
+import androidx.compose.ui.graphics.Color
 
-private val DarkColorPalette = darkColors(
+private val DarkColorPalette = darkColorScheme(
+    //todo
     primary = Blue,
-    primaryVariant = BlueDark,
-    secondary = Sky
-)
-
-private val LightColorPalette = lightColors(
-    primary = Blue,
-    primaryVariant = BlueDark,
-    secondary = Sky
-
-    /* Other default colors to override
-    background = Color.White,
+    secondary = Blue,
     surface = Color.White,
+    background = Color.White,
     onPrimary = Color.White,
     onSecondary = Color.Black,
     onBackground = Color.Black,
     onSurface = Color.Black,
-    */
+)
+
+private val LightColorPalette = lightColorScheme(
+    primary = Blue,
+    onPrimary = White,
+    primaryContainer = Blue,
+    onPrimaryContainer = White,
+    secondary = Blue,
+    onSecondary = White,
+    surface = White,
+    background = White,
+    onBackground = Color.DarkGray,
+    onSurface = Blue,
 )
 
 @Composable
@@ -36,8 +39,8 @@ fun WeatherAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compos
         LightColorPalette
     }
 
-    MaterialTheme(
-        colors = colors,
+    androidx.compose.material3.MaterialTheme(
+        colorScheme = colors,
         typography = Typography,
         shapes = Shapes,
         content = content

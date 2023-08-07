@@ -1,4 +1,4 @@
-package navigation
+package navigation.component
 
 sealed class NavigationDirection(val destination: String) {
     object Home : NavigationDirection(destination = "route_home")

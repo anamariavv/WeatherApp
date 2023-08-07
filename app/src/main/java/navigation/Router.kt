@@ -1,5 +1,7 @@
 package navigation
 
+import navigation.component.NavigationDirection
+
 interface Router {
 
     fun showCitiesScreen()

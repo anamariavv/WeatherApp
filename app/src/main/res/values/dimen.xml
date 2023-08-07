@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!--Icons-->
     <dimen name="normal">30dp</dimen>
     <dimen name="large">35dp</dimen>
+
+    <!-- Common -->
+    <dimen name="divider_thickness">1dp</dimen>
+    <dimen name="list_item_spacing">20dp</dimen>
+    <dimen name="list_content_padding">5dp</dimen>
 </resources>

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Weather App</string>
 
     <!--Translatable-->
@@ -7,18 +7,57 @@
     <string name="home">Home</string>
     <string name="weekly">Weekly weather</string>
     <string name="settings">Settings</string>
+    <string name="city_search">City search</string>
+    <string name="add_to_favourites">Add to favourites</string>
+    <string name="remove_from_favourites">Remove from favourites</string>
+    <string name="close">Close</string>
+    <string name="where_am_i">Where am i <xliff:g>?</xliff:g></string>
+    <string name="dismiss">Dismiss</string>
+    <string name="favourite_cities">Favourite Cities</string>
+    <string name="error">Error</string>
+    <string name="an_error_occurred_while_adding_city_to_favourites">An error occurred while adding city to favourites</string>
+    <string name="an_error_occurred_while_removing_city_from_favourites">An error occurred while removing city from favourites</string>
+    <string name="an_error_occurred_while_getting_favourite_cities">An error occurred while getting favourite cities</string>
+    <string name="an_error_occurred_while_performing_search">An error occurred while performing search</string>
+    <string name="an_error_occurred_while_getting_your_location">An error occurred while getting your location</string>
+    <string name="your_location">Your location</string>
+    <string name="you_are_currently_in_city_country">You are currently in <xliff:g>%1$s, %2$s</xliff:g></string>
+    <string name="location_permission_is_necessary_in_order_to_use_this_functionality">Location permission is necessary in order to use this functionality</string>
+    <string name="permission_necessary">Permission necessary</string>
 
-    <!--Top app bar-->
-    <string name="top_app_bar_button_content_description" translatable="false">@string/manage_cities</string>
-    <string name="top_app_bar_title_placeholder" translatable="false">@string/rijeka</string>
+    <!--Common -->
+    <string name="dialog_dismiss_button" translatable="false">@string/dismiss</string>
 
     <!--Bottom navbar-->
     <string name="bottom_navbar_home_content_description" translatable="false">@string/home</string>
     <string name="bottom_navbar_weekly_content_description" translatable="false">@string/weekly</string>
     <string name="bottom_navbar_settings_content_description" translatable="false">@string/settings</string>
+    <string name="bottom_navbar_cities_content_description" translatable="false">@string/manage_cities</string>
 
     <!--Home screen-->
     <!--Settings screen-->
     <!--Weekly screen-->
 
+    <!-- Cities screen-->
+    <string name="cities_screen_title" translatable="false">@string/favourite_cities</string>
+    <string name="cities_screen_search_bar_placeholder" translatable="false">@string/city_search</string>
+    <string name="cities_screen_search_bar_icon_content_description" translatable="false">@string/city_search</string>
+    <string name="cities_screen_add_to_favourites_icon_content_description" translatable="false">@string/add_to_favourites</string>
+    <string name="cities_screen_remove_from_favourites_icon_content_description" translatable="false">@string/remove_from_favourites</string>
+    <string name="cities_screen_close_searchbar_icon_content_description" translatable="false">@string/close</string>
+    <string name="cities_screen_get_city_by_location_button_text" translatable="false">@string/where_am_i</string>
+    <string name="cities_screen_error_adding_to_favourites_title" translatable="false">@string/error</string>
+    <string name="cities_screen_error_adding_to_favourites_message" translatable="false">@string/an_error_occurred_while_adding_city_to_favourites</string>
+    <string name="cities_screen_error_removing_from_favourites_title" translatable="false">@string/error</string>
+    <string name="cities_screen_error_removing_from_favourites_message" translatable="false">@string/an_error_occurred_while_removing_city_from_favourites</string>
+    <string name="cities_screen_error_getting_favourites_title" translatable="false">@string/error</string>
+    <string name="cities_screen_error_getting_favourites_message" translatable="false">@string/an_error_occurred_while_getting_favourite_cities</string>
+    <string name="cities_screen_error_querying_cities_title" translatable="false">@string/error</string>
+    <string name="cities_screen_error_querying_cities_message" translatable="false">@string/an_error_occurred_while_performing_search</string>
+    <string name="cities_screen_error_getting_location_title" translatable="false">@string/error</string>
+    <string name="cities_screen_error_getting_location_message" translatable="false">@string/an_error_occurred_while_getting_your_location</string>
+    <string name="cities_screen_location_result_title" translatable="false">@string/your_location</string>
+    <string name="cities_screen_location_result_message" translatable="false">@string/you_are_currently_in_city_country</string>
+    <string name="cities_screen_location_permission_dialog_title" translatable="false">@string/permission_necessary</string>
+    <string name="cities_screen_location_permission_dialog_message" translatable="false">@string/location_permission_is_necessary_in_order_to_use_this_functionality</string>
 </resources>

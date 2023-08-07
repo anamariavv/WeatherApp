@@ -63,7 +63,15 @@ dependencies {
     implementation(Dependencies.coroutines)
     implementation(Dependencies.hilt)
     implementation(Dependencies.hiltComposeNavigation)
+    implementation(Dependencies.gson)
+    implementation(Dependencies.gsonConverter)
+    implementation(Dependencies.httpLoggingInterceptor)
+    implementation(Dependencies.room)
+    implementation(Dependencies.roomKotlin)
+    implementation(Dependencies.playServicesLocation)
+    implementation(Dependencies.coroutinesPlayServices)
 
+    kapt(Dependencies.roomCompiler)
     kapt(Dependencies.hiltCompiler)
 
     androidTestImplementation(Dependencies.junit_jupiter)
@@ -72,4 +80,5 @@ dependencies {
     debugImplementation(Dependencies.composeToolingPreview)
 
     implementation(project(":domain"))
+    implementation(project(":data"))
 }
