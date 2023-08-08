@@ -43,7 +43,7 @@ data class ApiNight(
 	@SerializedName("TotalLiquid")
 	val totalLiquid: ApiTotalLiquid,
 	@SerializedName("Wind")
-	val wind: ApiWindNight,
+	val wind: ApiWind,
 	@SerializedName("WindGust")
-	val windGust: ApiWindGustNight
+	val windGust: ApiWind
 )

@@ -1,8 +1,8 @@
 package repository
 
-import model.forecast.DailyForecastInfo
+import model.forecast.Forecast
 
 interface ForecastRepository {
 
-	suspend fun getDailyForecast(locationKey: String): DailyForecastInfo
+	suspend fun getDailyForecast(locationKey: String): Forecast
 }

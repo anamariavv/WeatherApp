@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ApiRealFeelTemperature(
 	@SerializedName("Maximum")
-	val maximum: ApiRealFeelMaximum,
+	val maximum: ApiRealFeelMeasure,
 	@SerializedName("Minimum")
-	val minimum: ApiRealFeelMinimum
+	val minimum: ApiRealFeelMeasure
 )

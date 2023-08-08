@@ -6,7 +6,6 @@ data class Headline(
 	val effectiveEpochDate: Int,
 	val endDate: String,
 	val endEpochDate: Int,
-	val link: String,
 	val mobileLink: String,
 	val severity: Int,
 	val text: String

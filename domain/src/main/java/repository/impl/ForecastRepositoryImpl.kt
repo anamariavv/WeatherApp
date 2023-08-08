@@ -2,7 +2,7 @@ package repository.impl
 
 import interactor.GetDailyForecastInteractor
 import mapper.ForecastMapper
-import model.forecast.DailyForecastInfo
+import model.forecast.Forecast
 import repository.ForecastRepository
 
 class ForecastRepositoryImpl(
@@ -10,7 +10,7 @@ class ForecastRepositoryImpl(
 	private val forecastMapper: ForecastMapper
 ) : ForecastRepository {
 
-	override suspend fun getDailyForecast(locationKey: String): DailyForecastInfo {
+	override suspend fun getDailyForecast(locationKey: String): Forecast {
 		return forecastMapper.toDailyForecastInfo(getDailyForecastInteractor(locationKey, true))
 	}
 }

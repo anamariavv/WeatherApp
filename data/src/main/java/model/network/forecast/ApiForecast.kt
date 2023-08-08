@@ -3,7 +3,7 @@ package model.network.forecast
 
 import com.google.gson.annotations.SerializedName
 
-data class ApiDailyForecastInfo(
+data class ApiForecast(
 	@SerializedName("DailyForecasts")
 	val dailyForecasts: List<ApiDailyForecast>,
 	@SerializedName("Headline")

@@ -1,9 +1,9 @@
 package mapper
 
-import model.forecast.DailyForecastInfo
-import model.network.forecast.ApiDailyForecastInfo
+import model.forecast.Forecast
+import model.network.forecast.ApiForecast
 
 interface ForecastMapper {
 
-	suspend fun toDailyForecastInfo(apiDailyForecastInfo: ApiDailyForecastInfo): DailyForecastInfo
+	suspend fun toDailyForecastInfo(apiForecast: ApiForecast): Forecast
 }

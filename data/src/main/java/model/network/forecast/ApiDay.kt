@@ -4,46 +4,46 @@ package model.network.forecast
 import com.google.gson.annotations.SerializedName
 
 data class ApiDay(
-	@SerializedName("CloudCover")
+		@SerializedName("CloudCover")
 	val cloudCover: Int,
-	@SerializedName("HasPrecipitation")
+		@SerializedName("HasPrecipitation")
 	val hasPrecipitation: Boolean,
-	@SerializedName("HoursOfIce")
+		@SerializedName("HoursOfIce")
 	val hoursOfIce: Int,
-	@SerializedName("HoursOfPrecipitation")
+		@SerializedName("HoursOfPrecipitation")
 	val hoursOfPrecipitation: Int,
-	@SerializedName("HoursOfRain")
+		@SerializedName("HoursOfRain")
 	val hoursOfRain: Int,
-	@SerializedName("HoursOfSnow")
+		@SerializedName("HoursOfSnow")
 	val hoursOfSnow: Int,
-	@SerializedName("Ice")
+		@SerializedName("Ice")
 	val ice: ApiIce,
-	@SerializedName("IceProbability")
+		@SerializedName("IceProbability")
 	val iceProbability: Int,
-	@SerializedName("Icon")
+		@SerializedName("Icon")
 	val icon: Int,
-	@SerializedName("IconPhrase")
+		@SerializedName("IconPhrase")
 	val iconPhrase: String,
-	@SerializedName("LongPhrase")
+		@SerializedName("LongPhrase")
 	val longPhrase: String,
-	@SerializedName("PrecipitationProbability")
+		@SerializedName("PrecipitationProbability")
 	val precipitationProbability: Int,
-	@SerializedName("Rain")
+		@SerializedName("Rain")
 	val rain: ApiRain,
-	@SerializedName("RainProbability")
+		@SerializedName("RainProbability")
 	val rainProbability: Int,
-	@SerializedName("ShortPhrase")
+		@SerializedName("ShortPhrase")
 	val shortPhrase: String,
-	@SerializedName("Snow")
+		@SerializedName("Snow")
 	val snow: ApiSnow,
-	@SerializedName("SnowProbability")
+		@SerializedName("SnowProbability")
 	val snowProbability: Int,
-	@SerializedName("ThunderstormProbability")
+		@SerializedName("ThunderstormProbability")
 	val thunderstormProbability: Int,
-	@SerializedName("TotalLiquid")
+		@SerializedName("TotalLiquid")
 	val totalLiquid: ApiTotalLiquid,
-	@SerializedName("Wind")
-	val wind: ApiWindDay,
-	@SerializedName("WindGust")
-	val windGust: ApiWindGustDay
+		@SerializedName("Wind")
+	val wind: ApiWind,
+		@SerializedName("WindGust")
+	val windGust: ApiWind
 )

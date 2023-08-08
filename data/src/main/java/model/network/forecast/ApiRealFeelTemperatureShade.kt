@@ -7,5 +7,5 @@ data class ApiRealFeelTemperatureShade(
 	@SerializedName("Maximum")
 	val maximum: ApiRealFeelMaximum,
 	@SerializedName("Minimum")
-	val minimum: ApiRealFeelMinimum
+	val minimum: ApiRealFeelMeasure
 )

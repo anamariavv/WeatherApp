@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ApiTemperature(
 	@SerializedName("Maximum")
-	val maximum: ApiMaximum,
+	val maximum: ApiMeasure,
 	@SerializedName("Minimum")
-	val minimum: ApiMinimum
+	val minimum: ApiMeasure
 )
