@@ -13,8 +13,8 @@ import interactor.QueryCitiesInteractor
 import interactor.RemoveFavouriteCityInteractor
 import mapper.CityMapper
 import mapper.impl.CityMapperImpl
-import repository.city.CityRepository
-import repository.city.impl.CityRepositoryImpl
+import repository.CityRepository
+import repository.impl.CityRepositoryImpl
 import usecase.city.AddFavouriteCityUseCase
 import usecase.city.impl.AddFavouriteCityUseCaseImpl
 import usecase.city.GetFavouriteCitiesUseCase

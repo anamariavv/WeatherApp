@@ -4,7 +4,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import model.City
+import model.city.City
 import model.common.ErrorData
 import ui.base.BaseViewModel
 import ui.cities.model.CityScreenMessages
@@ -17,7 +17,6 @@ import usecase.city.QueryCitiesUseCase
 import usecase.city.QueryCitiesUseCase.QueryCitiesError
 import usecase.city.QueryCitiesUseCase.QueryCitiesUseCaseResponse
 import usecase.city.RemoveFavouriteCityUseCase
-import usecase.city.RemoveFavouriteCityUseCase.RemoveFavouriteCityError
 import usecase.location.GetCurrentCityUseCase.GetCurrentCityUseCaseResponse
 import usecase.city.ToggleFavouriteCityUseCase
 import usecase.city.ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError

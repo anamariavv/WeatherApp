@@ -4,8 +4,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.flow.updateAndGet
-import model.City
+import model.city.City
 import model.common.ErrorData
 import ui.base.BaseViewModel
 import ui.cities.model.CityScreenMessages
@@ -49,7 +48,10 @@ class HomeViewModel @Inject constructor(val getFavouriteCitiesUseCase: GetFavour
 
 	fun onItemSelected(city: City, index: Int) {
 		_dropdownState.update { it.copy(isExpanded = false, selectedIndex = index, selectedValue = city) }
-		//todo get forecast for selected city
+	}
+
+	private suspend fun getDailyForecast(city: City) {
+
 	}
 
 }

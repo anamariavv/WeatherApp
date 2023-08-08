@@ -1,7 +1,7 @@
 package usecase.city.impl
 
-import model.City
-import repository.city.CityRepository
+import model.city.City
+import repository.CityRepository
 import usecase.city.AddFavouriteCityUseCase
 
 class AddFavouriteCityUseCaseImpl(private val cityRepository: CityRepository) :

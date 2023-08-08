@@ -1,6 +1,6 @@
 package ui.cities.model
 
-import model.City
+import model.city.City
 
 data class SearchBarState(
     val queryText: String,

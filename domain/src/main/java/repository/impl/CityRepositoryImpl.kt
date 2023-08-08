@@ -1,4 +1,4 @@
-package repository.city.impl
+package repository.impl
 
 import interactor.AddFavouriteCityInteractor
 import interactor.GetCityBasedOnCoordinatesInteractor
@@ -7,9 +7,9 @@ import interactor.GetFavouriteCitiesInteractor
 import interactor.QueryCitiesInteractor
 import interactor.RemoveFavouriteCityInteractor
 import mapper.CityMapper
-import model.City
-import model.network.ApiCity
-import repository.city.CityRepository
+import model.city.City
+import model.network.city.ApiCity
+import repository.CityRepository
 
 class CityRepositoryImpl(
 	private val queryCitiesInteractor: QueryCitiesInteractor,

@@ -38,3 +38,6 @@ local.properties
 *.keystore
 
 /buildSrc/build/
+
+# Api Key config
+app/src/main/java/config/api/

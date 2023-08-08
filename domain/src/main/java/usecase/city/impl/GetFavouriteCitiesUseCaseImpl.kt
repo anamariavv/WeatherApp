@@ -1,7 +1,7 @@
 package usecase.city.impl
 
 import model.common.Resource
-import repository.city.CityRepository
+import repository.CityRepository
 import usecase.city.GetFavouriteCitiesUseCase.GetFavouriteCitiesUseCaseResponse
 import usecase.city.GetFavouriteCitiesUseCase.GetFavouriteCitiesError
 import usecase.city.GetFavouriteCitiesUseCase

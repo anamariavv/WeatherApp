@@ -1,7 +1,7 @@
 package interactor.impl
 
 import interactor.GetCityBasedOnCoordinatesInteractor
-import model.network.ApiCity
+import model.network.city.ApiCity
 import source.network.LocationsService
 
 class GetCityBasedOnCoordinatesInteractorImpl(private val locationsService: LocationsService): GetCityBasedOnCoordinatesInteractor {

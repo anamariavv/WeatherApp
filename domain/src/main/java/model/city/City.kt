@@ -1,4 +1,4 @@
-package model
+package model.city
 
 data class City(
     val localizedName: String,

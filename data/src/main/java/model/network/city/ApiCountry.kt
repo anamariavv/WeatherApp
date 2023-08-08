@@ -1,4 +1,4 @@
-package model.network
+package model.network.city
 
 import com.google.gson.annotations.SerializedName
 

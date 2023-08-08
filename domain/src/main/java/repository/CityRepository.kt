@@ -1,6 +1,6 @@
-package repository.city
+package repository
 
-import model.City
+import model.city.City
 
 interface CityRepository {
     suspend fun queryCities(queryText: String): List<City>

@@ -1,16 +1,16 @@
-package model.network
+package model.network.city
 
 import com.google.gson.annotations.SerializedName
 
 data class ApiCity(
-    @SerializedName("Country")
+	@SerializedName("Country")
     val country: ApiCountry,
-    @SerializedName("Key")
+	@SerializedName("Key")
     val key: String,
-    @SerializedName("LocalizedName")
+	@SerializedName("LocalizedName")
     val localizedName: String,
-    @SerializedName("Rank")
+	@SerializedName("Rank")
     val rank: Int,
-    @SerializedName("Type")
+	@SerializedName("Type")
     val type: String
 )

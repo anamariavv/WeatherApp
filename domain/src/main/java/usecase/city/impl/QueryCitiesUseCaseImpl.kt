@@ -1,7 +1,7 @@
 package usecase.city.impl
 
 import model.common.Resource
-import repository.city.CityRepository
+import repository.CityRepository
 import usecase.city.QueryCitiesUseCase.QueryCitiesUseCaseResponse
 import usecase.city.QueryCitiesUseCase
 import usecase.city.QueryCitiesUseCase.QueryCitiesError
