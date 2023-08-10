@@ -1,15 +1,13 @@
-package model.network.forecast
+package model.network.forecast.daily
 
 
 import com.google.gson.annotations.SerializedName
 
-data class ApiRealFeelMeasure(
-	@SerializedName("Phrase")
-	val phrase: String,
+data class ApiSpeed(
 	@SerializedName("Unit")
 	val unit: String,
 	@SerializedName("UnitType")
 	val unitType: Int,
 	@SerializedName("Value")
-	val value: Int
+	val value: Double
 )

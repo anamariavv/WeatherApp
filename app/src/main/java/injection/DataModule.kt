@@ -99,7 +99,7 @@ class DataModule {
 	@Provides
 	@ViewModelScoped
 	fun provideGetCityBasedOnCoordsInteractor(locationsService: LocationsService): GetCityBasedOnCoordinatesInteractor {
-		return GetCityBasedOnCoordinatesInteractorImpl(locationsService)
+		return GetCityBasedOnCoordinatesInteractorImpl(ApiConfig.apiKey, locationsService)
 	}
 
 	@Provides

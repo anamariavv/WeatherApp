@@ -1,17 +1,13 @@
-package model.network.forecast
+package model.network.forecast.daily
 
 
 import com.google.gson.annotations.SerializedName
 
-data class ApiMoon(
-	@SerializedName("Age")
-	val age: Int,
+data class ApiSun(
 	@SerializedName("EpochRise")
 	val epochRise: Int,
 	@SerializedName("EpochSet")
 	val epochSet: Int,
-	@SerializedName("Phase")
-	val phase: String,
 	@SerializedName("Rise")
 	val rise: String,
 	@SerializedName("Set")

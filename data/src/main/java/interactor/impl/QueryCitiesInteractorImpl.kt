@@ -15,6 +15,13 @@ class QueryCitiesInteractorImpl(
         //return locationsService.queryCities(apiKey = apiKey, queryText=queryText)
         return listOf(
                 ApiCity(
+                        localizedName = "Rijeka",
+                        key = "120665",
+                        country = ApiCountry(id = "HR", localizedName = "Croatia"),
+                        rank = 65,
+                        type = "City"
+                ),
+                ApiCity(
                         localizedName = "Versailles",
                         key = "133875",
                         country = ApiCountry(id = "FR", localizedName = "France"),

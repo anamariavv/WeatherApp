@@ -1,9 +1,11 @@
-package model.network.forecast
+package model.network.forecast.daily
 
 
 import com.google.gson.annotations.SerializedName
 
-data class ApiRain(
+data class ApiRealFeelMeasure(
+	@SerializedName("Phrase")
+	val phrase: String,
 	@SerializedName("Unit")
 	val unit: String,
 	@SerializedName("UnitType")

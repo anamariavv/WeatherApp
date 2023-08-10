@@ -2,7 +2,15 @@ package mapper.impl
 
 import mapper.ForecastMapper
 import model.forecast.*
-import model.network.forecast.*
+import model.network.forecast.daily.ApiAirAndPollen
+import model.network.forecast.daily.ApiDailyForecast
+import model.network.forecast.daily.ApiDay
+import model.network.forecast.daily.ApiForecast
+import model.network.forecast.daily.ApiHeadline
+import model.network.forecast.daily.ApiNight
+import model.network.forecast.daily.ApiRealFeelTemperature
+import model.network.forecast.daily.ApiTemperature
+import model.network.forecast.daily.ApiWind
 
 class ForecastMapperImpl : ForecastMapper {
 
@@ -29,7 +37,7 @@ class ForecastMapperImpl : ForecastMapper {
 
 		return DailyForecast(airAndPollen = airAndPollenList,
 		                     date = apiDailyForecast.date,
-		                     day = apiDailyForecast.day,
+		                     day = toDay(apiDailyForecast.day),
 		                     epochDate = apiDailyForecast.epochDate,
 		                     hoursOfSun = apiDailyForecast.hoursOfSun,
 		                     mobileLink = apiDailyForecast.mobileLink,
@@ -38,9 +46,9 @@ class ForecastMapperImpl : ForecastMapper {
 		                     sunRiseEpoch = apiDailyForecast.sun.epochRise,
 		                     sunSetEpoch = apiDailyForecast.sun.epochSet,
 		                     night = toNight(apiDailyForecast.night),
-		                     realFeelTemperature =,
-		                     realFeelTemperatureShade =,
-		                     temperature = apiDailyForecast.temperature)
+		                     realFeelTemperature = toTemperature(apiDailyForecast.realFeelTemperature),
+		                     realFeelTemperatureShade = toTemperature(apiDailyForecast.realFeelTemperatureShade),
+		                     temperature = toTemperature(apiDailyForecast.temperature))
 	}
 
 	private fun toAirAndPollen(apiAirAndPollen: ApiAirAndPollen): AirAndPollen {
@@ -78,32 +86,52 @@ class ForecastMapperImpl : ForecastMapper {
 
 	private fun toNight(apiNight: ApiNight): Night {
 		return Night(cloudCover = apiNight.cloudCover,
-		           hasPrecipitation = apiNight.hasPrecipitation,
-		           hoursOfIce = apiNight.hoursOfIce,
-		           hoursOfPrecipitation = apiNight.hoursOfPrecipitation,
-		           hoursOfRain = apiNight.hoursOfRain,
-		           hoursOfSnow = apiNight.hoursOfSnow,
-		           ice = Measurement(apiNight.ice.unit, apiNight.ice.unitType, apiNight.ice.value),
-		           iceProbability = apiNight.iceProbability,
-		           icon = apiNight.icon,
-		           iconPhrase = apiNight.iconPhrase,
-		           longPhrase = apiNight.longPhrase,
-		           precipitationProbability = apiNight.precipitationProbability,
-		           rain = Measurement(apiNight.rain.unit, apiNight.rain.unitType, apiNight.rain.value),
-		           rainProbability = apiNight.rainProbability,
-		           shortPhrase = apiNight.shortPhrase,
-		           snow = Measurement(apiNight.snow.unit, apiNight.snow.unitType, apiNight.snow.value),
-		           snowProbability = apiNight.snowProbability,
-		           thunderstormProbability = apiNight.thunderstormProbability,
-		           totalLiquid = Measurement(apiNight.totalLiquid.unit, apiNight.totalLiquid.unitType, apiNight.totalLiquid.value),
-		           wind = toWind(apiNight.wind),
-		           windGust = toWind(apiNight.windGust))
+		             hasPrecipitation = apiNight.hasPrecipitation,
+		             hoursOfIce = apiNight.hoursOfIce,
+		             hoursOfPrecipitation = apiNight.hoursOfPrecipitation,
+		             hoursOfRain = apiNight.hoursOfRain,
+		             hoursOfSnow = apiNight.hoursOfSnow,
+		             ice = Measurement(apiNight.ice.unit, apiNight.ice.unitType, apiNight.ice.value),
+		             iceProbability = apiNight.iceProbability,
+		             icon = apiNight.icon,
+		             iconPhrase = apiNight.iconPhrase,
+		             longPhrase = apiNight.longPhrase,
+		             precipitationProbability = apiNight.precipitationProbability,
+		             rain = Measurement(apiNight.rain.unit, apiNight.rain.unitType, apiNight.rain.value),
+		             rainProbability = apiNight.rainProbability,
+		             shortPhrase = apiNight.shortPhrase,
+		             snow = Measurement(apiNight.snow.unit, apiNight.snow.unitType, apiNight.snow.value),
+		             snowProbability = apiNight.snowProbability,
+		             thunderstormProbability = apiNight.thunderstormProbability,
+		             totalLiquid = Measurement(apiNight.totalLiquid.unit, apiNight.totalLiquid.unitType, apiNight.totalLiquid.value),
+		             wind = toWind(apiNight.wind),
+		             windGust = toWind(apiNight.windGust))
 	}
 
 	private fun toWind(apiWind: ApiWind): Wind {
 		val direction = Direction(apiWind.direction.degrees, apiWind.direction.english, apiWind.direction.localized)
 		val measurement = Measurement(apiWind.speed.unit, apiWind.speed.unitType, apiWind.speed.value)
 		return Wind(direction, measurement)
+	}
+
+	private fun toTemperature(apiRealFeelTemperature: ApiRealFeelTemperature): Temperature {
+		return Temperature(maximum = Measurement(apiRealFeelTemperature.maximum.phrase,
+		                                         apiRealFeelTemperature.maximum.unit,
+		                                         apiRealFeelTemperature.maximum.unitType,
+		                                         apiRealFeelTemperature.maximum.value),
+		                   minimum = Measurement(apiRealFeelTemperature.minimum.phrase,
+		                                         apiRealFeelTemperature.minimum.unit,
+		                                         apiRealFeelTemperature.minimum.unitType,
+		                                         apiRealFeelTemperature.minimum.value))
+	}
+
+	private fun toTemperature(apiTemperature: ApiTemperature): Temperature {
+		return Temperature(maximum = Measurement(apiTemperature.maximum.unit,
+		                                         apiTemperature.maximum.unitType,
+		                                         apiTemperature.maximum.value),
+		                   minimum = Measurement(apiTemperature.minimum.unit,
+		                                         apiTemperature.minimum.unitType,
+		                                         apiTemperature.minimum.value))
 	}
 
 }

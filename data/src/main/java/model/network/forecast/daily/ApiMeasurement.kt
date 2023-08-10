@@ -1,9 +1,9 @@
-package model.network.forecast
+package model.network.forecast.daily
 
 
 import com.google.gson.annotations.SerializedName
 
-data class ApiSpeed(
+data class ApiMeasurement(
 	@SerializedName("Unit")
 	val unit: String,
 	@SerializedName("UnitType")

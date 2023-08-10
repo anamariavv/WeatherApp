@@ -1,6 +1,6 @@
 package interactor
 
-import model.network.forecast.ApiForecast
+import model.network.forecast.daily.ApiForecast
 
 interface GetDailyForecastInteractor {
 

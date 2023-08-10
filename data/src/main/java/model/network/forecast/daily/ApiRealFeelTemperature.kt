@@ -1,4 +1,4 @@
-package model.network.forecast
+package model.network.forecast.daily
 
 
 import com.google.gson.annotations.SerializedName

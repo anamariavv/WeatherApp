@@ -1,7 +1,7 @@
 package mapper
 
 import model.forecast.Forecast
-import model.network.forecast.ApiForecast
+import model.network.forecast.daily.ApiForecast
 
 interface ForecastMapper {
 

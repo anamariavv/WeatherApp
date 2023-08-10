@@ -1,11 +1,11 @@
-package model.network.forecast
+package model.network.forecast.daily
 
 
 import com.google.gson.annotations.SerializedName
 
 data class ApiTemperature(
 	@SerializedName("Maximum")
-	val maximum: ApiMeasure,
+	val maximum: ApiMeasurement,
 	@SerializedName("Minimum")
-	val minimum: ApiMeasure
+	val minimum: ApiMeasurement
 )

@@ -5,16 +5,15 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
-import interactor.AddFavouriteCityInteractor
-import interactor.GetCityBasedOnCoordinatesInteractor
-import interactor.GetCurrentGeoLocationInteractor
-import interactor.GetFavouriteCitiesInteractor
-import interactor.QueryCitiesInteractor
-import interactor.RemoveFavouriteCityInteractor
+import interactor.*
 import mapper.CityMapper
+import mapper.ForecastMapper
 import mapper.impl.CityMapperImpl
+import mapper.impl.ForecastMapperImpl
 import repository.CityRepository
+import repository.ForecastRepository
 import repository.impl.CityRepositoryImpl
+import repository.impl.ForecastRepositoryImpl
 import usecase.city.AddFavouriteCityUseCase
 import usecase.city.impl.AddFavouriteCityUseCaseImpl
 import usecase.city.GetFavouriteCitiesUseCase
@@ -25,6 +24,8 @@ import usecase.city.RemoveFavouriteCityUseCase
 import usecase.city.impl.RemoveFavouriteCityUseCaseImpl
 import usecase.city.ToggleFavouriteCityUseCase
 import usecase.city.impl.ToggleFavouriteCityUseCaseImpl
+import usecase.forecast.GetDailyForecastUseCase
+import usecase.forecast.impl.GetDailyForecastUseCaseImpl
 import usecase.location.GetCurrentCityUseCase
 import usecase.location.impl.GetCurrentCityUseCaseImpl
 
@@ -70,6 +71,12 @@ class DomainModule {
 
 	@Provides
 	@ViewModelScoped
+	fun provideGetDailyForecastUseCase(forecastRepository: ForecastRepository): GetDailyForecastUseCase {
+		return GetDailyForecastUseCaseImpl(forecastRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
 	fun provideCitiesRepository(
 		queryCitiesInteractor: QueryCitiesInteractor,
 		getFavouriteCitiesInteractor: GetFavouriteCitiesInteractor,
@@ -80,19 +87,30 @@ class DomainModule {
 		cityMapper: CityMapper
 	): CityRepository {
 		return CityRepositoryImpl(
-			queryCitiesInteractor,
-			getFavouriteCitiesInteractor,
-			addFavouriteCityInteractor,
-			removeFavouriteCityInteractor,
-			getCurrentGeoLocationInteractor,
-			getCityBasedOnCoordinatesInteractor,
-			cityMapper
+				queryCitiesInteractor,
+				getFavouriteCitiesInteractor,
+				addFavouriteCityInteractor,
+				removeFavouriteCityInteractor,
+				getCurrentGeoLocationInteractor,
+				getCityBasedOnCoordinatesInteractor,
+				cityMapper
 		)
+	}
+
+	@Provides
+	fun provideForecastRepository(getDailyForecastInteractor: GetDailyForecastInteractor, forecastMapper: ForecastMapper): ForecastRepository {
+		return ForecastRepositoryImpl(getDailyForecastInteractor, forecastMapper)
 	}
 
 	@Provides
 	@ViewModelScoped
 	fun provideCityMapper(): CityMapper {
 		return CityMapperImpl()
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideForecastMapper(): ForecastMapper {
+		return ForecastMapperImpl()
 	}
 }

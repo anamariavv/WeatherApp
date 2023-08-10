@@ -1,4 +1,4 @@
-package model.network.forecast
+package model.network.forecast.daily
 
 
 import com.google.gson.annotations.SerializedName
@@ -17,7 +17,7 @@ data class ApiNight(
 	@SerializedName("HoursOfSnow")
 	val hoursOfSnow: Int,
 	@SerializedName("Ice")
-	val ice: ApiIce,
+	val ice: ApiMeasurement,
 	@SerializedName("IceProbability")
 	val iceProbability: Int,
 	@SerializedName("Icon")
@@ -29,19 +29,19 @@ data class ApiNight(
 	@SerializedName("PrecipitationProbability")
 	val precipitationProbability: Int,
 	@SerializedName("Rain")
-	val rain: ApiRain,
+	val rain: ApiMeasurement,
 	@SerializedName("RainProbability")
 	val rainProbability: Int,
 	@SerializedName("ShortPhrase")
 	val shortPhrase: String,
 	@SerializedName("Snow")
-	val snow: ApiSnow,
+	val snow: ApiMeasurement,
 	@SerializedName("SnowProbability")
 	val snowProbability: Int,
 	@SerializedName("ThunderstormProbability")
 	val thunderstormProbability: Int,
 	@SerializedName("TotalLiquid")
-	val totalLiquid: ApiTotalLiquid,
+	val totalLiquid: ApiMeasurement,
 	@SerializedName("Wind")
 	val wind: ApiWind,
 	@SerializedName("WindGust")
