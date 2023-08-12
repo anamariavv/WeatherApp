@@ -2,6 +2,9 @@ package mapper.impl
 
 import mapper.ForecastMapper
 import model.forecast.*
+import model.forecast.CurrentConditions
+import model.network.forecast.current.ApiCurrentConditionsItem
+import model.network.forecast.current.ApiWindCurrent
 import model.network.forecast.daily.ApiAirAndPollen
 import model.network.forecast.daily.ApiDailyForecast
 import model.network.forecast.daily.ApiDay
@@ -13,6 +16,64 @@ import model.network.forecast.daily.ApiTemperature
 import model.network.forecast.daily.ApiWind
 
 class ForecastMapperImpl : ForecastMapper {
+
+	override suspend fun toCurrentConditionsMetric(apiItem: ApiCurrentConditionsItem): CurrentConditions {
+		return CurrentConditions(
+				epochTime = apiItem.epochTime,
+				hasPrecipitation = apiItem.hasPrecipitation,
+				isDayTime = apiItem.isDayTime,
+				localObservationDateTime = apiItem.localObservationDateTime,
+				mobileLink = apiItem.mobileLink,
+				obstructionsToVisibility = apiItem.obstructionsToVisibility,
+				precipitationType = apiItem.precipitationType,
+				pressure = Measurement(apiItem.pressure.metric.unit, apiItem.pressure.metric.unitType, apiItem.pressure.metric.value),
+				realFeelTemperature = Measurement(apiItem.realFeelTemperature.metric.phrase,
+				                                  apiItem.realFeelTemperature.metric.unit,
+				                                  apiItem.realFeelTemperature.metric.unitType,
+				                                  apiItem.realFeelTemperature.metric.value),
+				realFeelTemperatureShade = Measurement(apiItem.realFeelTemperatureShade.metric.phrase,
+				                                       apiItem.realFeelTemperatureShade.metric.unit,
+				                                       apiItem.realFeelTemperatureShade.metric.unitType,
+				                                       apiItem.realFeelTemperatureShade.metric.value),
+				relativeHumidity = apiItem.relativeHumidity,
+				temperature = Measurement(apiItem.temperature.metric.unit, apiItem.temperature.metric.unitType, apiItem.temperature.metric.value),
+				uVIndex = apiItem.uVIndex,
+				uVIndexText = apiItem.uVIndexText,
+				visibility = Measurement(apiItem.visibility.metric.unit, apiItem.visibility.metric.unitType, apiItem.visibility.metric.value),
+				weatherText = apiItem.weatherText,
+				wind = toWindCurrent(apiItem.wind, isMetric = true),
+				windGust = toWindCurrent(apiItem.windGust, isMetric = true)
+		)
+	}
+
+	override suspend fun toCurrentConditionsImperial(apiItem: ApiCurrentConditionsItem): CurrentConditions {
+		return CurrentConditions(
+				epochTime = apiItem.epochTime,
+				hasPrecipitation = apiItem.hasPrecipitation,
+				isDayTime = apiItem.isDayTime,
+				localObservationDateTime = apiItem.localObservationDateTime,
+				mobileLink = apiItem.mobileLink,
+				obstructionsToVisibility = apiItem.obstructionsToVisibility,
+				precipitationType = apiItem.precipitationType,
+				pressure = Measurement(apiItem.pressure.imperial.unit, apiItem.pressure.imperial.unitType, apiItem.pressure.imperial.value),
+				realFeelTemperature = Measurement(apiItem.realFeelTemperature.imperial.phrase,
+				                                  apiItem.realFeelTemperature.imperial.unit,
+				                                  apiItem.realFeelTemperature.imperial.unitType,
+				                                  apiItem.realFeelTemperature.imperial.value),
+				realFeelTemperatureShade = Measurement(apiItem.realFeelTemperatureShade.imperial.phrase,
+				                                       apiItem.realFeelTemperatureShade.imperial.unit,
+				                                       apiItem.realFeelTemperatureShade.imperial.unitType,
+				                                       apiItem.realFeelTemperatureShade.imperial.value),
+				relativeHumidity = apiItem.relativeHumidity,
+				temperature = Measurement(apiItem.temperature.imperial.unit, apiItem.temperature.imperial.unitType, apiItem.temperature.imperial.value),
+				uVIndex = apiItem.uVIndex,
+				uVIndexText = apiItem.uVIndexText,
+				visibility = Measurement(apiItem.visibility.imperial.unit, apiItem.visibility.imperial.unitType, apiItem.visibility.imperial.value),
+				weatherText = apiItem.weatherText,
+				wind = toWindCurrent(apiItem.wind, isMetric = false),
+				windGust = toWindCurrent(apiItem.windGust, isMetric = false)
+		)
+	}
 
 	override suspend fun toDailyForecastInfo(apiForecast: ApiForecast): Forecast {
 		val dailyForecastList = apiForecast.dailyForecasts.map { toDailyForecast(it) }
@@ -59,7 +120,6 @@ class ForecastMapperImpl : ForecastMapper {
 		                    value = apiAirAndPollen.value)
 	}
 
-	//todo: combine day and night into sealed class
 	private fun toDay(apiDay: ApiDay): Day {
 		return Day(cloudCover = apiDay.cloudCover,
 		           hasPrecipitation = apiDay.hasPrecipitation,
@@ -111,6 +171,18 @@ class ForecastMapperImpl : ForecastMapper {
 	private fun toWind(apiWind: ApiWind): Wind {
 		val direction = Direction(apiWind.direction.degrees, apiWind.direction.english, apiWind.direction.localized)
 		val measurement = Measurement(apiWind.speed.unit, apiWind.speed.unitType, apiWind.speed.value)
+		return Wind(direction, measurement)
+	}
+
+	private fun toWindCurrent(apiWindCurrent: ApiWindCurrent, isMetric: Boolean): Wind {
+		val direction = Direction(apiWindCurrent.direction.degrees, apiWindCurrent.direction.english, apiWindCurrent.direction.localized)
+
+		val measurement = if (isMetric) {
+			Measurement(apiWindCurrent.speed.metric.unit, apiWindCurrent.speed.metric.unitType, apiWindCurrent.speed.metric.value)
+		} else {
+			Measurement(apiWindCurrent.speed.imperial.unit, apiWindCurrent.speed.imperial.unitType, apiWindCurrent.speed.imperial.value)
+		}
+
 		return Wind(direction, measurement)
 	}
 

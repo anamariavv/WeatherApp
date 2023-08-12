@@ -107,4 +107,16 @@ class DataModule {
 	fun provideGetDailyForecastInteractor(forecastService: ForecastService): GetDailyForecastInteractor {
 		return GetDailyForecastInteractorImpl(ApiConfig.apiKey, forecastService)
 	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideGetCurrentConditionsInteractor(forecastService: ForecastService): GetCurrentConditionsInteractor {
+		return GetCurrentConditionsInteractorImpl(ApiConfig.apiKey, forecastService)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideGetWeeklyForecastInteractor(forecastService: ForecastService): GetWeeklyForecastInteractor {
+		return GetWeeklyForecastInteractorImpl(ApiConfig.apiKey, forecastService)
+	}
 }

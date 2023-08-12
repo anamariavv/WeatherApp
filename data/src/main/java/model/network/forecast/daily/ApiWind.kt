@@ -7,5 +7,5 @@ data class ApiWind(
 	@SerializedName("Direction")
 	val direction: ApiDirection,
 	@SerializedName("Speed")
-	val speed: ApiSpeed
+	val speed: ApiMeasurement
 )

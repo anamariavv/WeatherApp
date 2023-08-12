@@ -10,8 +10,6 @@ data class ApiCurrentConditionsItem(
     val hasPrecipitation: Boolean,
     @SerializedName("IsDayTime")
     val isDayTime: Boolean,
-    @SerializedName("Link")
-    val link: String,
     @SerializedName("LocalObservationDateTime")
     val localObservationDateTime: String,
     @SerializedName("MobileLink")

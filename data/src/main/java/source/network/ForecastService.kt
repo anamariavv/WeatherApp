@@ -10,36 +10,34 @@ interface ForecastService {
 	//todo: data reduction, nullability
 
 	@GET("/currentconditions/v1/{locationKey}")
-	//todo: finish flow
 	suspend fun getCurrentConditions(
 		@Path("locationKey") locationKey: String,
 		@Query("apikey") apiKey: String,
-		@Query("details") details: Boolean = true,
+		@Query("details") details: Boolean,
 	): ApiCurrentConditions
 
 	@GET("/forecasts/v1/daily/1day/{locationKey}")
 	suspend fun getDailyForecast(
 			@Path("locationKey") locationKey: String,
 			@Query("apikey") apiKey: String,
-			@Query("details") details: Boolean = true,
-			@Query("metric") metric: Boolean = true,
+			@Query("details") details: Boolean,
+			@Query("metric") metric: Boolean,
 	): ApiForecast
 
-	//todo: finish flow, return type will be different so make a new type - details not needed here, only basic info
+	//todo: finish flow
 	@GET("/forecasts/v1/hourly/12hour/{locationKey}")
 	suspend fun get12HourlyForecast(
 			@Path("locationKey") locationKey: String,
 			@Query("apikey") apiKey: String,
-			@Query("details") details: Boolean = true,
-			@Query("metric") metric: Boolean = true,
+			@Query("details") details: Boolean,
+			@Query("metric") metric: Boolean,
 	): ApiForecast
 
-	//todo: finish flow
 	@GET("/forecasts/v1/daily/5day/{locationKey}")
-	suspend fun get5DayForecast(
+	suspend fun getWeeklyForecast(
 		@Path("locationKey") locationKey: String,
 		@Query("apikey") apiKey: String,
-		@Query("details") details: Boolean = false,
-		@Query("metric") metric: Boolean = true,
+		@Query("details") details: Boolean,
+		@Query("metric") metric: Boolean,
 	): ApiForecast
 }

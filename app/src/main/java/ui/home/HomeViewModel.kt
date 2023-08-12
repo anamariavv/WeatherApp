@@ -13,9 +13,11 @@ import ui.home.model.DropdownState
 import usecase.city.GetFavouriteCitiesUseCase
 import usecase.city.GetFavouriteCitiesUseCase.GetFavouriteCitiesUseCaseResponse
 import usecase.city.GetFavouriteCitiesUseCase.GetFavouriteCitiesError
+import usecase.forecast.GetCurrentConditionsUseCase
 import usecase.forecast.GetDailyForecastUseCase
 import usecase.forecast.GetDailyForecastUseCase.GetDailyForecastError
 import usecase.forecast.GetDailyForecastUseCase.GetDailyForecastUseCaeResponse
+import usecase.forecast.GetWeeklyForecastUseCase
 import usecase.location.GetCurrentCityUseCase
 import usecase.location.GetCurrentCityUseCase.GetCurrentCityUseCaseResponse
 import javax.inject.Inject
@@ -24,6 +26,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
 	val getFavouriteCitiesUseCase: GetFavouriteCitiesUseCase,
 	val getDailyForecastUseCase: GetDailyForecastUseCase,
+	val getWeeklyForecastUseCase: GetWeeklyForecastUseCase,
+	val getCurrentConditionsUseCase: GetCurrentConditionsUseCase,
 	val getCurrentCityUseCase: GetCurrentCityUseCase
 ) : BaseViewModel() {
 
@@ -31,7 +35,8 @@ class HomeViewModel @Inject constructor(
 	val dropdownState = _dropdownState.asStateFlow()
 
 	init {
-		runSuspend { getFavouriteCities() }
+		//runSuspend { getFavouriteCities() }
+		runSuspend { getWeeklyForecast("120665") }
 	}
 
 	private suspend fun getFavouriteCities() {
@@ -76,6 +81,23 @@ class HomeViewModel @Inject constructor(
 	private fun getDailyForecastSuccess(response: GetDailyForecastUseCaeResponse) {
 		Log.d("forecast:R", response.toString())
 	}
+
+	private suspend fun getCurrentConditions(locationKey: String) {
+		getCurrentConditionsUseCase(locationKey).onFinished(this::getCurrentConditionsSuccess, this::handleErrors)
+	}
+
+	private fun getCurrentConditionsSuccess(response: GetCurrentConditionsUseCase.GetCurrentConditionsUseCaseResponse) {
+		Log.d("current:R", response.toString())
+	}
+
+	private suspend fun getWeeklyForecast(locationKey: String) {
+		getWeeklyForecastUseCase(locationKey).onFinished(this::getWeeklyForecastSuccess, this::handleErrors)
+	}
+
+	private fun getWeeklyForecastSuccess(response: GetWeeklyForecastUseCase.GetWeeklyForecastUseCaseResponse) {
+		Log.d("weekly:R", response.toString())
+	}
+
 
 	private fun handleErrors(errorData: ErrorData) {
 		when (errorData.errorType) {

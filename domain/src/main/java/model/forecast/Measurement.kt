@@ -5,6 +5,6 @@ data class Measurement(
 	val unit: String,
 	val unitType: Int,
 	val value: Double
-) {
+)  {
 	constructor(unit: String, unitType: Int, value: Double) : this(phrase = "", unit = unit, unitType = unitType, value = value)
 }
