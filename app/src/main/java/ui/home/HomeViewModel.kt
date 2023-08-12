@@ -36,7 +36,7 @@ class HomeViewModel @Inject constructor(
 
 	init {
 		//runSuspend { getFavouriteCities() }
-		runSuspend { getWeeklyForecast("120665") }
+		//runSuspend { getWeeklyForecast("120665") }
 	}
 
 	private suspend fun getFavouriteCities() {
