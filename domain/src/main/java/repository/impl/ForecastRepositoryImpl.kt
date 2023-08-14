@@ -2,16 +2,19 @@ package repository.impl
 
 import interactor.GetCurrentConditionsInteractor
 import interactor.GetDailyForecastInteractor
+import interactor.GetTwelveHourForecastInteractor
 import interactor.GetWeeklyForecastInteractor
 import mapper.ForecastMapper
 import model.forecast.CurrentConditions
 import model.forecast.Forecast
+import model.forecast.HourlyForecast
 import repository.ForecastRepository
 
 class ForecastRepositoryImpl(
 	private val getDailyForecastInteractor: GetDailyForecastInteractor,
 	private val getCurrentConditionsInteractor: GetCurrentConditionsInteractor,
 	private val getWeeklyForecastInteractor: GetWeeklyForecastInteractor,
+	private val getTwelveHourForecastInteractor: GetTwelveHourForecastInteractor,
 	private val forecastMapper: ForecastMapper
 ) : ForecastRepository {
 
@@ -34,5 +37,9 @@ class ForecastRepositoryImpl(
 
 	override suspend fun getWeeklyForecast(locationKey: String): Forecast {
 		return forecastMapper.toDailyForecastInfo(getWeeklyForecastInteractor(locationKey, true))
+	}
+
+	override suspend fun getTwelveHourForecast(locationKey: String): HourlyForecast {
+		return forecastMapper.toHourlyForecast(getTwelveHourForecastInteractor(locationKey, true))
 	}
 }

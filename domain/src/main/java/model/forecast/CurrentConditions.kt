@@ -1,8 +1,5 @@
 package model.forecast
 
-import model.forecast.Measurement
-import model.forecast.Wind
-
 data class CurrentConditions(
 	val epochTime: Int,
 	val hasPrecipitation: Boolean,
@@ -10,7 +7,7 @@ data class CurrentConditions(
 	val localObservationDateTime: String,
 	val mobileLink: String,
 	val obstructionsToVisibility: String,
-	val precipitationType: Any,
+	val precipitationType: String?,
 	val pressure: Measurement,
 	val realFeelTemperature: Measurement,
 	val realFeelTemperatureShade: Measurement,
@@ -20,6 +17,6 @@ data class CurrentConditions(
 	val uVIndexText: String,
 	val visibility: Measurement,
 	val weatherText: String,
-	val wind: Wind,
-	val windGust: Wind
+	val wind: Wind?,
+	val windGust: Wind?
 )

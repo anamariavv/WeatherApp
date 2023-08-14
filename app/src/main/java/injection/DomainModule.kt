@@ -26,9 +26,11 @@ import usecase.city.ToggleFavouriteCityUseCase
 import usecase.city.impl.ToggleFavouriteCityUseCaseImpl
 import usecase.forecast.GetCurrentConditionsUseCase
 import usecase.forecast.GetDailyForecastUseCase
+import usecase.forecast.GetTwelveHourForecastUseCase
 import usecase.forecast.GetWeeklyForecastUseCase
 import usecase.forecast.impl.GetCurrentConditionsUseCaseImpl
 import usecase.forecast.impl.GetDailyForecastUseCaseImpl
+import usecase.forecast.impl.GetTwelveHourForecastUseCaseImpl
 import usecase.forecast.impl.GetWeeklyForecastUseCaseImpl
 import usecase.location.GetCurrentCityUseCase
 import usecase.location.impl.GetCurrentCityUseCaseImpl
@@ -93,6 +95,12 @@ class DomainModule {
 
 	@Provides
 	@ViewModelScoped
+	fun provideGetTwelveHourForecastUseCase(forecastRepository: ForecastRepository): GetTwelveHourForecastUseCase {
+		return GetTwelveHourForecastUseCaseImpl(forecastRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
 	fun provideCitiesRepository(
 		queryCitiesInteractor: QueryCitiesInteractor,
 		getFavouriteCitiesInteractor: GetFavouriteCitiesInteractor,
@@ -118,9 +126,10 @@ class DomainModule {
 		getDailyForecastInteractor: GetDailyForecastInteractor,
 		getCurrentConditionsInteractor: GetCurrentConditionsInteractor,
 		getWeeklyForecastInteractor: GetWeeklyForecastInteractor,
+		getTwelveHourForecastInteractor: GetTwelveHourForecastInteractor,
 		forecastMapper: ForecastMapper
 	): ForecastRepository {
-		return ForecastRepositoryImpl(getDailyForecastInteractor, getCurrentConditionsInteractor, getWeeklyForecastInteractor, forecastMapper)
+		return ForecastRepositoryImpl(getDailyForecastInteractor, getCurrentConditionsInteractor, getWeeklyForecastInteractor, getTwelveHourForecastInteractor, forecastMapper)
 	}
 
 	@Provides

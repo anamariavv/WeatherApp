@@ -7,6 +7,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import model.city.City
 import model.common.ErrorData
+import model.forecast.CurrentConditions
+import model.forecast.HourlyForecast
+import model.forecast.Measurement
 import ui.base.BaseViewModel
 import ui.cities.model.CityScreenMessages
 import ui.home.model.DropdownState
@@ -16,8 +19,9 @@ import usecase.city.GetFavouriteCitiesUseCase.GetFavouriteCitiesError
 import usecase.forecast.GetCurrentConditionsUseCase
 import usecase.forecast.GetDailyForecastUseCase
 import usecase.forecast.GetDailyForecastUseCase.GetDailyForecastError
-import usecase.forecast.GetDailyForecastUseCase.GetDailyForecastUseCaeResponse
-import usecase.forecast.GetWeeklyForecastUseCase
+import usecase.forecast.GetDailyForecastUseCase.GetDailyForecastUseCaseResponse
+import usecase.forecast.GetTwelveHourForecastUseCase
+import usecase.forecast.GetTwelveHourForecastUseCase.GetTwelveHourForecastUseCaseResponse
 import usecase.location.GetCurrentCityUseCase
 import usecase.location.GetCurrentCityUseCase.GetCurrentCityUseCaseResponse
 import javax.inject.Inject
@@ -26,7 +30,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
 	val getFavouriteCitiesUseCase: GetFavouriteCitiesUseCase,
 	val getDailyForecastUseCase: GetDailyForecastUseCase,
-	val getWeeklyForecastUseCase: GetWeeklyForecastUseCase,
+	val getTwelveHourForecastUseCase: GetTwelveHourForecastUseCase,
 	val getCurrentConditionsUseCase: GetCurrentConditionsUseCase,
 	val getCurrentCityUseCase: GetCurrentCityUseCase
 ) : BaseViewModel() {
@@ -34,9 +38,36 @@ class HomeViewModel @Inject constructor(
 	private val _dropdownState = MutableStateFlow(DropdownState(isExpanded = false, list = listOf(), selectedIndex = 0, selectedValue = null))
 	val dropdownState = _dropdownState.asStateFlow()
 
+	private val _hourlyForecastState = MutableStateFlow(HourlyForecast(items = listOf()))
+	val hourlyForecastState = _hourlyForecastState.asStateFlow()
+
+	private val _currentConditionsState = MutableStateFlow(
+		CurrentConditions(
+			0,
+			false,
+			true,
+			"",
+			"",
+			"",
+			"",
+			Measurement("", 2, 0.0),
+			Measurement("", 2, 0.0),
+			Measurement("", 2, 0.0),
+			0,
+			Measurement("", 2, 0.0),
+			0,
+			"",
+			Measurement("", 2, 0.0),
+			"null",
+			null,
+			null
+		)
+	)
+	val currentConditionsState = _currentConditionsState.asStateFlow()
+
 	init {
 		//runSuspend { getFavouriteCities() }
-		//runSuspend { getWeeklyForecast("120665") }
+		runSuspend { getTwelveHourForecast("120665") }
 	}
 
 	private suspend fun getFavouriteCities() {
@@ -78,7 +109,7 @@ class HomeViewModel @Inject constructor(
 		getDailyForecastUseCase(locationKey).onFinished(this::getDailyForecastSuccess, this::handleErrors)
 	}
 
-	private fun getDailyForecastSuccess(response: GetDailyForecastUseCaeResponse) {
+	private fun getDailyForecastSuccess(response: GetDailyForecastUseCaseResponse) {
 		Log.d("forecast:R", response.toString())
 	}
 
@@ -88,16 +119,34 @@ class HomeViewModel @Inject constructor(
 
 	private fun getCurrentConditionsSuccess(response: GetCurrentConditionsUseCase.GetCurrentConditionsUseCaseResponse) {
 		Log.d("current:R", response.toString())
+		_currentConditionsState.update {
+			it.copy(
+				response.currentConditions.epochTime,
+				response.currentConditions.hasPrecipitation,
+				response.currentConditions.isDayTime,
+				response.currentConditions.localObservationDateTime,
+				response.currentConditions.mobileLink,
+				response.currentConditions.obstructionsToVisibility,
+				response.currentConditions.precipitationType,
+				response.currentConditions.pressure,
+				response.currentConditions.realFeelTemperature,
+				response.currentConditions.realFeelTemperatureShade,
+				response.currentConditions.relativeHumidity,
+				response.currentConditions.temperature,
+				response.currentConditions.uVIndex,
+				response.currentConditions.uVIndexText
+			)
+		}
 	}
 
-	private suspend fun getWeeklyForecast(locationKey: String) {
-		getWeeklyForecastUseCase(locationKey).onFinished(this::getWeeklyForecastSuccess, this::handleErrors)
+	private suspend fun getTwelveHourForecast(locationKey: String) {
+		getTwelveHourForecastUseCase(locationKey).onFinished(this::getTwelveHourForecastSuccess, this::handleErrors)
 	}
 
-	private fun getWeeklyForecastSuccess(response: GetWeeklyForecastUseCase.GetWeeklyForecastUseCaseResponse) {
-		Log.d("weekly:R", response.toString())
+	private fun getTwelveHourForecastSuccess(response: GetTwelveHourForecastUseCaseResponse) {
+		Log.d("12hour:R", response.toString())
+		_hourlyForecastState.update { it.copy(items = response.forecast.items) }
 	}
-
 
 	private fun handleErrors(errorData: ErrorData) {
 		when (errorData.errorType) {

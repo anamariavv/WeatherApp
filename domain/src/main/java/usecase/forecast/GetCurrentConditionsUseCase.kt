@@ -8,7 +8,7 @@ interface GetCurrentConditionsUseCase {
 
 	suspend operator fun invoke(locationKey: String): Resource<GetCurrentConditionsUseCaseResponse>
 
-	class GetCurrentConditionsUseCaseResponse(currentConditions: CurrentConditions)
+	class GetCurrentConditionsUseCaseResponse(val currentConditions: CurrentConditions)
 
 	enum class GetCurrentConditionsError : ErrorType {
 		GET_CONDITIONS_ERROR

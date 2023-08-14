@@ -14,6 +14,8 @@ import model.network.forecast.daily.ApiNight
 import model.network.forecast.daily.ApiRealFeelTemperature
 import model.network.forecast.daily.ApiTemperature
 import model.network.forecast.daily.ApiWind
+import model.network.forecast.hourly.ApiHourlyForecast
+import model.network.forecast.hourly.ApiHourlyForecastItem
 
 class ForecastMapperImpl : ForecastMapper {
 
@@ -112,12 +114,32 @@ class ForecastMapperImpl : ForecastMapper {
 		                     temperature = toTemperature(apiDailyForecast.temperature))
 	}
 
+	override suspend fun toHourlyForecast(apiForecast: ApiHourlyForecast): HourlyForecast {
+		val items = apiForecast.map { toHourlyForecastItem(it) }
+		return HourlyForecast(items)
+	}
+
+	private fun toHourlyForecastItem(apiItem: ApiHourlyForecastItem): HourlyForecastItem {
+		return HourlyForecastItem(dateTime = apiItem.dateTime,
+		                          epochDateTime = apiItem.epochDateTime,
+		                          hasPrecipitation = apiItem.hasPrecipitation,
+		                          iconPhrase = apiItem.iconPhrase,
+		                          isDaylight = apiItem.isDaylight,
+		                          mobileLink = apiItem.mobileLink,
+		                          precipitationIntensity = apiItem.precipitationIntensity,
+		                          precipitationProbability = apiItem.precipitationProbability,
+		                          precipitationType = apiItem.precipitationType,
+		                          temperature = Measurement(apiItem.temperature.unit, apiItem.temperature.unitType, apiItem.temperature.value)
+		)
+	}
+
 	private fun toAirAndPollen(apiAirAndPollen: ApiAirAndPollen): AirAndPollen {
 		return AirAndPollen(category = apiAirAndPollen.category,
 		                    categoryValue = apiAirAndPollen.categoryValue,
 		                    name = apiAirAndPollen.name,
 		                    type = apiAirAndPollen.type,
-		                    value = apiAirAndPollen.value)
+		                    value = apiAirAndPollen.value
+		)
 	}
 
 	private fun toDay(apiDay: ApiDay): Day {
@@ -141,7 +163,8 @@ class ForecastMapperImpl : ForecastMapper {
 		           thunderstormProbability = apiDay.thunderstormProbability,
 		           totalLiquid = Measurement(apiDay.totalLiquid.unit, apiDay.totalLiquid.unitType, apiDay.totalLiquid.value),
 		           wind = toWind(apiDay.wind),
-		           windGust = toWind(apiDay.windGust))
+		           windGust = toWind(apiDay.windGust)
+		)
 	}
 
 	private fun toNight(apiNight: ApiNight): Night {
@@ -165,7 +188,8 @@ class ForecastMapperImpl : ForecastMapper {
 		             thunderstormProbability = apiNight.thunderstormProbability,
 		             totalLiquid = Measurement(apiNight.totalLiquid.unit, apiNight.totalLiquid.unitType, apiNight.totalLiquid.value),
 		             wind = toWind(apiNight.wind),
-		             windGust = toWind(apiNight.windGust))
+		             windGust = toWind(apiNight.windGust)
+		)
 	}
 
 	private fun toWind(apiWind: ApiWind): Wind {
@@ -194,7 +218,8 @@ class ForecastMapperImpl : ForecastMapper {
 		                   minimum = Measurement(apiRealFeelTemperature.minimum.phrase,
 		                                         apiRealFeelTemperature.minimum.unit,
 		                                         apiRealFeelTemperature.minimum.unitType,
-		                                         apiRealFeelTemperature.minimum.value))
+		                                         apiRealFeelTemperature.minimum.value)
+		)
 	}
 
 	private fun toTemperature(apiTemperature: ApiTemperature): Temperature {
@@ -203,7 +228,8 @@ class ForecastMapperImpl : ForecastMapper {
 		                                         apiTemperature.maximum.value),
 		                   minimum = Measurement(apiTemperature.minimum.unit,
 		                                         apiTemperature.minimum.unitType,
-		                                         apiTemperature.minimum.value))
+		                                         apiTemperature.minimum.value)
+		)
 	}
 
 }

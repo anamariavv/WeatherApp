@@ -14,6 +14,6 @@ class GetWeeklyForecastInteractorImpl(
 	}
 
 	override suspend fun invoke(locationKey: String, useMetricSystem: Boolean): ApiForecast {
-		return forecastService.getWeeklyForecast(locationKey = locationKey, apiKey = apiKey, details = SHOULD_GET_DETAILS, useMetricSystem)
+		return forecastService.getWeeklyForecast(locationKey, apiKey, SHOULD_GET_DETAILS, useMetricSystem)
 	}
 }

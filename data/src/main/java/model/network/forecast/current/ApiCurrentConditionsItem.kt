@@ -17,7 +17,7 @@ data class ApiCurrentConditionsItem(
     @SerializedName("ObstructionsToVisibility")
     val obstructionsToVisibility: String,
     @SerializedName("PrecipitationType")
-    val precipitationType: Any,
+    val precipitationType: String?,
     @SerializedName("Pressure")
     val pressure: ApiPressureCurrent,
     @SerializedName("RealFeelTemperature")

@@ -119,4 +119,10 @@ class DataModule {
 	fun provideGetWeeklyForecastInteractor(forecastService: ForecastService): GetWeeklyForecastInteractor {
 		return GetWeeklyForecastInteractorImpl(ApiConfig.apiKey, forecastService)
 	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideGetTwelveHourForecastInteractor(forecastService: ForecastService): GetTwelveHourForecastInteractor {
+		return GetTwelveHourForecastInteractorImpl(ApiConfig.apiKey, forecastService)
+	}
 }

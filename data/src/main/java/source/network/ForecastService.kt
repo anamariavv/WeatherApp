@@ -2,6 +2,7 @@ package source.network
 
 import model.network.forecast.daily.ApiForecast
 import model.network.forecast.current.ApiCurrentConditions
+import model.network.forecast.hourly.ApiHourlyForecast
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -24,14 +25,13 @@ interface ForecastService {
 			@Query("metric") metric: Boolean,
 	): ApiForecast
 
-	//todo: finish flow
 	@GET("/forecasts/v1/hourly/12hour/{locationKey}")
-	suspend fun get12HourlyForecast(
+	suspend fun getTwelveHourForecast(
 			@Path("locationKey") locationKey: String,
 			@Query("apikey") apiKey: String,
 			@Query("details") details: Boolean,
 			@Query("metric") metric: Boolean,
-	): ApiForecast
+	): ApiHourlyForecast
 
 	@GET("/forecasts/v1/daily/5day/{locationKey}")
 	suspend fun getWeeklyForecast(
