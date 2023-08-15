@@ -1,5 +1,6 @@
 package mapper.impl
 
+import android.util.Log
 import mapper.ForecastMapper
 import model.forecast.*
 import model.forecast.CurrentConditions
@@ -20,7 +21,7 @@ import model.network.forecast.hourly.ApiHourlyForecastItem
 class ForecastMapperImpl : ForecastMapper {
 
 	override suspend fun toCurrentConditionsMetric(apiItem: ApiCurrentConditionsItem): CurrentConditions {
-		return CurrentConditions(
+		val item = CurrentConditions(
 				epochTime = apiItem.epochTime,
 				hasPrecipitation = apiItem.hasPrecipitation,
 				isDayTime = apiItem.isDayTime,
@@ -43,9 +44,12 @@ class ForecastMapperImpl : ForecastMapper {
 				uVIndexText = apiItem.uVIndexText,
 				visibility = Measurement(apiItem.visibility.metric.unit, apiItem.visibility.metric.unitType, apiItem.visibility.metric.value),
 				weatherText = apiItem.weatherText,
+				weatherIcon = apiItem.weatherIcon,
 				wind = toWindCurrent(apiItem.wind, isMetric = true),
 				windGust = toWindCurrent(apiItem.windGust, isMetric = true)
 		)
+		Log.d("Conditem", item.toString())
+		return item
 	}
 
 	override suspend fun toCurrentConditionsImperial(apiItem: ApiCurrentConditionsItem): CurrentConditions {
@@ -72,6 +76,7 @@ class ForecastMapperImpl : ForecastMapper {
 				uVIndexText = apiItem.uVIndexText,
 				visibility = Measurement(apiItem.visibility.imperial.unit, apiItem.visibility.imperial.unitType, apiItem.visibility.imperial.value),
 				weatherText = apiItem.weatherText,
+				weatherIcon = apiItem.weatherIcon,
 				wind = toWindCurrent(apiItem.wind, isMetric = false),
 				windGust = toWindCurrent(apiItem.windGust, isMetric = false)
 		)
@@ -129,7 +134,8 @@ class ForecastMapperImpl : ForecastMapper {
 		                          precipitationIntensity = apiItem.precipitationIntensity,
 		                          precipitationProbability = apiItem.precipitationProbability,
 		                          precipitationType = apiItem.precipitationType,
-		                          temperature = Measurement(apiItem.temperature.unit, apiItem.temperature.unitType, apiItem.temperature.value)
+		                          temperature = Measurement(apiItem.temperature.unit, apiItem.temperature.unitType, apiItem.temperature.value),
+		                          weatherIcon = apiItem.weatherIcon
 		)
 	}
 
@@ -193,13 +199,13 @@ class ForecastMapperImpl : ForecastMapper {
 	}
 
 	private fun toWind(apiWind: ApiWind): Wind {
-		val direction = Direction(apiWind.direction.degrees, apiWind.direction.english, apiWind.direction.localized)
+		val direction = Direction(apiWind.direction?.degrees, apiWind.direction?.english, apiWind.direction?.localized)
 		val measurement = Measurement(apiWind.speed.unit, apiWind.speed.unitType, apiWind.speed.value)
 		return Wind(direction, measurement)
 	}
 
 	private fun toWindCurrent(apiWindCurrent: ApiWindCurrent, isMetric: Boolean): Wind {
-		val direction = Direction(apiWindCurrent.direction.degrees, apiWindCurrent.direction.english, apiWindCurrent.direction.localized)
+		val direction = Direction(apiWindCurrent.direction?.degrees, apiWindCurrent.direction?.english, apiWindCurrent.direction?.localized)
 
 		val measurement = if (isMetric) {
 			Measurement(apiWindCurrent.speed.metric.unit, apiWindCurrent.speed.metric.unitType, apiWindCurrent.speed.metric.value)

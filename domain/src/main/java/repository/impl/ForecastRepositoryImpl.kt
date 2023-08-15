@@ -1,5 +1,6 @@
 package repository.impl
 
+import android.util.Log
 import interactor.GetCurrentConditionsInteractor
 import interactor.GetDailyForecastInteractor
 import interactor.GetTwelveHourForecastInteractor
@@ -24,7 +25,6 @@ class ForecastRepositoryImpl(
 
 	override suspend fun getCurrentConditions(locationKey: String): CurrentConditions {
 		val apiCurrentConditions = getCurrentConditionsInteractor(locationKey)[0]
-
 		return forecastMapper.toCurrentConditionsMetric(apiCurrentConditions)
 
 		//todo: check for system units

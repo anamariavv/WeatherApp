@@ -14,6 +14,6 @@ class GetCurrentConditionsInteractorImpl(
 	}
 
 	override suspend fun invoke(locationKey: String): ApiCurrentConditions {
-		return forecastService.getCurrentConditions(apiKey, locationKey, SHOULD_GET_DETAILS)
+		return forecastService.getCurrentConditions( locationKey, apiKey, SHOULD_GET_DETAILS)
 	}
 }

@@ -11,5 +11,5 @@ data class ApiMeasurement(
 	@SerializedName("UnitType")
 	val unitType: Int,
 	@SerializedName("Value")
-	val value: Double
+	val value: Double?
 )

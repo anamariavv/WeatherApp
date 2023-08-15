@@ -10,5 +10,6 @@ data class HourlyForecastItem(
 	val precipitationIntensity: String?,
 	val precipitationProbability: Int?,
 	val precipitationType: String?,
-	val temperature: Measurement
+	val temperature: Measurement,
+	val weatherIcon: Int?
 )

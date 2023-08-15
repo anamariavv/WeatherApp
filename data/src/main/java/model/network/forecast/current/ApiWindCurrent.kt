@@ -6,7 +6,7 @@ import model.network.forecast.daily.ApiDirection
 
 data class ApiWindCurrent(
     @SerializedName("Direction")
-    val direction: ApiDirection,
+    val direction: ApiDirection?,
     @SerializedName("Speed")
     val speed: ApiSpeedCurrent
 )

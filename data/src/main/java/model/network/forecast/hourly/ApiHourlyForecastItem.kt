@@ -24,5 +24,7 @@ data class ApiHourlyForecastItem(
     @SerializedName("PrecipitationType")
     val precipitationType: String,
     @SerializedName("Temperature")
-    val temperature: ApiMeasurement
+    val temperature: ApiMeasurement,
+    @SerializedName("WeatherIcon")
+    val weatherIcon: Int?
 )

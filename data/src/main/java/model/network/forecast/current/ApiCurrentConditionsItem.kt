@@ -25,17 +25,19 @@ data class ApiCurrentConditionsItem(
     @SerializedName("RealFeelTemperatureShade")
     val realFeelTemperatureShade: ApiRealFeelTemperatureCurrent,
     @SerializedName("RelativeHumidity")
-    val relativeHumidity: Int,
+    val relativeHumidity: Int?,
     @SerializedName("Temperature")
     val temperature: ApiTemperatureCurrent,
     @SerializedName("UVIndex")
-    val uVIndex: Int,
+    val uVIndex: Int?,
     @SerializedName("UVIndexText")
     val uVIndexText: String,
     @SerializedName("Visibility")
     val visibility: ApiVisibilityCurrent,
     @SerializedName("WeatherText")
     val weatherText: String,
+    @SerializedName("WeatherIcon")
+    val weatherIcon: Int?,
     @SerializedName("Wind")
     val wind: ApiWindCurrent,
     @SerializedName("WindGust")

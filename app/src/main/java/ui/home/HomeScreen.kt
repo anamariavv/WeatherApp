@@ -45,63 +45,55 @@ import utils.empty
 	val currentConditionsState by viewModel.currentConditionsState.collectAsState()
 
 	Column(Modifier.fillMaxSize()) {
-		favouritesDropdown(titleText = dropdownState.selectedValue?.localizedName ?: String.empty(),
-		                   isExpanded = dropdownState.isExpanded,
-		                   onDismiss = viewModel::closeDropdown,
-		                   itemList = dropdownState.list,
-		                   onItemSelected = viewModel::onItemSelected,
-		                   onIconClicked = viewModel::toggleDropdownExpanded)
+		favouritesDropdown(
+			titleText = dropdownState.selectedValue?.localizedName ?: String.empty(),
+			isExpanded = dropdownState.isExpanded,
+			onDismiss = viewModel::closeDropdown,
+			itemList = dropdownState.list,
+			onItemSelected = viewModel::onItemSelected,
+			onIconClicked = viewModel::toggleDropdownExpanded
+		)
 
 		Surface(modifier = Modifier.fillMaxWidth(0.7f).weight(0.7f).padding(10.dp).align(CenterHorizontally), shape = Shapes.medium) {
 			Box {
-				Icon(painterResource(id = R.drawable.partially_cloudy_large), contentDescription = "Weather icon", tint = Color.Unspecified, modifier = Modifier.align(TopCenter))
+				Icon(painterResource(id = currentConditionsState.weatherIconId), contentDescription = "Weather icon", tint = Color.Unspecified, modifier = Modifier.align(TopCenter))
 
 				Column(modifier = Modifier.align(Center).padding(top = 30.dp), horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center) {
-					Text(currentConditionsState.temperature.value.toString(), style = Typography.headlineLarge)
-					Text(String.format("Feels like %d", currentConditionsState.realFeelTemperature.value.toInt()), style = Typography.titleLarge)
+					Text(currentConditionsState.temperature, style = Typography.headlineLarge)
+					Text(currentConditionsState.realFeelTemperature, style = Typography.titleLarge)
 					Text(currentConditionsState.weatherText, style = Typography.titleMedium)
 				}
 			}
 		}
 
 		Row(Modifier.fillMaxWidth().weight(0.15f).padding(10.dp), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-			Card(modifier = Modifier.weight(1f), shape = Shapes.medium, backgroundColor = Blue) {
-				Column(modifier = Modifier.padding(10.dp), horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center) {
-					Icon(painterResource(id = R.drawable.wind), contentDescription = "wind")
-					Text(String.format("%d km/h", currentConditionsState.wind?.speed?.value?.toInt()), style = Typography.labelMedium)
-					Text("Wind", style = Typography.labelSmall)
+			if (currentConditionsState.hasWind) {
+				Card(modifier = Modifier.weight(1f), shape = Shapes.medium, backgroundColor = Blue) {
+					Column(modifier = Modifier.padding(10.dp), horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center) {
+						Icon(painterResource(id = R.drawable.wind), contentDescription = "wind")
+						Text(currentConditionsState.windSpeed!!, style = Typography.labelMedium)
+						Text("Wind", style = Typography.labelSmall)
+					}
 				}
 			}
 
-			Card(modifier = Modifier.weight(1f), shape = Shapes.medium, backgroundColor = Blue) {
-				Column(modifier = Modifier.padding(10.dp), horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center) {
-					Icon(painterResource(id = R.drawable.raindrop), contentDescription = "Humidity")
-					Text(String.format("%d", currentConditionsState.relativeHumidity.toInt()), style = Typography.labelMedium)
-					Text("Humidity", style = Typography.labelSmall)
+			if (currentConditionsState.hasHumidity) {
+				Card(modifier = Modifier.weight(1f), shape = Shapes.medium, backgroundColor = Blue) {
+					Column(modifier = Modifier.padding(10.dp), horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center) {
+						Icon(painterResource(id = R.drawable.raindrop), contentDescription = "Humidity")
+						Text(currentConditionsState.humidity!!, style = Typography.labelMedium)
+						Text("Humidity", style = Typography.labelSmall)
+					}
 				}
 			}
 
-			Card(modifier = Modifier.weight(1f), shape = Shapes.medium, backgroundColor = Blue) {
-				Column(modifier = Modifier.padding(10.dp), horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center) {
-					Icon(painterResource(id = R.drawable.rain), contentDescription = "Chance of rain")
-					Text("50%", style = Typography.labelMedium)
-					Text("Rain", style = Typography.labelSmall)
-				}
-			}
-
-			Card(modifier = Modifier.weight(1f), shape = Shapes.medium, backgroundColor = Blue) {
-				Column(modifier = Modifier.padding(10.dp), horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center) {
-					Icon(painterResource(id = R.drawable.aqi), contentDescription = "AQI")
-					Text("33", style = Typography.labelMedium)
-					Text("AQI", style = Typography.labelSmall)
-				}
-			}
-
-			Card(modifier = Modifier.weight(1f), shape = Shapes.medium, backgroundColor = Blue) {
-				Column(modifier = Modifier.padding(10.dp), horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center) {
-					Icon(painterResource(id = R.drawable.sunny), contentDescription = "UV intensity")
-					Text(currentConditionsState.uVIndex.toString(), style = Typography.labelMedium)
-					Text("UV", style = Typography.labelSmall)
+			if (currentConditionsState.hasUvIndex) {
+				Card(modifier = Modifier.weight(1f), shape = Shapes.medium, backgroundColor = Blue) {
+					Column(modifier = Modifier.padding(10.dp), horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center) {
+						Icon(painterResource(id = R.drawable.sunny), contentDescription = "UV intensity")
+						Text(currentConditionsState.uvIndex!!, style = Typography.labelMedium)
+						Text("UV", style = Typography.labelSmall)
+					}
 				}
 			}
 		}
@@ -113,10 +105,10 @@ import utils.empty
 					Text("12 hour forecast", style = Typography.titleMedium)
 				}
 				LazyRow {
-					items(twelveHourForecastState.items) {
+					items(twelveHourForecastState.hours) {
 						Column(modifier = Modifier.padding(10.dp), horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center) {
-							Text(it.temperature.value.toInt().toString(), style = Typography.labelSmall)
-							Icon(painterResource(id = R.drawable.sunny), contentDescription = "Sunny")
+							Text(it.temperature, style = Typography.labelSmall)
+							Icon(painterResource(id = it.weatherIconId), contentDescription = "Sunny")
 							Text(it.iconPhrase, style = Typography.labelSmall)
 						}
 					}
@@ -133,7 +125,8 @@ fun favouritesDropdown(
 	onDismiss: () -> Unit,
 	itemList: List<City>,
 	onItemSelected: (City, Int) -> Unit,
-	onIconClicked: (Boolean) -> Unit) {
+	onIconClicked: (Boolean) -> Unit
+) {
 	Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
 		Box {
 			Text(modifier = Modifier.align(Center), text = titleText, style = Typography.headlineSmall)
