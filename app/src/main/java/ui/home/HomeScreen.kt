@@ -1,12 +1,12 @@
 package ui.home
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -37,9 +37,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.weatherapp.R
 import model.city.City
 import ui.common.component.dialog
+import ui.home.model.UiCurrentConditions
+import ui.home.model.UiHourlyForecast
 import ui.theme.Blue
 import ui.theme.Shapes
-import ui.theme.Sky
 import ui.theme.Typography
 import ui.theme.White
 import utils.empty
@@ -62,74 +63,11 @@ import utils.empty
 			onIconClicked = viewModel::toggleDropdownExpanded
 		)
 
-		Surface(modifier = Modifier.fillMaxWidth(0.7f).weight(0.5f).padding(10.dp).align(CenterHorizontally), shape = Shapes.medium) {
-			Box {
-				Icon(
-					painterResource(id = currentConditionsState.weatherIconId),
-					contentDescription = "Weather icon",
-					tint = Color.Unspecified,
-					modifier = Modifier.align(TopCenter)
-				)
+		currentConditionSummary(currentConditionsState)
 
-				Column(modifier = Modifier.align(Center).padding(top = 30.dp), horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center) {
-					Text(currentConditionsState.temperature, style = Typography.headlineLarge)
-					Text(currentConditionsState.realFeelTemperature, style = Typography.labelLarge)
-					Text(currentConditionsState.weatherText, style = Typography.titleMedium)
-				}
-			}
-		}
+		currentConditionDetails(currentConditionsState)
 
-		Row(Modifier.fillMaxWidth().weight(0.10f).padding(horizontal = 10.dp), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-			if (currentConditionsState.hasWind) {
-				Card(modifier = Modifier.weight(1f), shape = Shapes.medium, backgroundColor = Blue) {
-					Column(modifier = Modifier.padding(10.dp), horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center) {
-						Icon(painterResource(id = R.drawable.wind), contentDescription = "wind", tint = White)
-						Text(currentConditionsState.windSpeed!!, style = Typography.labelLarge, color = White)
-						Text("Wind", style = Typography.labelSmall, color = White)
-					}
-				}
-			}
-
-			if (currentConditionsState.hasHumidity) {
-				Card(modifier = Modifier.weight(1f), shape = Shapes.medium, backgroundColor = Blue) {
-					Column(modifier = Modifier.padding(10.dp), horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center) {
-						Icon(painterResource(id = R.drawable.raindrop), contentDescription = "Humidity", tint = White)
-						Text(currentConditionsState.humidity!!, style = Typography.labelLarge, color = White)
-						Text("Humidity", style = Typography.labelSmall, color = White)
-					}
-				}
-			}
-
-			if (currentConditionsState.hasUvIndex) {
-				Card(modifier = Modifier.weight(1f), shape = Shapes.medium, backgroundColor = Blue) {
-					Column(modifier = Modifier.padding(10.dp), horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center) {
-						Icon(painterResource(id = R.drawable.sunny), contentDescription = "UV intensity", tint = White)
-						Text(currentConditionsState.uvIndex!!, style = Typography.labelMedium, color = White)
-						Text("UV", style = Typography.labelSmall, color = White)
-					}
-				}
-			}
-		}
-
-		Surface(modifier = Modifier.fillMaxWidth().weight(0.20f).padding(10.dp).align(CenterHorizontally), shape = Shapes.medium) {
-			Column(horizontalAlignment = Alignment.Start) {
-				Row(modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)) {
-					Icon(painterResource(id = R.drawable.time), contentDescription = "12 hour forecast")
-					Text("12 hour forecast", style = Typography.titleLarge)
-				}
-				LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-					items(twelveHourForecastState.hours) {
-						Card {
-							Box(modifier = Modifier.weight(1f).background(Blue, Shapes.medium)) {
-								Text(it.temperature, style = Typography.labelLarge, modifier = Modifier.align(TopCenter), color = White)
-								Icon(painterResource(id = it.weatherIconId), contentDescription = "Sunny", modifier = Modifier.align(Center), tint = Color.Unspecified)
-								Text(it.time, style = Typography.labelLarge, modifier = Modifier.align(BottomCenter), color = White)
-							}
-						}
-					}
-				}
-			}
-		}
+		twelveHourForecastSummary(twelveHourForecastState)
 
 		dialog(dialogState, viewModel::dismissDialog)
 	}
@@ -159,6 +97,102 @@ fun favouritesDropdown(
 
 		IconButton(onClick = { onIconClicked(isExpanded) }) {
 			Icon(Icons.Filled.KeyboardArrowDown, "Toggle dropdown")
+		}
+	}
+}
+
+@Composable
+fun ColumnScope.currentConditionSummary(currentConditionsState: UiCurrentConditions) {
+	Surface(modifier = Modifier.fillMaxWidth(0.7f).weight(0.5f).padding(10.dp).align(CenterHorizontally), shape = Shapes.medium) {
+		Box {
+			Icon(
+				painterResource(id = currentConditionsState.weatherIconId),
+				contentDescription = "Weather icon",
+				tint = Color.Unspecified,
+				modifier = Modifier.align(TopCenter)
+			)
+
+			Column(modifier = Modifier.align(Center).padding(top = 30.dp), horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center) {
+				Text(currentConditionsState.temperature, style = Typography.headlineLarge)
+				Text(currentConditionsState.realFeelTemperature, style = Typography.labelLarge)
+				Text(currentConditionsState.weatherText, style = Typography.titleMedium)
+			}
+		}
+	}
+}
+
+@Composable
+fun ColumnScope.currentConditionDetails(currentConditionsState: UiCurrentConditions) {
+	Row(Modifier.fillMaxWidth().weight(0.10f).padding(horizontal = 10.dp), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+		if (currentConditionsState.hasWind) {
+			CurrentConditionItem(
+				labelText = "Wind",
+				valueText = currentConditionsState.windSpeed!!,
+				iconId = R.drawable.wind,
+				iconContentDescription = "Wind"
+			)
+		}
+
+		if (currentConditionsState.hasHumidity) {
+			CurrentConditionItem(
+				labelText = "Humidity",
+				valueText = currentConditionsState.humidity!!,
+				iconId = R.drawable.raindrop,
+				iconContentDescription = "Humidity"
+			)
+		}
+
+		if (currentConditionsState.hasUvIndex) {
+			CurrentConditionItem(
+				labelText = "UV",
+				valueText = currentConditionsState.uvIndex!!,
+				iconId = R.drawable.sunny,
+				iconContentDescription = "UV index"
+			)
+		}
+	}
+}
+
+@Composable
+fun RowScope.CurrentConditionItem(labelText: String, valueText: String, iconId: Int, iconContentDescription: String) {
+	Card(modifier = Modifier.weight(1f), shape = Shapes.medium, backgroundColor = Blue) {
+		Column(modifier = Modifier.padding(10.dp), horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center) {
+			Icon(painterResource(id = iconId), contentDescription = iconContentDescription, tint = White)
+			Text(valueText, style = Typography.labelMedium, color = White)
+			Text(labelText, style = Typography.labelSmall, color = White)
+		}
+	}
+}
+
+@Composable
+fun ColumnScope.twelveHourForecastSummary(twelveHourForecastState: UiHourlyForecast) {
+	Surface(modifier = Modifier.fillMaxWidth().weight(0.20f).padding(10.dp).align(CenterHorizontally), shape = Shapes.medium) {
+		Column(horizontalAlignment = Alignment.Start) {
+			Row(modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)) {
+				Icon(painterResource(id = R.drawable.time), contentDescription = "12 hour forecast")
+				Text("12 hour forecast", style = Typography.titleLarge)
+			}
+			LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+				items(twelveHourForecastState.hours) {
+					hourlyForecastItem(
+						temperatureText = it.temperature,
+						timeText = it.time,
+						iconId = it.weatherIconId,
+						modifier = Modifier.weight(1f).background(Blue, Shapes.medium)
+					)
+				}
+			}
+		}
+	}
+}
+
+@Composable
+fun hourlyForecastItem(temperatureText: String, timeText: String, iconId: Int, modifier: Modifier) {
+	Card {
+		Box(modifier = modifier) {
+			Text(temperatureText, style = Typography.labelLarge, modifier = Modifier.align(TopCenter), color = White)
+			Icon(painterResource(id = iconId), contentDescription = "Sunny", modifier = Modifier.align(Center), tint = Color.Unspecified)
+			Text(timeText, style = Typography.labelLarge, modifier = Modifier.align(BottomCenter), color = White)
 		}
 	}
 }
