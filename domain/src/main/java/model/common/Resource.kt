@@ -40,4 +40,10 @@ sealed class Resource<T>(val data: T? = null, val errorData: ErrorData? = null) 
             successCallback(data)
         }
     }
+
+    suspend fun onError(errorCallback: (ErrorData) -> Unit) {
+        if(errorData != null) {
+            errorCallback(errorData)
+        }
+    }
 }

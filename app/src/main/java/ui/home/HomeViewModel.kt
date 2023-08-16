@@ -7,33 +7,42 @@ import kotlinx.coroutines.flow.update
 import model.city.City
 import model.common.ErrorData
 import ui.base.BaseViewModel
-import ui.cities.model.CityScreenMessages
+import ui.common.model.CommonMessages
 import ui.home.mapper.UiForecastMapper
 import ui.home.model.DropdownState
+import ui.home.model.HomeScreenMessages
 import ui.home.model.UiCurrentConditions
 import ui.home.model.UiHourlyForecast
+import usecase.city.AddFavouriteCityUseCase
 import usecase.city.GetFavouriteCitiesUseCase
 import usecase.city.GetFavouriteCitiesUseCase.GetFavouriteCitiesUseCaseResponse
 import usecase.city.GetFavouriteCitiesUseCase.GetFavouriteCitiesError
+import usecase.city.GetSelectedCityLocationKeyUseCase
+import usecase.city.GetSelectedCityLocationKeyUseCase.GetSelectedCityLocationKeyUseCaseResponse
+import usecase.city.SetSelectedCityLocationKeyUseCase
 import usecase.forecast.GetCurrentConditionsUseCase
-import usecase.forecast.GetDailyForecastUseCase
-import usecase.forecast.GetDailyForecastUseCase.GetDailyForecastError
-import usecase.forecast.GetDailyForecastUseCase.GetDailyForecastUseCaseResponse
+import usecase.forecast.GetCurrentConditionsUseCase.GetCurrentConditionsUseCaseResponse
+import usecase.forecast.GetCurrentConditionsUseCase.GetCurrentConditionsError
 import usecase.forecast.GetTwelveHourForecastUseCase
 import usecase.forecast.GetTwelveHourForecastUseCase.GetTwelveHourForecastUseCaseResponse
+import usecase.forecast.GetTwelveHourForecastUseCase.GetTwelveHourForecastError
 import usecase.location.GetCurrentCityUseCase
 import usecase.location.GetCurrentCityUseCase.GetCurrentCityUseCaseResponse
+import usecase.location.GetCurrentCityUseCase.GetCurrentCityUseCaseError
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
 	private val getFavouriteCitiesUseCase: GetFavouriteCitiesUseCase,
-	private val getDailyForecastUseCase: GetDailyForecastUseCase,
 	private val getTwelveHourForecastUseCase: GetTwelveHourForecastUseCase,
 	private val getCurrentConditionsUseCase: GetCurrentConditionsUseCase,
 	private val getCurrentCityUseCase: GetCurrentCityUseCase,
+	private val setSelectedCityLocationKeyUseCase: SetSelectedCityLocationKeyUseCase,
+	private val getSelectedCityLocationKeyUseCase: GetSelectedCityLocationKeyUseCase,
+	private val addFavouriteCityUseCase: AddFavouriteCityUseCase,
 	private val uiForecastMapper: UiForecastMapper
 ) : BaseViewModel() {
+	private lateinit var selectedCityLocationKey: String
 
 	private val _dropdownState = MutableStateFlow(DropdownState(isExpanded = false, list = listOf(), selectedIndex = 0, selectedValue = null))
 	val dropdownState = _dropdownState.asStateFlow()
@@ -45,9 +54,7 @@ class HomeViewModel @Inject constructor(
 	val currentConditionsState = _currentConditionsState.asStateFlow()
 
 	init {
-		//runSuspend { getFavouriteCities() }
-		runSuspend { getTwelveHourForecast("120665") }
-		runSuspend { getCurrentConditions("120665")}
+		runSuspend { getFavouriteCities() }
 	}
 
 	private suspend fun getFavouriteCities() {
@@ -56,11 +63,31 @@ class HomeViewModel @Inject constructor(
 
 	private fun getFavouriteCitiesSuccess(response: GetFavouriteCitiesUseCaseResponse) {
 		if (response.list.isNotEmpty()) {
-			runSuspend { getDailyForecast(response.list[0].locationKey) }
 			_dropdownState.update { it.copy(list = response.list, selectedIndex = 0, selectedValue = response.list[0]) }
+			runSuspend { getSelectedCityLocationKey() }
 		} else {
 			runSuspend { getCurrentCity() }
 		}
+	}
+
+	private suspend fun getSelectedCityLocationKey() {
+		getSelectedCityLocationKeyUseCase().onFinished(this::getSelectedCityLocationKeySuccess, this::handleErrors)
+	}
+
+	private fun getSelectedCityLocationKeySuccess(response: GetSelectedCityLocationKeyUseCaseResponse) {
+		val list = _dropdownState.value.list
+		var selectedIndex = 0
+		var selectedCity = list[0]
+
+		list.forEachIndexed { index, it ->
+			if (it.locationKey == response.locationKey) {
+				selectedIndex = index
+				selectedCity = it
+			}
+		}
+
+		_dropdownState.update { it.copy(selectedIndex = selectedIndex, selectedValue = selectedCity) }
+		updateForecastInformation(response.locationKey)
 	}
 
 	private suspend fun getCurrentCity() {
@@ -69,7 +96,10 @@ class HomeViewModel @Inject constructor(
 
 	private fun getCurrentCitySuccess(response: GetCurrentCityUseCaseResponse) {
 		_dropdownState.update { it.copy(list = listOf(response.city), selectedIndex = 0, selectedValue = response.city) }
-		runSuspend { getDailyForecast(response.city.locationKey) }
+		runSuspend { updateForecastInformation(response.city.locationKey) }
+		runSuspend { setSelectedCityLocationKey(response.city.locationKey) }
+		runSuspend { addFavouriteCityUseCase(response.city)}
+		showInfo(HomeScreenMessages.CityListInfo)
 	}
 
 	fun closeDropdown() {
@@ -82,22 +112,24 @@ class HomeViewModel @Inject constructor(
 
 	fun onItemSelected(city: City, index: Int) {
 		_dropdownState.update { it.copy(isExpanded = false, selectedIndex = index, selectedValue = city) }
-		//save choice to database
+		runSuspend { updateForecastInformation(city.locationKey) }
+		runSuspend { setSelectedCityLocationKey(city.locationKey) }
 	}
 
-	private suspend fun getDailyForecast(locationKey: String) {
-		getDailyForecastUseCase(locationKey).onFinished(this::getDailyForecastSuccess, this::handleErrors)
+	private suspend fun setSelectedCityLocationKey(locationKey: String) {
+		setSelectedCityLocationKeyUseCase(locationKey).onError(this::handleErrors)
 	}
 
-	private fun getDailyForecastSuccess(response: GetDailyForecastUseCaseResponse) {
-
+	private fun updateForecastInformation(locationKey: String) {
+		runSuspend { getCurrentConditions(locationKey) }
+		runSuspend { getTwelveHourForecast(locationKey) }
 	}
 
 	private suspend fun getCurrentConditions(locationKey: String) {
 		getCurrentConditionsUseCase(locationKey).onFinished(this::getCurrentConditionsSuccess, this::handleErrors)
 	}
 
-	private fun getCurrentConditionsSuccess(response: GetCurrentConditionsUseCase.GetCurrentConditionsUseCaseResponse) {
+	private fun getCurrentConditionsSuccess(response: GetCurrentConditionsUseCaseResponse) {
 		_currentConditionsState.value = uiForecastMapper.toUiCurrentConditions(response.currentConditions)
 	}
 
@@ -111,8 +143,10 @@ class HomeViewModel @Inject constructor(
 
 	private fun handleErrors(errorData: ErrorData) {
 		when (errorData.errorType) {
-			GetFavouriteCitiesError.GET_FAVOURITES_ERROR -> showError(CityScreenMessages.AddFavouriteCityError)
-			GetDailyForecastError.GET_FORECAST_ERROR -> showError(CityScreenMessages.AddFavouriteCityError)
+			GetFavouriteCitiesError.GET_FAVOURITES_ERROR -> showError(HomeScreenMessages.GetFavouriteCitiesError)
+			GetTwelveHourForecastError.GET_TWELVE_HOUR_FORECAST_ERROR -> showError(HomeScreenMessages.GetForecastError)
+			GetCurrentConditionsError.GET_CONDITIONS_ERROR -> showError(HomeScreenMessages.GetForecastError)
+			GetCurrentCityUseCaseError.GET_LOCATION_ERROR -> showError(CommonMessages.GetLocationError)
 		}
 	}
 }

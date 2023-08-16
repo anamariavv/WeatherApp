@@ -17,12 +17,16 @@ import repository.impl.ForecastRepositoryImpl
 import usecase.city.AddFavouriteCityUseCase
 import usecase.city.impl.AddFavouriteCityUseCaseImpl
 import usecase.city.GetFavouriteCitiesUseCase
+import usecase.city.GetSelectedCityLocationKeyUseCase
 import usecase.city.impl.GetFavouriteCitiesUseCaseImpl
 import usecase.city.QueryCitiesUseCase
 import usecase.city.impl.QueryCitiesUseCaseImpl
 import usecase.city.RemoveFavouriteCityUseCase
+import usecase.city.SetSelectedCityLocationKeyUseCase
 import usecase.city.impl.RemoveFavouriteCityUseCaseImpl
 import usecase.city.ToggleFavouriteCityUseCase
+import usecase.city.impl.GetSelectedCityLocationKeyUseCaseImpl
+import usecase.city.impl.SetSelectedCityLocationKeyUseCaseImpl
 import usecase.city.impl.ToggleFavouriteCityUseCaseImpl
 import usecase.forecast.GetCurrentConditionsUseCase
 import usecase.forecast.GetDailyForecastUseCase
@@ -108,16 +112,20 @@ class DomainModule {
 		removeFavouriteCityInteractor: RemoveFavouriteCityInteractor,
 		getCurrentGeoLocationInteractor: GetCurrentGeoLocationInteractor,
 		getCityBasedOnCoordinatesInteractor: GetCityBasedOnCoordinatesInteractor,
+		getSelectedCityLocationKeyInteractor: GetSelectedCityLocationKeyInteractor,
+		setSelectedCityLocationKeyInteractor: SetSelectedCityLocationKeyInteractor,
 		cityMapper: CityMapper
 	): CityRepository {
 		return CityRepositoryImpl(
-				queryCitiesInteractor,
-				getFavouriteCitiesInteractor,
-				addFavouriteCityInteractor,
-				removeFavouriteCityInteractor,
-				getCurrentGeoLocationInteractor,
-				getCityBasedOnCoordinatesInteractor,
-				cityMapper
+			queryCitiesInteractor,
+			getFavouriteCitiesInteractor,
+			addFavouriteCityInteractor,
+			removeFavouriteCityInteractor,
+			getCurrentGeoLocationInteractor,
+			getCityBasedOnCoordinatesInteractor,
+			getSelectedCityLocationKeyInteractor,
+			setSelectedCityLocationKeyInteractor,
+			cityMapper
 		)
 	}
 
@@ -142,5 +150,17 @@ class DomainModule {
 	@ViewModelScoped
 	fun provideForecastMapper(): ForecastMapper {
 		return ForecastMapperImpl()
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideSetSelectedCityLocationKeyUseCase(cityRepository: CityRepository): SetSelectedCityLocationKeyUseCase {
+		return SetSelectedCityLocationKeyUseCaseImpl(cityRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideGetSelectedCityLocationKeyUseCase(cityRepository: CityRepository): GetSelectedCityLocationKeyUseCase {
+		return GetSelectedCityLocationKeyUseCaseImpl(cityRepository)
 	}
 }

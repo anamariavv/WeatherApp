@@ -38,6 +38,7 @@ dependencies {
     implementation(Dependencies.roomKotlin)
     implementation(Dependencies.playServicesLocation)
     implementation(Dependencies.coroutinesPlayServices)
+    implementation(Dependencies.datastore)
 
     androidTestImplementation(Dependencies.junit_jupiter)
 

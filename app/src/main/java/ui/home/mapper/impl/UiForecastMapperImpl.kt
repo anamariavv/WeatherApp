@@ -49,7 +49,7 @@ class UiForecastMapperImpl : UiForecastMapper {
 	}
 
 	private fun toTime(timestamp: Long): String {
-		val sdf = SimpleDateFormat("HH:mm:ss", Locale.US)
+		val sdf = SimpleDateFormat("HH:mm", Locale.US)
 		val date = Date(timestamp * 1000)
 		return sdf.format(date)
 	}

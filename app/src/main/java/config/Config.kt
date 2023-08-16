@@ -10,6 +10,7 @@ import navigation.component.BottomNavItem
 import navigation.component.NavigationDirection
 
 object Config {
+    const val DATA_STORE_NAME = "preferences"
     const val databaseName = "locationDatabase"
     const val retrofitBaseUrl = "http://dataservice.accuweather.com"
 

@@ -12,4 +12,8 @@ interface CityRepository {
     suspend fun removeFavouriteCity(city: City)
 
     suspend fun getCurrentCity(): City
+
+    suspend fun getSelectedCityLocationKey(): String
+
+    suspend fun setSelectedCityLocationKey(locationKey: String)
 }

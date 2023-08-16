@@ -4,8 +4,10 @@ import interactor.AddFavouriteCityInteractor
 import interactor.GetCityBasedOnCoordinatesInteractor
 import interactor.GetCurrentGeoLocationInteractor
 import interactor.GetFavouriteCitiesInteractor
+import interactor.GetSelectedCityLocationKeyInteractor
 import interactor.QueryCitiesInteractor
 import interactor.RemoveFavouriteCityInteractor
+import interactor.SetSelectedCityLocationKeyInteractor
 import mapper.CityMapper
 import model.city.City
 import model.network.city.ApiCity
@@ -18,13 +20,13 @@ class CityRepositoryImpl(
 	private val removeFavouriteCityInteractor: RemoveFavouriteCityInteractor,
 	private val getCurrentGeoLocationInteractor: GetCurrentGeoLocationInteractor,
 	private val getCityBasedOnCoordinatesInteractor: GetCityBasedOnCoordinatesInteractor,
+	private val getSelectedCityLocationKeyInteractor: GetSelectedCityLocationKeyInteractor,
+	private val setSelectedCityLocationKeyInteractor: SetSelectedCityLocationKeyInteractor,
 	private val cityMapper: CityMapper
 ) : CityRepository {
 
 	override suspend fun queryCities(queryText: String): List<City> {
-		//todo find a more efficient way
 		val favouriteCities = getFavouriteCities()
-
 		return queryCitiesInteractor(queryText).map { filterAndMapToCity(it, favouriteCities) }
 	}
 
@@ -61,7 +63,14 @@ class CityRepositoryImpl(
 
 	private suspend fun getCurrentCoordinates(): Pair<Double, Double> {
 		val geoLocation = getCurrentGeoLocationInteractor()
-
 		return Pair(geoLocation.latitude, geoLocation.longitude)
+	}
+
+	override suspend fun getSelectedCityLocationKey(): String {
+		return getSelectedCityLocationKeyInteractor()
+	}
+
+	override suspend fun setSelectedCityLocationKey(locationKey: String) {
+		setSelectedCityLocationKeyInteractor(locationKey)
 	}
 }

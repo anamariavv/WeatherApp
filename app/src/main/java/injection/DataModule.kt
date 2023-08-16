@@ -1,5 +1,7 @@
 package injection
 
+import android.content.Context
+import androidx.datastore.preferences.preferencesDataStore
 import com.google.android.gms.location.FusedLocationProviderClient
 import config.Config
 import config.api.ApiConfig
@@ -7,6 +9,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
 import interactor.*
 import interactor.impl.*
@@ -14,12 +17,16 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import source.local.ApplicationStorage
 import source.local.FavouriteCityDao
 import source.local.GeoLocationProvider
 import source.local.LocationDatabase
+import source.local.impl.ApplicationStorageImpl
 import source.local.impl.GeoLocationProviderImpl
 import source.network.ForecastService
 import source.network.LocationsService
+
+val Context.dataStore by preferencesDataStore(Config.DATA_STORE_NAME)
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -59,6 +66,18 @@ class DataModule {
 		return retrofit.create(ForecastService::class.java)
 	}
 
+	@Provides
+	@ViewModelScoped
+	fun provideApplicationStorage(@ApplicationContext context: Context): ApplicationStorage {
+		return ApplicationStorageImpl(context.dataStore)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideGeoLocationProvider(fusedLocationProviderClient: FusedLocationProviderClient): GeoLocationProvider {
+		return GeoLocationProviderImpl(fusedLocationProviderClient)
+	}
+
 
 	@Provides
 	@ViewModelScoped
@@ -92,12 +111,6 @@ class DataModule {
 
 	@Provides
 	@ViewModelScoped
-	fun provideGeoLocationProvider(fusedLocationProviderClient: FusedLocationProviderClient): GeoLocationProvider {
-		return GeoLocationProviderImpl(fusedLocationProviderClient)
-	}
-
-	@Provides
-	@ViewModelScoped
 	fun provideGetCityBasedOnCoordsInteractor(locationsService: LocationsService): GetCityBasedOnCoordinatesInteractor {
 		return GetCityBasedOnCoordinatesInteractorImpl(ApiConfig.apiKey, locationsService)
 	}
@@ -125,4 +138,17 @@ class DataModule {
 	fun provideGetTwelveHourForecastInteractor(forecastService: ForecastService): GetTwelveHourForecastInteractor {
 		return GetTwelveHourForecastInteractorImpl(ApiConfig.apiKey, forecastService)
 	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideSetSelectedCityLocationKeyInteractor(applicationStorage: ApplicationStorage) : SetSelectedCityLocationKeyInteractor {
+		return SetSelectedCityLocationKeyInteractorImpl(applicationStorage)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun providGetSelectedCityLocationKeyInteractor(applicationStorage: ApplicationStorage) : GetSelectedCityLocationKeyInteractor {
+		return GetSelectedCityLocationKeyInteractorImpl(applicationStorage)
+	}
+
 }

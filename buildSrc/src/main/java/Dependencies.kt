@@ -26,6 +26,8 @@ object Versions {
     const val room = "2.5.2"
     const val playServicesLocation = "21.0.1"
     const val coroutinesPlayServices = "1.7.3"
+    const val datastore = "1.0.0"
+
 }
 
 object Dependencies {
@@ -58,6 +60,7 @@ object Dependencies {
     const val roomKotlin = "androidx.room:room-ktx:${Versions.room}"
     const val playServicesLocation = "com.google.android.gms:play-services-location:${Versions.playServicesLocation}"
     const val coroutinesPlayServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:${Versions.coroutinesPlayServices}"
+    const val datastore = "androidx.datastore:datastore-preferences:${Versions.datastore}"
 }
 
 object Plugins {

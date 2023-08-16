@@ -70,6 +70,7 @@ dependencies {
     implementation(Dependencies.roomKotlin)
     implementation(Dependencies.playServicesLocation)
     implementation(Dependencies.coroutinesPlayServices)
+    implementation(Dependencies.datastore)
 
     kapt(Dependencies.roomCompiler)
     kapt(Dependencies.hiltCompiler)

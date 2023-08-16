@@ -10,6 +10,7 @@ import ui.base.BaseViewModel
 import ui.cities.model.CityScreenMessages
 import ui.cities.model.FavouriteCityListState
 import ui.cities.model.SearchBarState
+import ui.common.model.CommonMessages
 import usecase.city.GetFavouriteCitiesUseCase.GetFavouriteCitiesUseCaseResponse
 import usecase.city.GetFavouriteCitiesUseCase
 import usecase.city.GetFavouriteCitiesUseCase.GetFavouriteCitiesError
@@ -131,13 +132,12 @@ class CitiesViewModel @Inject constructor(
 	}
 
 	private fun handleErrors(errorData: ErrorData) {
-		//todo: better error titles
 		when (errorData.errorType) {
 			ToggleFavouriteCitiesError.ADD_FAVOURITE_CITY_ERROR -> showError(CityScreenMessages.AddFavouriteCityError)
 			ToggleFavouriteCitiesError.REMOVE_FAVOURITE_CITY_ERROR -> showError(CityScreenMessages.RemoveFavouriteCityError)
 			GetFavouriteCitiesError.GET_FAVOURITES_ERROR -> showError(CityScreenMessages.GetFavouritesError)
 			QueryCitiesError.QUERY_CITIES_ERROR -> showError(CityScreenMessages.QueryCitiesError)
-			GetCurrentCityUseCaseError.GET_LOCATION_ERROR -> showError(CityScreenMessages.GetLocationError)
+			GetCurrentCityUseCaseError.GET_LOCATION_ERROR -> showError(CommonMessages.GetLocationError)
 		}
 	}
 }
