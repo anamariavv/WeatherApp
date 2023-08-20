@@ -1,5 +1,5 @@
 package ui.cities.model
 
-import model.City
+import model.city.City
 
 data class FavouriteCityListState(val cities: List<City>)

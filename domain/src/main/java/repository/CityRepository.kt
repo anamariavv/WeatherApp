@@ -1,6 +1,6 @@
-package repository.city
+package repository
 
-import model.City
+import model.city.City
 
 interface CityRepository {
     suspend fun queryCities(queryText: String): List<City>
@@ -12,4 +12,8 @@ interface CityRepository {
     suspend fun removeFavouriteCity(city: City)
 
     suspend fun getCurrentCity(): City
+
+    suspend fun getSelectedCityLocationKey(): String
+
+    suspend fun setSelectedCityLocationKey(locationKey: String)
 }

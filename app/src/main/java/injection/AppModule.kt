@@ -9,6 +9,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import navigation.NavigationDelegate
 import navigation.impl.NavigationDelegateImpl
@@ -16,6 +17,8 @@ import navigation.Router
 import navigation.impl.RouterImpl
 import source.local.LocationDatabase
 import source.local.impl.LocationDatabaseImpl
+import ui.home.mapper.UiForecastMapper
+import ui.home.mapper.impl.UiForecastMapperImpl
 import javax.inject.Singleton
 
 @Module
@@ -45,5 +48,11 @@ class AppModule {
     @Singleton
     fun provideFusedLocationProviderClient(@ApplicationContext appContext: Context): FusedLocationProviderClient {
         return LocationServices.getFusedLocationProviderClient(appContext)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUiForecastMapper(): UiForecastMapper {
+        return UiForecastMapperImpl()
     }
 }

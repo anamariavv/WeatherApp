@@ -1,9 +1,9 @@
 package usecase.city.impl
 
-import model.City
+import model.city.City
 import model.common.EmptyResource
 import model.common.Resource
-import repository.city.CityRepository
+import repository.CityRepository
 import usecase.city.RemoveFavouriteCityUseCase
 import usecase.city.RemoveFavouriteCityUseCase.RemoveFavouriteCityError
 

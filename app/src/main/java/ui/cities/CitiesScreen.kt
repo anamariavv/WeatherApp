@@ -47,7 +47,7 @@ import androidx.core.content.ContextCompat
 import ui.common.component.dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.weatherapp.R
-import model.City
+import model.city.City
 import ui.theme.Shapes
 import ui.theme.Typography
 
@@ -91,18 +91,18 @@ import ui.theme.Typography
 
 
 @Composable fun customSearchbar(
-		queryText: String,
-		onQueryChange: (String) -> Unit,
-		onSearch: (String) -> Unit,
-		isActive: Boolean,
-		shape: Shape,
-		onActiveChange: (Boolean) -> Unit,
-		onTrailingButtonClick: () -> Unit,
-		onSearchResultItemClicked: (City, Int) -> Unit,
-		queryResult: List<City>,
-		placeholder: String,
-		leadingIconContentDescription: String,
-		trailingIconContentDescription: String,
+	queryText: String,
+	onQueryChange: (String) -> Unit,
+	onSearch: (String) -> Unit,
+	isActive: Boolean,
+	shape: Shape,
+	onActiveChange: (Boolean) -> Unit,
+	onTrailingButtonClick: () -> Unit,
+	onSearchResultItemClicked: (City, Int) -> Unit,
+	queryResult: List<City>,
+	placeholder: String,
+	leadingIconContentDescription: String,
+	trailingIconContentDescription: String,
 ) {
 	SearchBar(query = queryText,
 	          onQueryChange = onQueryChange,
@@ -122,7 +122,7 @@ import ui.theme.Typography
 	          placeholder = { Text(placeholder) },
 	          leadingIcon = { Icon(Icons.Rounded.Search, contentDescription = leadingIconContentDescription) }
 	) {
-		LazyColumn(modifier = Modifier.fillMaxWidth().padding(0.dp),
+		LazyColumn(modifier = Modifier.fillMaxWidth(),
 		           contentPadding = PaddingValues(dimensionResource(id = R.dimen.list_content_padding)),
 		           verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.list_item_spacing))) {
 			itemsIndexed(queryResult) { index, it ->

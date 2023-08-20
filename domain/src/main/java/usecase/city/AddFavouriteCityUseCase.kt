@@ -1,6 +1,6 @@
 package usecase.city
 
-import model.City
+import model.city.City
 
 interface AddFavouriteCityUseCase {
 

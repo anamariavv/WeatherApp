@@ -4,20 +4,25 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import model.City
+import model.city.City
 import model.common.ErrorData
 import ui.base.BaseViewModel
 import ui.cities.model.CityScreenMessages
 import ui.cities.model.FavouriteCityListState
 import ui.cities.model.SearchBarState
+import ui.common.model.CommonMessages
 import usecase.city.GetFavouriteCitiesUseCase.GetFavouriteCitiesUseCaseResponse
 import usecase.city.GetFavouriteCitiesUseCase
+import usecase.city.GetFavouriteCitiesUseCase.GetFavouriteCitiesError
 import usecase.city.QueryCitiesUseCase
+import usecase.city.QueryCitiesUseCase.QueryCitiesError
 import usecase.city.QueryCitiesUseCase.QueryCitiesUseCaseResponse
 import usecase.city.RemoveFavouriteCityUseCase
 import usecase.location.GetCurrentCityUseCase.GetCurrentCityUseCaseResponse
 import usecase.city.ToggleFavouriteCityUseCase
+import usecase.city.ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError
 import usecase.location.GetCurrentCityUseCase
+import usecase.location.GetCurrentCityUseCase.GetCurrentCityUseCaseError
 import utils.empty
 import javax.inject.Inject
 
@@ -127,13 +132,12 @@ class CitiesViewModel @Inject constructor(
 	}
 
 	private fun handleErrors(errorData: ErrorData) {
-		//todo: better error titles
 		when (errorData.errorType) {
-			ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError.ADD_FAVOURITE_CITY_ERROR -> showError(CityScreenMessages.AddFavouriteCityError)
-			ToggleFavouriteCityUseCase.ToggleFavouriteCitiesError.REMOVE_FAVOURITE_CITY_ERROR -> showError(CityScreenMessages.RemoveFavouriteCityError)
-			GetFavouriteCitiesUseCase.GetFavouriteCitiesError.GET_FAVOURITES_ERROR -> showError(CityScreenMessages.GetFavouritesError)
-			QueryCitiesUseCase.QueryCitiesError.QUERY_CITIES_ERROR -> showError(CityScreenMessages.QueryCitiesError)
-			GetCurrentCityUseCase.GetCurrentCityUseCaseError.GET_LOCATION_ERROR -> showError(CityScreenMessages.GetLocationError)
+			ToggleFavouriteCitiesError.ADD_FAVOURITE_CITY_ERROR -> showError(CityScreenMessages.AddFavouriteCityError)
+			ToggleFavouriteCitiesError.REMOVE_FAVOURITE_CITY_ERROR -> showError(CityScreenMessages.RemoveFavouriteCityError)
+			GetFavouriteCitiesError.GET_FAVOURITES_ERROR -> showError(CityScreenMessages.GetFavouritesError)
+			QueryCitiesError.QUERY_CITIES_ERROR -> showError(CityScreenMessages.QueryCitiesError)
+			GetCurrentCityUseCaseError.GET_LOCATION_ERROR -> showError(CommonMessages.GetLocationError)
 		}
 	}
 }

@@ -1,6 +1,6 @@
 package interactor
 
-import model.network.ApiCity
+import model.network.city.ApiCity
 
 interface GetCityBasedOnCoordinatesInteractor {
 

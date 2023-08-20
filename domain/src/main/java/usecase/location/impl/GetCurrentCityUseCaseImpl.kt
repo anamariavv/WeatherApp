@@ -1,7 +1,7 @@
 package usecase.location.impl
 
 import model.common.Resource
-import repository.city.CityRepository
+import repository.CityRepository
 import usecase.location.GetCurrentCityUseCase
 import usecase.location.GetCurrentCityUseCase.GetCurrentCityUseCaseResponse
 import usecase.location.GetCurrentCityUseCase.GetCurrentCityUseCaseError

@@ -24,9 +24,15 @@
     <string name="you_are_currently_in_city_country">You are currently in <xliff:g>%1$s, %2$s</xliff:g></string>
     <string name="location_permission_is_necessary_in_order_to_use_this_functionality">Location permission is necessary in order to use this functionality</string>
     <string name="permission_necessary">Permission necessary</string>
+    <string name="daily_weather">Daily weather</string>
+    <string name="cities_info">Cities info</string>
+    <string name="an_error_occurred_while_getting_forecast_information">An error occurred while getting forecast information</string>
+    <string name="since_your_favourites_list_is_empty_message">Since your favourites list is empty, forecast information will be displayed for your current location, which will be automatically added to your favourites list! To manage favourites, go to the cities screen.</string>
 
     <!--Common -->
     <string name="dialog_dismiss_button" translatable="false">@string/dismiss</string>
+    <string name="common_error_getting_location_title" translatable="false">@string/error</string>
+    <string name="common_error_getting_location_message" translatable="false">@string/an_error_occurred_while_getting_your_location</string>
 
     <!--Bottom navbar-->
     <string name="bottom_navbar_home_content_description" translatable="false">@string/home</string>
@@ -35,6 +41,13 @@
     <string name="bottom_navbar_cities_content_description" translatable="false">@string/manage_cities</string>
 
     <!--Home screen-->
+    <string name="home_screen_get_favourites_error_title" translatable="false">@string/error</string>
+    <string name="home_screen_get_forecast_title" translatable="false">@string/error</string>
+    <string name="home_screen_city_list_info_title" translatable="false">@string/cities_info</string>
+    <string name="home_screen_get_favourites_error_message" translatable="false">@string/an_error_occurred_while_getting_favourite_cities</string>
+    <string name="home_screen_get_forecast_message" translatable="false">@string/an_error_occurred_while_getting_forecast_information</string>
+    <string name="home_screen_city_list_info_message" translatable="false">@string/since_your_favourites_list_is_empty_message</string>
+
     <!--Settings screen-->
     <!--Weekly screen-->
 
@@ -54,8 +67,6 @@
     <string name="cities_screen_error_getting_favourites_message" translatable="false">@string/an_error_occurred_while_getting_favourite_cities</string>
     <string name="cities_screen_error_querying_cities_title" translatable="false">@string/error</string>
     <string name="cities_screen_error_querying_cities_message" translatable="false">@string/an_error_occurred_while_performing_search</string>
-    <string name="cities_screen_error_getting_location_title" translatable="false">@string/error</string>
-    <string name="cities_screen_error_getting_location_message" translatable="false">@string/an_error_occurred_while_getting_your_location</string>
     <string name="cities_screen_location_result_title" translatable="false">@string/your_location</string>
     <string name="cities_screen_location_result_message" translatable="false">@string/you_are_currently_in_city_country</string>
     <string name="cities_screen_location_permission_dialog_title" translatable="false">@string/permission_necessary</string>

@@ -8,7 +8,6 @@ sealed class CityScreenMessages(vararg val args: String) : Message {
 	object RemoveFavouriteCityError : CityScreenMessages()
 	object GetFavouritesError : CityScreenMessages()
 	object QueryCitiesError : CityScreenMessages()
-	object GetLocationError : CityScreenMessages()
 	class LocationResultInfo(city: String, country: String) : CityScreenMessages(args = arrayOf(city, country))
 	object LocationPermissionNeeded : CityScreenMessages()
 
@@ -18,7 +17,6 @@ sealed class CityScreenMessages(vararg val args: String) : Message {
 			is RemoveFavouriteCityError -> R.string.cities_screen_error_removing_from_favourites_title
 			is GetFavouritesError -> R.string.cities_screen_error_getting_favourites_title
 			is QueryCitiesError -> R.string.cities_screen_error_querying_cities_title
-			is GetLocationError -> R.string.cities_screen_error_getting_location_title
 			is LocationResultInfo -> R.string.cities_screen_location_result_title
 			is LocationPermissionNeeded -> R.string.cities_screen_location_permission_dialog_title
 		}
@@ -30,7 +28,6 @@ sealed class CityScreenMessages(vararg val args: String) : Message {
 			is RemoveFavouriteCityError -> R.string.cities_screen_error_removing_from_favourites_message
 			is GetFavouritesError -> R.string.cities_screen_error_getting_favourites_message
 			is QueryCitiesError -> R.string.cities_screen_error_querying_cities_message
-			is GetLocationError -> R.string.cities_screen_error_getting_location_message
 			is LocationResultInfo -> R.string.cities_screen_location_result_message
 			is LocationPermissionNeeded -> R.string.cities_screen_location_permission_dialog_message
 		}

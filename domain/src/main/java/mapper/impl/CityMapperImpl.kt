@@ -1,9 +1,9 @@
 package mapper.impl
 
 import mapper.CityMapper
-import model.network.ApiCity
-import model.network.ApiCountry
-import model.City
+import model.network.city.ApiCity
+import model.network.city.ApiCountry
+import model.city.City
 import model.local.FavouriteCity
 
 class CityMapperImpl : CityMapper {
@@ -34,11 +34,11 @@ class CityMapperImpl : CityMapper {
 
     override fun toApiCity(city: City): ApiCity {
         return ApiCity(
-            localizedName = city.localizedName,
-            key = city.locationKey,
-            country = ApiCountry(city.countryId, city.countryLocalizedName),
-            rank = city.rank,
-            type = city.type
+                localizedName = city.localizedName,
+                key = city.locationKey,
+                country = ApiCountry(city.countryId, city.countryLocalizedName),
+                rank = city.rank,
+                type = city.type
         )
     }
 

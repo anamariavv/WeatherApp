@@ -1,7 +1,7 @@
 package mapper
 
-import model.network.ApiCity
-import model.City
+import model.network.city.ApiCity
+import model.city.City
 import model.local.FavouriteCity
 
 interface CityMapper {

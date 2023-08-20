@@ -1,6 +1,6 @@
 package usecase.city
 
-import model.City
+import model.city.City
 import model.common.EmptyResource
 import model.common.ErrorType
 
