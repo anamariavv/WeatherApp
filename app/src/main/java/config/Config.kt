@@ -1,7 +1,6 @@
 package config
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.sharp.DateRange
 import androidx.compose.material.icons.sharp.Home
 import androidx.compose.material.icons.sharp.LocationOn
 import androidx.compose.material.icons.sharp.Settings
@@ -19,11 +18,6 @@ object Config {
             icon = Icons.Sharp.Home,
             contentDescriptionId = R.string.bottom_navbar_home_content_description,
             direction = NavigationDirection.Home
-        ),
-        BottomNavItem(
-            icon = Icons.Sharp.DateRange,
-            contentDescriptionId = R.string.bottom_navbar_weekly_content_description,
-            direction = NavigationDirection.Weekly
         ),
         BottomNavItem(
             icon = Icons.Sharp.Settings,

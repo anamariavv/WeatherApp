@@ -8,7 +8,7 @@ interface GetWeeklyForecastUseCase {
 
 	suspend operator fun invoke(locationKey: String): Resource<GetWeeklyForecastUseCaseResponse>
 
-	class GetWeeklyForecastUseCaseResponse(forecast: Forecast)
+	class GetWeeklyForecastUseCaseResponse(val forecast: Forecast)
 
 	enum class GetWeeklyForecastError : ErrorType {
 		GET_WEEKLY_FORECAST_ERROR

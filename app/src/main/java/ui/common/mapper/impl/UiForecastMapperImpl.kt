@@ -1,19 +1,31 @@
-package ui.home.mapper.impl
+package ui.common.mapper.impl
 
 import android.icu.text.SimpleDateFormat
 import com.example.weatherapp.R
 import model.forecast.CurrentConditions
+import model.forecast.DailyForecast
+import model.forecast.Forecast
 import model.forecast.HourlyForecast
 import model.forecast.HourlyForecastItem
 import model.forecast.Measurement
+import model.forecast.Temperature
 import model.forecast.Wind
-import ui.home.mapper.UiForecastMapper
+import ui.common.mapper.UiForecastMapper
 import ui.home.model.UiCurrentConditions
 import ui.home.model.UiHourlyForecast
 import ui.home.model.UiHourlyForecastItem
+import ui.weekly.model.UiDailyForecast
+import ui.weekly.model.UiWeeklyForecast
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class UiForecastMapperImpl : UiForecastMapper {
+
+	override fun toWeeklyForecast(forecast: Forecast): UiWeeklyForecast {
+		val items = forecast.dailyForecasts.map { toUiDailyForecast(it) }
+		return UiWeeklyForecast(items)
+	}
 
 	override fun toUiHourlyForecast(forecast: HourlyForecast): UiHourlyForecast {
 		val items = forecast.items.map { toUiHourlyForecastItem(it) }
@@ -36,7 +48,15 @@ class UiForecastMapperImpl : UiForecastMapper {
 			humidity = formatHumidity(item.relativeHumidity),
 			hasUvIndex = item.uVIndex != null,
 			uvIndex = formatUvIndex(item.uVIndex)
-			)
+		)
+	}
+
+	private fun toUiDailyForecast(item: DailyForecast): UiDailyForecast {
+		return UiDailyForecast(
+			day = formatDay(item.epochDate),
+			weatherIconId = mapIconToId(item.icon, true),
+			temperature = formatMinMaxTemperature(item.temperature)
+		)
 	}
 
 	private fun toUiHourlyForecastItem(item: HourlyForecastItem): UiHourlyForecastItem {
@@ -54,12 +74,25 @@ class UiForecastMapperImpl : UiForecastMapper {
 		return sdf.format(date)
 	}
 
+	private fun formatDay(timestamp: Long): String {
+		val format = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+
+		val timestampAsDateString = DateTimeFormatter.ISO_INSTANT.format(java.time.Instant.ofEpochSecond(timestamp))
+
+		val date = LocalDate.parse(timestampAsDateString, format)
+		return date.dayOfWeek.toString()
+	}
+
 	private fun formatTemperature(temperature: Measurement, isRealFeel: Boolean): String {
-		return if(isRealFeel) {
+		return if (isRealFeel) {
 			String.format("Feels like %d\u00B0 %s", temperature.value?.toInt(), temperature.unit)
 		} else {
 			String.format("%d\u00B0 %s", temperature.value?.toInt(), temperature.unit)
 		}
+	}
+
+	private fun formatMinMaxTemperature(temperature: Temperature): String {
+		return String.format("%d\u00B0/%d\u00B0", temperature.minimum.value?.toInt(), temperature.maximum.value?.toInt())
 	}
 
 	private fun mapIconToId(weatherIcon: Int?, isDay: Boolean): Int {
@@ -82,7 +115,7 @@ class UiForecastMapperImpl : UiForecastMapper {
 	}
 
 	private fun formatWind(wind: Wind?): String {
-		if(!hasWind(wind)) return ""
+		if (!hasWind(wind)) return ""
 
 		return String.format("%d %s", wind!!.speed.value!!.toInt(), wind.speed.unit)
 	}
@@ -92,13 +125,13 @@ class UiForecastMapperImpl : UiForecastMapper {
 	}
 
 	private fun formatHumidity(humidity: Int?): String {
-		if(humidity == null) return ""
+		if (humidity == null) return ""
 
 		return String.format("%d %%", humidity)
 	}
 
 	private fun formatUvIndex(index: Int?): String {
-		if(index == null) return ""
+		if (index == null) return ""
 
 		return index.toString()
 	}

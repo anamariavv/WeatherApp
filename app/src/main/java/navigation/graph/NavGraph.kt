@@ -22,7 +22,7 @@ fun NavGraph(navController: NavHostController) {
             SettingsScreen()
         }
 
-        composable(NavigationDirection.Weekly.destination) {
+        composable(NavigationDirection.Weekly.destination, arguments = NavigationDirection.Weekly.weeklyArguments) {
             WeeklyScreen()
         }
 

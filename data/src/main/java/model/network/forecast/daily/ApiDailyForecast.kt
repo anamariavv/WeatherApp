@@ -10,8 +10,10 @@ data class ApiDailyForecast(
 	val date: String,
 	@SerializedName("Day")
 	val day: ApiDay,
+	@SerializedName("Icon")
+	val icon: Int,
 	@SerializedName("EpochDate")
-	val epochDate: Int,
+	val epochDate: Long,
 	@SerializedName("HoursOfSun")
 	val hoursOfSun: Double,
 	@SerializedName("MobileLink")

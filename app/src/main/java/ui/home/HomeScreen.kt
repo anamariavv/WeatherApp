@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -21,6 +22,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -46,7 +48,8 @@ import ui.theme.White
 import utils.empty
 
 
-@Composable fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
+@Composable
+fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 
 	val dropdownState by viewModel.dropdownState.collectAsState()
 	val twelveHourForecastState by viewModel.hourlyForecastState.collectAsState()
@@ -68,6 +71,11 @@ import utils.empty
 		currentConditionDetails(currentConditionsState)
 
 		twelveHourForecastSummary(twelveHourForecastState)
+
+		Button(onClick = viewModel::navigateToWeeklyScreen, modifier = Modifier.padding(10.dp).align(CenterHorizontally)) {
+			Text(text = "5 day forecast")
+			Icon(Icons.Filled.KeyboardArrowRight, "View 5 day forecast")
+		}
 
 		dialog(dialogState, viewModel::dismissDialog)
 	}

@@ -17,8 +17,8 @@ import navigation.Router
 import navigation.impl.RouterImpl
 import source.local.LocationDatabase
 import source.local.impl.LocationDatabaseImpl
-import ui.home.mapper.UiForecastMapper
-import ui.home.mapper.impl.UiForecastMapperImpl
+import ui.common.mapper.UiForecastMapper
+import ui.common.mapper.impl.UiForecastMapperImpl
 import javax.inject.Singleton
 
 @Module

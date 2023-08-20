@@ -20,7 +20,7 @@ import model.network.forecast.hourly.ApiHourlyForecastItem
 
 class ForecastMapperImpl : ForecastMapper {
 
-	override suspend fun toCurrentConditionsMetric(apiItem: ApiCurrentConditionsItem): CurrentConditions {
+	override fun toCurrentConditionsMetric(apiItem: ApiCurrentConditionsItem): CurrentConditions {
 		val item = CurrentConditions(
 				epochTime = apiItem.epochTime,
 				hasPrecipitation = apiItem.hasPrecipitation,
@@ -52,7 +52,7 @@ class ForecastMapperImpl : ForecastMapper {
 		return item
 	}
 
-	override suspend fun toCurrentConditionsImperial(apiItem: ApiCurrentConditionsItem): CurrentConditions {
+	override fun toCurrentConditionsImperial(apiItem: ApiCurrentConditionsItem): CurrentConditions {
 		return CurrentConditions(
 				epochTime = apiItem.epochTime,
 				hasPrecipitation = apiItem.hasPrecipitation,
@@ -82,7 +82,7 @@ class ForecastMapperImpl : ForecastMapper {
 		)
 	}
 
-	override suspend fun toDailyForecastInfo(apiForecast: ApiForecast): Forecast {
+	override fun toDailyForecastInfo(apiForecast: ApiForecast): Forecast {
 		val dailyForecastList = apiForecast.dailyForecasts.map { toDailyForecast(it) }
 		val headline = toHeadline(apiForecast.headline)
 
@@ -106,6 +106,7 @@ class ForecastMapperImpl : ForecastMapper {
 		return DailyForecast(airAndPollen = airAndPollenList,
 		                     date = apiDailyForecast.date,
 		                     day = toDay(apiDailyForecast.day),
+		                     icon = apiDailyForecast.icon,
 		                     epochDate = apiDailyForecast.epochDate,
 		                     hoursOfSun = apiDailyForecast.hoursOfSun,
 		                     mobileLink = apiDailyForecast.mobileLink,
@@ -119,7 +120,7 @@ class ForecastMapperImpl : ForecastMapper {
 		                     temperature = toTemperature(apiDailyForecast.temperature))
 	}
 
-	override suspend fun toHourlyForecast(apiForecast: ApiHourlyForecast): HourlyForecast {
+	override fun toHourlyForecast(apiForecast: ApiHourlyForecast): HourlyForecast {
 		val items = apiForecast.map { toHourlyForecastItem(it) }
 		return HourlyForecast(items)
 	}
