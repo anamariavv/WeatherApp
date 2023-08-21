@@ -9,16 +9,19 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import navigation.NavigationDelegate
 import navigation.impl.NavigationDelegateImpl
 import navigation.Router
 import navigation.impl.RouterImpl
+import notification.NotificationScheduler
+import notification.impl.NotificationSchedulerImpl
+import notification.impl.ScheduledNotificationReceiver
 import source.local.LocationDatabase
 import source.local.impl.LocationDatabaseImpl
 import ui.common.mapper.UiForecastMapper
 import ui.common.mapper.impl.UiForecastMapperImpl
+import javax.inject.Scope
 import javax.inject.Singleton
 
 @Module
@@ -52,7 +55,15 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideUiForecastMapper(): UiForecastMapper {
-        return UiForecastMapperImpl()
+    fun provideUiForecastMapper(): UiForecastMapper = UiForecastMapperImpl()
+
+    @Provides
+    @Singleton
+    fun provideScheduledNotificationReceiver(): ScheduledNotificationReceiver {
+        return ScheduledNotificationReceiver()
     }
+
+    @Provides
+    @Singleton
+    fun provideNotificationScheduler(): NotificationScheduler = NotificationSchedulerImpl()
 }

@@ -40,7 +40,7 @@ class HomeViewModel @Inject constructor(
 	private val setSelectedCityLocationKeyUseCase: SetSelectedCityLocationKeyUseCase,
 	private val getSelectedCityLocationKeyUseCase: GetSelectedCityLocationKeyUseCase,
 	private val addFavouriteCityUseCase: AddFavouriteCityUseCase,
-	private val uiForecastMapper: UiForecastMapper
+	private val uiForecastMapper: UiForecastMapper,
 ) : BaseViewModel() {
 	private lateinit var currentLocationKey: String
 
@@ -54,7 +54,7 @@ class HomeViewModel @Inject constructor(
 	val currentConditionsState = _currentConditionsState.asStateFlow()
 
 	init {
-		runSuspend { getFavouriteCities() }
+		//runSuspend { getFavouriteCities() }
 	}
 
 	private suspend fun getFavouriteCities() {
@@ -101,7 +101,7 @@ class HomeViewModel @Inject constructor(
 		_dropdownState.update { it.copy(list = listOf(response.city), selectedIndex = 0, selectedValue = response.city) }
 		runSuspend { updateForecastInformation(response.city.locationKey) }
 		runSuspend { setSelectedCityLocationKey(response.city.locationKey) }
-		runSuspend { addFavouriteCityUseCase(response.city)}
+		runSuspend { addFavouriteCityUseCase(response.city) }
 		showInfo(HomeScreenMessages.CityListInfo)
 	}
 
@@ -125,8 +125,8 @@ class HomeViewModel @Inject constructor(
 	}
 
 	private fun updateForecastInformation(locationKey: String) {
-		runSuspend { getCurrentConditions(locationKey) }
-		runSuspend { getTwelveHourForecast(locationKey) }
+		//runSuspend { getCurrentConditions(locationKey) }
+		//runSuspend { getTwelveHourForecast(locationKey) }
 	}
 
 	private suspend fun getCurrentConditions(locationKey: String) {
@@ -146,7 +146,13 @@ class HomeViewModel @Inject constructor(
 	}
 
 	fun navigateToWeeklyScreen() {
-		router.navigateToWeeklyScreen(currentLocationKey)
+		router.navigateToWeeklyScreen("120665")
+	}
+
+	fun onNotificationPermissionResult(isGranted: Boolean) {
+		if (!isGranted) {
+			showInfo(HomeScreenMessages.NotificationPermissionInfo)
+		}
 	}
 
 	private fun handleErrors(errorData: ErrorData) {

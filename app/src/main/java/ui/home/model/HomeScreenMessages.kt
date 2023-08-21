@@ -11,11 +11,14 @@ sealed class HomeScreenMessages : Message {
 
 	object CityListInfo : HomeScreenMessages()
 
+	object NotificationPermissionInfo : HomeScreenMessages()
+
 	override fun getTitleId(): Int {
 		return when (this) {
 			is GetFavouriteCitiesError -> R.string.home_screen_get_favourites_error_title
 			is GetForecastError -> R.string.home_screen_get_forecast_title
 			is CityListInfo -> R.string.home_screen_city_list_info_title
+			is NotificationPermissionInfo -> R.string.home_screen_notification_permission_info_title
 		}
 	}
 
@@ -24,6 +27,7 @@ sealed class HomeScreenMessages : Message {
 			is GetFavouriteCitiesError -> R.string.home_screen_get_favourites_error_message
 			is GetForecastError -> R.string.home_screen_get_forecast_message
 			is CityListInfo -> R.string.home_screen_city_list_info_message
+			is NotificationPermissionInfo -> R.string.home_screen_notification_permission_info_message
 		}
 	}
 
