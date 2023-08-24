@@ -4,18 +4,32 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import notification.NotificationScheduler
 import java.util.*
-import javax.inject.Inject
 
-class NotificationSchedulerImpl @Inject constructor(): NotificationScheduler {
+class NotificationScheduler private constructor() {
 	companion object {
+		@Volatile
+		private lateinit var instance: NotificationScheduler
+
+		fun getInstance(): NotificationScheduler {
+			synchronized(this) {
+				if (!::instance.isInitialized) {
+					instance = NotificationScheduler()
+				}
+				return instance
+			}
+		}
+
 		private const val REMINDER_NOTIFICATION_REQUEST_CODE = 1
-		private const val REMINDER_TIME = "13:25"
+		private const val REMINDER_TIME = "08:00"
 		private const val flags = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 	}
 
-	override fun startReminder(context: Context) {
+	fun startReminder(context: Context) {
+		instance.startReminderInternal(context)
+	}
+
+	private fun startReminderInternal(context: Context) {
 		val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
 		val (hours, min) = REMINDER_TIME.split(":").map { it.toInt() }
@@ -41,19 +55,5 @@ class NotificationSchedulerImpl @Inject constructor(): NotificationScheduler {
 			AlarmManager.AlarmClockInfo(calendar.timeInMillis, intent),
 			intent
 		)
-	}
-
-	override fun stopReminder(context: Context) {
-		val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-		val intent = Intent(context, ScheduledNotificationReceiver::class.java).let { intent ->
-			PendingIntent.getBroadcast(
-				context,
-				REMINDER_NOTIFICATION_REQUEST_CODE,
-				intent,
-				0
-			)
-		}
-		alarmManager.cancel(intent)
 	}
 }

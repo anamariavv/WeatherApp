@@ -4,13 +4,13 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import dagger.hilt.android.HiltAndroidApp
-import notification.impl.NotificationSchedulerImpl
+import notification.impl.NotificationScheduler
 import javax.inject.Inject
 
 @HiltAndroidApp
 class BaseApplication : Application() {
 	@Inject
-	lateinit var reminderManagerImpl: NotificationSchedulerImpl
+	lateinit var reminderManagerImpl: NotificationScheduler
 
 	override fun onCreate() {
 		super.onCreate()

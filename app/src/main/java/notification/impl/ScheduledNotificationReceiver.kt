@@ -8,16 +8,11 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.example.weatherapp.R
 import dagger.hilt.android.AndroidEntryPoint
-import notification.NotificationScheduler
 import ui.main.MainActivity
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ScheduledNotificationReceiver : BroadcastReceiver() {
-	@Inject
 	lateinit var notificationScheduler: NotificationScheduler
-	/*@Inject
-	lateinit var usecase: GetDailyForecastUseCase*/
 
 	private val flags = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 
