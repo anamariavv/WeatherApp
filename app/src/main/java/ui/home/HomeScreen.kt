@@ -1,5 +1,10 @@
 package ui.home
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -7,11 +12,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -21,6 +26,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,12 +37,16 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.weatherapp.R
 import model.city.City
+import ui.base.baseScreen
 import ui.common.component.dialog
+import ui.home.model.DropdownState
 import ui.home.model.UiCurrentConditions
 import ui.home.model.UiHourlyForecast
 import ui.theme.Blue
@@ -46,30 +56,77 @@ import ui.theme.White
 import utils.empty
 
 
-@Composable fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
+@Composable
+fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 
 	val dropdownState by viewModel.dropdownState.collectAsState()
 	val twelveHourForecastState by viewModel.hourlyForecastState.collectAsState()
 	val currentConditionsState by viewModel.currentConditionsState.collectAsState()
 	val dialogState by viewModel.dialogState.collectAsState()
+	val screenState by viewModel.screenState.collectAsState()
+	val context = LocalContext.current
 
-	Column(Modifier.fillMaxSize()) {
-		favouritesDropdown(
-			titleText = dropdownState.selectedValue?.localizedName ?: String.empty(),
-			isExpanded = dropdownState.isExpanded,
-			onDismiss = viewModel::closeDropdown,
-			itemList = dropdownState.list,
-			onItemSelected = viewModel::onItemSelected,
-			onIconClicked = viewModel::toggleDropdownExpanded
-		)
+	val launcher = rememberLauncherForActivityResult(
+		contract = ActivityResultContracts.RequestPermission(),
+		onResult = viewModel::onNotificationPermissionResult
+	)
 
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+		if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+			launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+		}
+	}
+
+	baseScreen(
+		state = screenState,
+		titleId = null,
+		content = {
+			HomeScreenContent(
+				dropdownState,
+				twelveHourForecastState,
+				currentConditionsState,
+				viewModel::closeDropdown,
+				viewModel::onItemSelected,
+				viewModel::toggleDropdownExpanded,
+				viewModel::navigateToWeeklyScreen,
+			)
+		}
+	)
+
+	dialog(dialogState, viewModel::dismissDialog)
+}
+
+@Composable
+fun HomeScreenContent(
+	dropdownState: DropdownState,
+	twelveHourForecastState: UiHourlyForecast,
+	currentConditionsState: UiCurrentConditions,
+	closeDropdown: () -> Unit,
+	onItemSelected: (City, Int) -> Unit,
+	toggleDropdownExpanded: (Boolean) -> Unit,
+	navigateToWeeklyScreen: () -> Unit
+) {
+
+	favouritesDropdown(
+		titleText = dropdownState.selectedValue?.localizedName ?: String.empty(),
+		isExpanded = dropdownState.isExpanded,
+		onDismiss = closeDropdown,
+		itemList = dropdownState.list,
+		onItemSelected = onItemSelected,
+		onIconClicked = toggleDropdownExpanded
+	)
+
+	Column {
 		currentConditionSummary(currentConditionsState)
 
 		currentConditionDetails(currentConditionsState)
 
 		twelveHourForecastSummary(twelveHourForecastState)
 
-		dialog(dialogState, viewModel::dismissDialog)
+		Button(onClick = navigateToWeeklyScreen, modifier = Modifier.padding(10.dp).align(CenterHorizontally)) {
+			Text(text = "5 day forecast")
+			Icon(Icons.Filled.KeyboardArrowRight, "View 5 day forecast")
+		}
 	}
 }
 

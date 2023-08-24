@@ -8,7 +8,7 @@ import model.city.City
 import model.common.ErrorData
 import ui.base.BaseViewModel
 import ui.common.model.CommonMessages
-import ui.home.mapper.UiForecastMapper
+import ui.common.mapper.UiForecastMapper
 import ui.home.model.DropdownState
 import ui.home.model.HomeScreenMessages
 import ui.home.model.UiCurrentConditions
@@ -40,9 +40,9 @@ class HomeViewModel @Inject constructor(
 	private val setSelectedCityLocationKeyUseCase: SetSelectedCityLocationKeyUseCase,
 	private val getSelectedCityLocationKeyUseCase: GetSelectedCityLocationKeyUseCase,
 	private val addFavouriteCityUseCase: AddFavouriteCityUseCase,
-	private val uiForecastMapper: UiForecastMapper
+	private val uiForecastMapper: UiForecastMapper,
 ) : BaseViewModel() {
-	private lateinit var selectedCityLocationKey: String
+	private lateinit var currentLocationKey: String
 
 	private val _dropdownState = MutableStateFlow(DropdownState(isExpanded = false, list = listOf(), selectedIndex = 0, selectedValue = null))
 	val dropdownState = _dropdownState.asStateFlow()
@@ -54,6 +54,7 @@ class HomeViewModel @Inject constructor(
 	val currentConditionsState = _currentConditionsState.asStateFlow()
 
 	init {
+		showScreenLoading()
 		runSuspend { getFavouriteCities() }
 	}
 
@@ -86,6 +87,8 @@ class HomeViewModel @Inject constructor(
 			}
 		}
 
+		currentLocationKey = response.locationKey
+
 		_dropdownState.update { it.copy(selectedIndex = selectedIndex, selectedValue = selectedCity) }
 		updateForecastInformation(response.locationKey)
 	}
@@ -95,10 +98,11 @@ class HomeViewModel @Inject constructor(
 	}
 
 	private fun getCurrentCitySuccess(response: GetCurrentCityUseCaseResponse) {
+		currentLocationKey = response.city.locationKey
 		_dropdownState.update { it.copy(list = listOf(response.city), selectedIndex = 0, selectedValue = response.city) }
 		runSuspend { updateForecastInformation(response.city.locationKey) }
 		runSuspend { setSelectedCityLocationKey(response.city.locationKey) }
-		runSuspend { addFavouriteCityUseCase(response.city)}
+		runSuspend { addFavouriteCityUseCase(response.city) }
 		showInfo(HomeScreenMessages.CityListInfo)
 	}
 
@@ -114,6 +118,7 @@ class HomeViewModel @Inject constructor(
 		_dropdownState.update { it.copy(isExpanded = false, selectedIndex = index, selectedValue = city) }
 		runSuspend { updateForecastInformation(city.locationKey) }
 		runSuspend { setSelectedCityLocationKey(city.locationKey) }
+		currentLocationKey = city.locationKey
 	}
 
 	private suspend fun setSelectedCityLocationKey(locationKey: String) {
@@ -122,7 +127,6 @@ class HomeViewModel @Inject constructor(
 
 	private fun updateForecastInformation(locationKey: String) {
 		runSuspend { getCurrentConditions(locationKey) }
-		runSuspend { getTwelveHourForecast(locationKey) }
 	}
 
 	private suspend fun getCurrentConditions(locationKey: String) {
@@ -131,6 +135,7 @@ class HomeViewModel @Inject constructor(
 
 	private fun getCurrentConditionsSuccess(response: GetCurrentConditionsUseCaseResponse) {
 		_currentConditionsState.value = uiForecastMapper.toUiCurrentConditions(response.currentConditions)
+		runSuspend { getTwelveHourForecast(currentLocationKey) }
 	}
 
 	private suspend fun getTwelveHourForecast(locationKey: String) {
@@ -139,6 +144,17 @@ class HomeViewModel @Inject constructor(
 
 	private fun getTwelveHourForecastSuccess(response: GetTwelveHourForecastUseCaseResponse) {
 		_hourlyForecastState.value = uiForecastMapper.toUiHourlyForecast(response.forecast)
+		showScreenContent()
+	}
+
+	fun navigateToWeeklyScreen() {
+		router.navigateToWeeklyScreen(currentLocationKey)
+	}
+
+	fun onNotificationPermissionResult(isGranted: Boolean) {
+		if (!isGranted) {
+			showInfo(HomeScreenMessages.NotificationPermissionInfo)
+		}
 	}
 
 	private fun handleErrors(errorData: ErrorData) {
@@ -148,5 +164,7 @@ class HomeViewModel @Inject constructor(
 			GetCurrentConditionsError.GET_CONDITIONS_ERROR -> showError(HomeScreenMessages.GetForecastError)
 			GetCurrentCityUseCaseError.GET_LOCATION_ERROR -> showError(CommonMessages.GetLocationError)
 		}
+
+		showScreenNoContent()
 	}
 }

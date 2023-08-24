@@ -163,4 +163,5 @@ class DomainModule {
 	fun provideGetSelectedCityLocationKeyUseCase(cityRepository: CityRepository): GetSelectedCityLocationKeyUseCase {
 		return GetSelectedCityLocationKeyUseCaseImpl(cityRepository)
 	}
+
 }

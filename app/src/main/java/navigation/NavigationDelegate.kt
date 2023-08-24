@@ -5,7 +5,7 @@ import navigation.component.NavigationDirection
 
 interface NavigationDelegate {
 
-    fun navigate(navigationDirection: NavigationDirection)
+    fun navigate(navigationCommand: NavigationCommand)
 
-    fun getNavigationEvents(): SharedFlow<NavigationDirection>
+    fun getNavigationEvents(): SharedFlow<NavigationCommand>
 }

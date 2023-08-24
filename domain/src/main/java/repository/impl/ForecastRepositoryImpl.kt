@@ -11,7 +11,7 @@ import model.forecast.Forecast
 import model.forecast.HourlyForecast
 import repository.ForecastRepository
 
-class ForecastRepositoryImpl(
+class ForecastRepositoryImpl (
 	private val getDailyForecastInteractor: GetDailyForecastInteractor,
 	private val getCurrentConditionsInteractor: GetCurrentConditionsInteractor,
 	private val getWeeklyForecastInteractor: GetWeeklyForecastInteractor,

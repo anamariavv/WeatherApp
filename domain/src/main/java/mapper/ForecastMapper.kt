@@ -9,11 +9,11 @@ import model.network.forecast.hourly.ApiHourlyForecast
 
 interface ForecastMapper {
 
-	suspend fun toDailyForecastInfo(apiForecast: ApiForecast): Forecast
+	fun toDailyForecastInfo(apiForecast: ApiForecast): Forecast
 
-	suspend fun toCurrentConditionsMetric(apiItem: ApiCurrentConditionsItem): CurrentConditions
+	fun toCurrentConditionsMetric(apiItem: ApiCurrentConditionsItem): CurrentConditions
 
-	suspend fun toCurrentConditionsImperial(apiItem: ApiCurrentConditionsItem): CurrentConditions
+	fun toCurrentConditionsImperial(apiItem: ApiCurrentConditionsItem): CurrentConditions
 
-	suspend fun toHourlyForecast(apiForecast: ApiHourlyForecast) : HourlyForecast
+	fun toHourlyForecast(apiForecast: ApiHourlyForecast) : HourlyForecast
 }
