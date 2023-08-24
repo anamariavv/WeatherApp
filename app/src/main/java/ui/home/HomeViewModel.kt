@@ -54,7 +54,8 @@ class HomeViewModel @Inject constructor(
 	val currentConditionsState = _currentConditionsState.asStateFlow()
 
 	init {
-		//runSuspend { getFavouriteCities() }
+		showScreenLoading()
+		runSuspend { getFavouriteCities() }
 	}
 
 	private suspend fun getFavouriteCities() {
@@ -125,8 +126,7 @@ class HomeViewModel @Inject constructor(
 	}
 
 	private fun updateForecastInformation(locationKey: String) {
-		//runSuspend { getCurrentConditions(locationKey) }
-		//runSuspend { getTwelveHourForecast(locationKey) }
+		runSuspend { getCurrentConditions(locationKey) }
 	}
 
 	private suspend fun getCurrentConditions(locationKey: String) {
@@ -135,6 +135,7 @@ class HomeViewModel @Inject constructor(
 
 	private fun getCurrentConditionsSuccess(response: GetCurrentConditionsUseCaseResponse) {
 		_currentConditionsState.value = uiForecastMapper.toUiCurrentConditions(response.currentConditions)
+		runSuspend { getTwelveHourForecast(currentLocationKey) }
 	}
 
 	private suspend fun getTwelveHourForecast(locationKey: String) {
@@ -143,10 +144,11 @@ class HomeViewModel @Inject constructor(
 
 	private fun getTwelveHourForecastSuccess(response: GetTwelveHourForecastUseCaseResponse) {
 		_hourlyForecastState.value = uiForecastMapper.toUiHourlyForecast(response.forecast)
+		showScreenContent()
 	}
 
 	fun navigateToWeeklyScreen() {
-		router.navigateToWeeklyScreen("120665")
+		router.navigateToWeeklyScreen(currentLocationKey)
 	}
 
 	fun onNotificationPermissionResult(isGranted: Boolean) {
@@ -162,5 +164,7 @@ class HomeViewModel @Inject constructor(
 			GetCurrentConditionsError.GET_CONDITIONS_ERROR -> showError(HomeScreenMessages.GetForecastError)
 			GetCurrentCityUseCaseError.GET_LOCATION_ERROR -> showError(CommonMessages.GetLocationError)
 		}
+
+		showScreenNoContent()
 	}
 }

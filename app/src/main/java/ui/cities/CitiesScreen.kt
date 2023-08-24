@@ -48,6 +48,9 @@ import ui.common.component.dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.weatherapp.R
 import model.city.City
+import ui.base.baseScreen
+import ui.cities.model.FavouriteCityListState
+import ui.cities.model.SearchBarState
 import ui.theme.Shapes
 import ui.theme.Typography
 
@@ -55,38 +58,74 @@ import ui.theme.Typography
 	val searchBarState by viewModel.searchBarState.collectAsState()
 	val favouriteCityListState by viewModel.favouriteCityListState.collectAsState()
 	val dialogState by viewModel.dialogState.collectAsState()
+	val screenState by viewModel.screenState.collectAsState()
 	val context = LocalContext.current
 
-	val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission(),
-	                                                 onResult = viewModel::onLocationPermissionRequestResult)
+	val launcher = rememberLauncherForActivityResult(
+		contract = ActivityResultContracts.RequestPermission(),
+		onResult = viewModel::onLocationPermissionRequestResult
+	)
 
+	baseScreen(
+		state = screenState,
+		titleId = R.string.cities_screen_title,
+		content = {
+			CitiesScreenContent(
+				searchBarState,
+				viewModel::updateQueryAndSearch,
+				viewModel::performSearch,
+				viewModel::onActiveChange,
+				viewModel::onSearchbarCloseButtonClick,
+				viewModel::toggleFavouriteCity,
+				favouriteCityListState,
+				viewModel::removeFavouriteCity,
+				context,
+				launcher,
+				viewModel::getCurrentCity
+			)
+		})
+
+	dialog(dialogState, viewModel::dismissDialog)
+}
+
+@Composable
+fun CitiesScreenContent(
+	searchBarState: SearchBarState,
+	updateQueryAndSearch: (String) -> Unit,
+	performSearch: (String) -> Unit,
+	onActiveChange: (Boolean) -> Unit,
+	onSearchbarCloseButtonClick: () -> Unit,
+	toggleFavouriteCity: (City, Int) -> Unit,
+	favouriteCityListState: FavouriteCityListState,
+	removeFavouriteCity: (City, Int) -> Unit,
+	context: Context,
+	launcher: ManagedActivityResultLauncher<String, Boolean>,
+	getCurrentCity: () -> Unit
+) {
 	Column(Modifier.fillMaxWidth(), Arrangement.Center, Alignment.CenterHorizontally) {
-		Column(Modifier.fillMaxWidth().weight(1f), Arrangement.Center, Alignment.CenterHorizontally) {
-			Text(stringResource(id = R.string.cities_screen_title), style = Typography.headlineSmall, modifier = Modifier.padding(20.dp))
 
-			customSearchbar(searchBarState.queryText,
-			                viewModel::updateQueryAndSearch,
-			                viewModel::performSearch,
-			                searchBarState.isActive,
-			                SearchBarDefaults.inputFieldShape,
-			                viewModel::onActiveChange,
-			                viewModel::onSearchbarCloseButtonClick,
-			                viewModel::toggleFavouriteCity,
-			                searchBarState.queryResult,
-			                stringResource(id = R.string.cities_screen_search_bar_placeholder),
-			                stringResource(id = R.string.cities_screen_search_bar_icon_content_description),
-			                stringResource(id = R.string.cities_screen_close_searchbar_icon_content_description))
+		customSearchbar(
+			searchBarState.queryText,
+			updateQueryAndSearch,
+			performSearch,
+			searchBarState.isActive,
+			SearchBarDefaults.inputFieldShape,
+			onActiveChange,
+			onSearchbarCloseButtonClick,
+			toggleFavouriteCity,
+			searchBarState.queryResult,
+			stringResource(id = R.string.cities_screen_search_bar_placeholder),
+			stringResource(id = R.string.cities_screen_search_bar_icon_content_description),
+			stringResource(id = R.string.cities_screen_close_searchbar_icon_content_description)
+		)
 
-			favouriteCityList(favouriteCityListState.cities, viewModel::removeFavouriteCity)
+		favouriteCityList(favouriteCityListState.cities, removeFavouriteCity)
 
-			dialog(dialogState, viewModel::dismissDialog)
-		}
-
-		Column(Modifier.fillMaxWidth(), Arrangement.Center, Alignment.CenterHorizontally) {
-			locationButton(context, launcher, viewModel::getCurrentCity)
-		}
 	}
 
+	Column(Modifier.fillMaxWidth(), Arrangement.Center, Alignment.CenterHorizontally) {
+		locationButton(context, launcher, getCurrentCity)
+	}
 }
 
 
@@ -113,7 +152,7 @@ import ui.theme.Typography
 	          trailingIcon = {
 		          if (isActive) {
 			          IconButton(
-					          onClick = onTrailingButtonClick,
+				          onClick = onTrailingButtonClick,
 			          ) {
 				          Icon(Icons.Rounded.Close, contentDescription = trailingIconContentDescription)
 			          }
@@ -122,9 +161,11 @@ import ui.theme.Typography
 	          placeholder = { Text(placeholder) },
 	          leadingIcon = { Icon(Icons.Rounded.Search, contentDescription = leadingIconContentDescription) }
 	) {
-		LazyColumn(modifier = Modifier.fillMaxWidth(),
-		           contentPadding = PaddingValues(dimensionResource(id = R.dimen.list_content_padding)),
-		           verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.list_item_spacing))) {
+		LazyColumn(
+			modifier = Modifier.fillMaxWidth(),
+			contentPadding = PaddingValues(dimensionResource(id = R.dimen.list_content_padding)),
+			verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.list_item_spacing))
+		) {
 			itemsIndexed(queryResult) { index, it ->
 				listItem(city = it, onButtonClick = { onSearchResultItemClicked(it, index) })
 			}
@@ -161,9 +202,10 @@ import ui.theme.Typography
 }
 
 @Composable fun favouriteCityList(cities: List<City>, onButtonClick: (City, Int) -> Unit) {
-	LazyColumn(modifier = Modifier.fillMaxWidth().padding(top = 20.dp, bottom = 20.dp),
-	           contentPadding = PaddingValues(10.dp),
-	           verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.list_item_spacing))
+	LazyColumn(
+		modifier = Modifier.fillMaxWidth().padding(top = 20.dp, bottom = 20.dp),
+		contentPadding = PaddingValues(10.dp),
+		verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.list_item_spacing))
 	) {
 		itemsIndexed(cities) { index, city ->
 			Surface(shape = Shapes.medium, shadowElevation = 5.dp, modifier = Modifier.fillMaxWidth()) {
@@ -174,9 +216,11 @@ import ui.theme.Typography
 					}
 					Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
 						IconButton(onClick = { onButtonClick(city, index) }) {
-							Icon(Icons.Filled.Delete,
-							     stringResource(id = R.string.cities_screen_remove_from_favourites_icon_content_description),
-							     tint = MaterialTheme.colorScheme.primary)
+							Icon(
+								Icons.Filled.Delete,
+								stringResource(id = R.string.cities_screen_remove_from_favourites_icon_content_description),
+								tint = MaterialTheme.colorScheme.primary
+							)
 						}
 					}
 				}

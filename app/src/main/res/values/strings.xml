@@ -29,11 +29,16 @@
     <string name="an_error_occurred_while_getting_forecast_information">An error occurred while getting forecast information</string>
     <string name="since_your_favourites_list_is_empty_message">Since your favourites list is empty, forecast information will be displayed for your current location, which will be automatically added to your favourites list! To manage favourites, go to the cities screen.</string>
     <string name="this_permission_is_necessary_in_order_for_notifications_to_work">This permission is necessary in order for notifications to work</string>
+    <string name="an_error_occurred_while_getting_weekly_forecast">An error occurred while getting weekly forecast</string>
+    <string name="an_unexpected_error_occurred">An unexpected error occurred</string>
+    <string name="five_day_forecast">5 day forecast</string>
 
     <!--Common -->
     <string name="dialog_dismiss_button" translatable="false">@string/dismiss</string>
     <string name="common_error_getting_location_title" translatable="false">@string/error</string>
     <string name="common_error_getting_location_message" translatable="false">@string/an_error_occurred_while_getting_your_location</string>
+    <string name="common_unexpected_error_title" translatable="false">@string/error</string>
+    <string name="common_unexpected_error_message" translatable="false">@string/an_unexpected_error_occurred</string>
 
     <!--Bottom navbar-->
     <string name="bottom_navbar_home_content_description" translatable="false">@string/home</string>
@@ -53,6 +58,9 @@
 
     <!--Settings screen-->
     <!--Weekly screen-->
+    <string name="weekly_screen_title" translatable="false">@string/five_day_forecast</string>
+    <string name="weekly_screen_forecast_error_title" translatable="false">@string/error</string>
+    <string name="weekly_screen_forecast_error_message" translatable="false">@string/an_error_occurred_while_getting_weekly_forecast</string>
 
     <!-- Cities screen-->
     <string name="cities_screen_title" translatable="false">@string/favourite_cities</string>

@@ -28,15 +28,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CitiesViewModel @Inject constructor(
-		private val queryCitiesUseCase: QueryCitiesUseCase,
-		private val toggleFavouriteCityUseCase: ToggleFavouriteCityUseCase,
-		private val getFavouriteCitiesUseCase: GetFavouriteCitiesUseCase,
-		private val getCurrentCityUseCase: GetCurrentCityUseCase,
-		private val removeFavouriteCitiesUseCase: RemoveFavouriteCityUseCase
+	private val queryCitiesUseCase: QueryCitiesUseCase,
+	private val toggleFavouriteCityUseCase: ToggleFavouriteCityUseCase,
+	private val getFavouriteCitiesUseCase: GetFavouriteCitiesUseCase,
+	private val getCurrentCityUseCase: GetCurrentCityUseCase,
+	private val removeFavouriteCitiesUseCase: RemoveFavouriteCityUseCase
 ) : BaseViewModel() {
 
 	private val _searchBarState = MutableStateFlow(
-			SearchBarState(queryText = String.empty(), isActive = false, isEnabled = true, queryResult = listOf())
+		SearchBarState(queryText = String.empty(), isActive = false, isEnabled = true, queryResult = listOf())
 	)
 	val searchBarState = _searchBarState.asStateFlow()
 
@@ -44,6 +44,7 @@ class CitiesViewModel @Inject constructor(
 	val favouriteCityListState = _favouriteCityListState.asStateFlow()
 
 	init {
+		showScreenLoading()
 		getFavouriteCityList()
 	}
 
@@ -57,6 +58,7 @@ class CitiesViewModel @Inject constructor(
 
 	private fun getFavouriteCityListSuccess(response: GetFavouriteCitiesUseCaseResponse) {
 		_favouriteCityListState.update { it.copy(cities = response.list) }
+		showScreenContent()
 	}
 
 	fun onActiveChange(isActive: Boolean) {
