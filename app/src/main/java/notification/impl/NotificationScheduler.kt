@@ -21,7 +21,7 @@ class NotificationScheduler private constructor() {
 		}
 
 		private const val REMINDER_NOTIFICATION_REQUEST_CODE = 1
-		private const val REMINDER_TIME = "08:00"
+		private const val REMINDER_TIME = "8:00"
 		private const val flags = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 	}
 
@@ -47,9 +47,9 @@ class NotificationScheduler private constructor() {
 			set(Calendar.MINUTE, min)
 		}
 
-		/*if (Calendar.getInstance(Locale.ENGLISH).apply { add(Calendar.MINUTE, 1) }.timeInMillis - calendar.timeInMillis > 0) {
+		if (Calendar.getInstance(Locale.ENGLISH).apply { add(Calendar.MINUTE, 1) }.timeInMillis - calendar.timeInMillis > 0) {
 			calendar.add(Calendar.DATE, 1)
-		}*/
+		}
 
 		alarmManager.setAlarmClock(
 			AlarmManager.AlarmClockInfo(calendar.timeInMillis, intent),

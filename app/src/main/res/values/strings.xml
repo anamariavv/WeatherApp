@@ -57,6 +57,8 @@
     <string name="home_screen_city_list_info_message" translatable="false">@string/since_your_favourites_list_is_empty_message</string>
 
     <!--Settings screen-->
+    <string name="settings_screen_title">@string/settings</string>
+
     <!--Weekly screen-->
     <string name="weekly_screen_title" translatable="false">@string/five_day_forecast</string>
     <string name="weekly_screen_forecast_error_title" translatable="false">@string/error</string>

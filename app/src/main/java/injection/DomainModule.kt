@@ -12,8 +12,10 @@ import mapper.impl.CityMapperImpl
 import mapper.impl.ForecastMapperImpl
 import repository.CityRepository
 import repository.ForecastRepository
+import repository.SettingsRepository
 import repository.impl.CityRepositoryImpl
 import repository.impl.ForecastRepositoryImpl
+import repository.impl.SettingsRepositoryImpl
 import usecase.city.AddFavouriteCityUseCase
 import usecase.city.impl.AddFavouriteCityUseCaseImpl
 import usecase.city.GetFavouriteCitiesUseCase
@@ -38,6 +40,10 @@ import usecase.forecast.impl.GetTwelveHourForecastUseCaseImpl
 import usecase.forecast.impl.GetWeeklyForecastUseCaseImpl
 import usecase.location.GetCurrentCityUseCase
 import usecase.location.impl.GetCurrentCityUseCaseImpl
+import usecase.settings.GetUnitsUseCase
+import usecase.settings.ToggleUnitsUseCase
+import usecase.settings.impl.GetUnitsUseCaseImpl
+import usecase.settings.impl.ToggleUnitsUseCaseImpl
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -130,14 +136,29 @@ class DomainModule {
 	}
 
 	@Provides
+	@ViewModelScoped
 	fun provideForecastRepository(
 		getDailyForecastInteractor: GetDailyForecastInteractor,
 		getCurrentConditionsInteractor: GetCurrentConditionsInteractor,
 		getWeeklyForecastInteractor: GetWeeklyForecastInteractor,
 		getTwelveHourForecastInteractor: GetTwelveHourForecastInteractor,
+		getUnitsInteractor: GetUnitsInteractor,
 		forecastMapper: ForecastMapper
 	): ForecastRepository {
-		return ForecastRepositoryImpl(getDailyForecastInteractor, getCurrentConditionsInteractor, getWeeklyForecastInteractor, getTwelveHourForecastInteractor, forecastMapper)
+		return ForecastRepositoryImpl(
+			getDailyForecastInteractor,
+			getCurrentConditionsInteractor,
+			getWeeklyForecastInteractor,
+			getTwelveHourForecastInteractor,
+			getUnitsInteractor,
+			forecastMapper
+		)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideSettingsRepository(toggleUnitsInteractor: ToggleUnitsInteractor, getUnitsInteractor: GetUnitsInteractor): SettingsRepository {
+		return SettingsRepositoryImpl(toggleUnitsInteractor, getUnitsInteractor)
 	}
 
 	@Provides
@@ -162,6 +183,18 @@ class DomainModule {
 	@ViewModelScoped
 	fun provideGetSelectedCityLocationKeyUseCase(cityRepository: CityRepository): GetSelectedCityLocationKeyUseCase {
 		return GetSelectedCityLocationKeyUseCaseImpl(cityRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideGetUnitsUseCase(settingsRepository: SettingsRepository) : GetUnitsUseCase {
+		return GetUnitsUseCaseImpl(settingsRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideToggleUnitsUseCase(settingsRepository: SettingsRepository) : ToggleUnitsUseCase {
+		return ToggleUnitsUseCaseImpl(settingsRepository)
 	}
 
 }

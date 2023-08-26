@@ -10,9 +10,10 @@ import com.example.weatherapp.R
 import dagger.hilt.android.AndroidEntryPoint
 import ui.main.MainActivity
 
+
 @AndroidEntryPoint
 class ScheduledNotificationReceiver : BroadcastReceiver() {
-	lateinit var notificationScheduler: NotificationScheduler
+	var notificationScheduler = NotificationScheduler.getInstance()
 
 	private val flags = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 
@@ -27,7 +28,9 @@ class ScheduledNotificationReceiver : BroadcastReceiver() {
 	}
 
 	private fun NotificationManager.sendReminderNotification(applicationContext: Context) {
-		val contentIntent = Intent(applicationContext, MainActivity::class.java)
+		val contentIntent = Intent(applicationContext, MainActivity::class.java).setFlags(
+			Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+		)
 		val pendingIntent = PendingIntent.getActivity(
 			applicationContext,
 			1,
@@ -35,11 +38,10 @@ class ScheduledNotificationReceiver : BroadcastReceiver() {
 			flags
 		)
 		val builder = NotificationCompat.Builder(applicationContext, "forecastNotificationChannel")
-			.setContentTitle("Forecast")
-			.setContentText("Test title")
+			.setContentTitle("Good Morning!")
+			.setContentText("Click here to view the current weather")
 			.setSmallIcon(R.drawable.sunny)
 			.setContentIntent(pendingIntent)
-			.setAutoCancel(true)
 
 		notify(1, builder.build())
 	}

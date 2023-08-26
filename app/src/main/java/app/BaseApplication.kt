@@ -5,17 +5,15 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import dagger.hilt.android.HiltAndroidApp
 import notification.impl.NotificationScheduler
-import javax.inject.Inject
 
 @HiltAndroidApp
 class BaseApplication : Application() {
-	@Inject
-	lateinit var reminderManagerImpl: NotificationScheduler
+	var notificationScheduler = NotificationScheduler.getInstance()
 
 	override fun onCreate() {
 		super.onCreate()
 		createNotificationChannel()
-		reminderManagerImpl.startReminder(this)
+		notificationScheduler.startReminder(this)
 	}
 
 	private fun createNotificationChannel() {

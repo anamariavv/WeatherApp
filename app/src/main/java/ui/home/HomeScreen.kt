@@ -1,8 +1,5 @@
 package ui.home
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -40,7 +37,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.weatherapp.R
 import model.city.City
@@ -55,7 +51,6 @@ import ui.theme.Typography
 import ui.theme.White
 import utils.empty
 
-
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 
@@ -66,16 +61,27 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 	val screenState by viewModel.screenState.collectAsState()
 	val context = LocalContext.current
 
-	val launcher = rememberLauncherForActivityResult(
+	/*val launcherNotifications = rememberLauncherForActivityResult(
 		contract = ActivityResultContracts.RequestPermission(),
 		onResult = viewModel::onNotificationPermissionResult
+	)*/
+	
+	val launcherLocation = rememberLauncherForActivityResult(
+		contract = ActivityResultContracts.RequestPermission(),
+		onResult = viewModel::onLocationPermissionRequestResult
 	)
 
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+	/*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
 		if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-			launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+			launcherNotifications.launch(Manifest.permission.POST_NOTIFICATIONS)
 		}
-	}
+	}*/
+
+	/*LaunchedEffect(launcherLocation) {
+		if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			launcherLocation.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+		}
+	}*/
 
 	baseScreen(
 		state = screenState,

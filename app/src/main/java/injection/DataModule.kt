@@ -147,8 +147,19 @@ class DataModule {
 
 	@Provides
 	@ViewModelScoped
-	fun providGetSelectedCityLocationKeyInteractor(applicationStorage: ApplicationStorage) : GetSelectedCityLocationKeyInteractor {
+	fun provideGetSelectedCityLocationKeyInteractor(applicationStorage: ApplicationStorage) : GetSelectedCityLocationKeyInteractor {
 		return GetSelectedCityLocationKeyInteractorImpl(applicationStorage)
 	}
 
+	@Provides
+	@ViewModelScoped
+	fun provideToggleUnitsInteractor(applicationStorage: ApplicationStorage) : ToggleUnitsInteractor {
+		return ToggleUnitsInteractorImpl(applicationStorage)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideGetUnitsInteractor(applicationStorage: ApplicationStorage) : GetUnitsInteractor {
+		return GetUnitsInteractorImpl(applicationStorage)
+	}
 }

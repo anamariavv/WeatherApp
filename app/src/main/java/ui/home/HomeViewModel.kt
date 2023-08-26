@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.update
 import model.city.City
 import model.common.ErrorData
 import ui.base.BaseViewModel
+import ui.cities.model.CityScreenMessages
 import ui.common.model.CommonMessages
 import ui.common.mapper.UiForecastMapper
 import ui.home.model.DropdownState
@@ -58,6 +59,14 @@ class HomeViewModel @Inject constructor(
 		runSuspend { getFavouriteCities() }
 	}
 
+	fun onLocationPermissionRequestResult(isGranted: Boolean) {
+		if (isGranted) {
+			runSuspend { getFavouriteCities() }
+		} else {
+			showInfo(CityScreenMessages.LocationPermissionNeeded)
+		}
+	}
+
 	private suspend fun getFavouriteCities() {
 		getFavouriteCitiesUseCase().onFinished(this::getFavouriteCitiesSuccess, this::handleErrors)
 	}
@@ -67,6 +76,7 @@ class HomeViewModel @Inject constructor(
 			_dropdownState.update { it.copy(list = response.list, selectedIndex = 0, selectedValue = response.list[0]) }
 			runSuspend { getSelectedCityLocationKey() }
 		} else {
+			//check permission granted status, if granted get current location, if not granted pokazati poruku
 			runSuspend { getCurrentCity() }
 		}
 	}
