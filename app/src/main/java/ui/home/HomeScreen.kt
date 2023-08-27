@@ -40,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.weatherapp.R
@@ -61,7 +62,6 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 	val dropdownState by viewModel.dropdownState.collectAsState()
 	val twelveHourForecastState by viewModel.hourlyForecastState.collectAsState()
 	val currentConditionsState by viewModel.currentConditionsState.collectAsState()
-	val shouldRequestLocationPermissionState by viewModel.shouldRequestLocationPermissionState.collectAsState()
 	val dialogState by viewModel.dialogState.collectAsState()
 	val screenState by viewModel.screenState.collectAsState()
 	val context = LocalContext.current
@@ -98,28 +98,30 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 		}
 	)
 
-	if (shouldRequestLocationPermissionState) {
+	if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && dropdownState.list.isEmpty()) {
 		AlertDialog(
 			onDismissRequest = viewModel::dismissDialog,
+			properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true),
 			title = { Text(text = "Permission Needed") },
-			text = { Text("Permission is needed to get forecast data based on location, since favourites are empty." +
-					              " To manage favourites, go to the favourite cities screen." +
-					              " Would you like to grant location permission?") },
+			text = {
+				Text(
+					"Permission is needed to get forecast data based on location" + " Would you like to grant location permission?"
+				)
+			},
 			confirmButton = {
 				Button(onClick = {
-					if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-						launcherLocation.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-					}
+					launcherLocation.launch(Manifest.permission.ACCESS_FINE_LOCATION)
 				}) {
 					Text("Yes")
 				}
 			},
 			dismissButton = {
-				Button(onClick = viewModel::onLocationNoButtonClicked) {
+				Button(onClick = viewModel::dismissDialog) {
 					Text("No")
 				}
 			}
 		)
+
 	}
 
 	dialog(dialogState, viewModel::dismissDialog)

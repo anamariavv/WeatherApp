@@ -1,6 +1,5 @@
 package ui.home
 
-import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -58,9 +57,6 @@ class HomeViewModel @Inject constructor(
 	private val _currentConditionsState = MutableStateFlow(UiCurrentConditions())
 	val currentConditionsState = _currentConditionsState.asStateFlow()
 
-	private val _shouldRequestLocationPermissionState = MutableStateFlow(false)
-	val shouldRequestLocationPermissionState = _shouldRequestLocationPermissionState.asStateFlow()
-
 	init {
 		showScreenLoading()
 		runSuspend { getFavouriteCities() }
@@ -86,27 +82,13 @@ class HomeViewModel @Inject constructor(
 	private fun updatePermissionState(isGranted: Boolean) {
 		if (isGranted) {
 			runSuspend { getCurrentCity() }
-			_shouldRequestLocationPermissionState.update { false }
 		} else {
-			_shouldRequestLocationPermissionState.update { true }
+			showScreenNoContent()
 		}
-	}
-
-	fun onLocationNoButtonClicked() {
-		runSuspend { toggleLocationPermissionState(false) }
-	}
-
-	private suspend fun toggleLocationPermissionState(isGranted: Boolean) {
-		toggleLocationPermissionStateUseCase(isGranted).onFinished(this::toggleLocationPermissionStateSuccess, this::handleErrors)
-	}
-
-	private fun toggleLocationPermissionStateSuccess() {
-		_shouldRequestLocationPermissionState.update { false }
 	}
 
 	fun onLocationPermissionRequestResult(isGranted: Boolean) {
 		if (isGranted) {
-			runSuspend { toggleLocationPermissionState(true) }
 			runSuspend { getCurrentCity() }
 		} else {
 			showScreenNoContent()

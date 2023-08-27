@@ -171,7 +171,7 @@ class DataModule {
 
 	@Provides
 	@ViewModelScoped
-	fun provideGetLocationPermissionStateInteractor(applicationStorage: ApplicationStorage) : GetLocationPermissionStateInteractor {
-		return GetLocationPermissionStateInteractorImpl(applicationStorage)
+	fun provideGetLocationPermissionStateInteractor(@ApplicationContext context: Context, applicationStorage: ApplicationStorage) : GetLocationPermissionStateInteractor {
+		return GetLocationPermissionStateInteractorImpl(context, applicationStorage)
 	}
 }
