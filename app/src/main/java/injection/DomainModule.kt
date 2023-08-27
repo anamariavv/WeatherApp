@@ -40,9 +40,13 @@ import usecase.forecast.impl.GetTwelveHourForecastUseCaseImpl
 import usecase.forecast.impl.GetWeeklyForecastUseCaseImpl
 import usecase.location.GetCurrentCityUseCase
 import usecase.location.impl.GetCurrentCityUseCaseImpl
+import usecase.settings.GetLocationPermissionStateUseCase
 import usecase.settings.GetUnitsUseCase
+import usecase.settings.ToggleLocationPermissionStateUseCase
 import usecase.settings.ToggleUnitsUseCase
+import usecase.settings.impl.GetLocationPermissionStateUseCaseImpl
 import usecase.settings.impl.GetUnitsUseCaseImpl
+import usecase.settings.impl.ToggleLocationPermissionStateUseCaseImpl
 import usecase.settings.impl.ToggleUnitsUseCaseImpl
 
 @Module
@@ -157,8 +161,13 @@ class DomainModule {
 
 	@Provides
 	@ViewModelScoped
-	fun provideSettingsRepository(toggleUnitsInteractor: ToggleUnitsInteractor, getUnitsInteractor: GetUnitsInteractor): SettingsRepository {
-		return SettingsRepositoryImpl(toggleUnitsInteractor, getUnitsInteractor)
+	fun provideSettingsRepository(
+		toggleUnitsInteractor: ToggleUnitsInteractor,
+		getUnitsInteractor: GetUnitsInteractor,
+		toggleLocationPermissionStateInteractor: ToggleLocationPermissionStateInteractor,
+		getLocationPermissionStateInteractor: GetLocationPermissionStateInteractor
+	): SettingsRepository {
+		return SettingsRepositoryImpl(toggleUnitsInteractor, getUnitsInteractor, toggleLocationPermissionStateInteractor, getLocationPermissionStateInteractor)
 	}
 
 	@Provides
@@ -187,14 +196,25 @@ class DomainModule {
 
 	@Provides
 	@ViewModelScoped
-	fun provideGetUnitsUseCase(settingsRepository: SettingsRepository) : GetUnitsUseCase {
+	fun provideGetUnitsUseCase(settingsRepository: SettingsRepository): GetUnitsUseCase {
 		return GetUnitsUseCaseImpl(settingsRepository)
 	}
 
 	@Provides
 	@ViewModelScoped
-	fun provideToggleUnitsUseCase(settingsRepository: SettingsRepository) : ToggleUnitsUseCase {
+	fun provideToggleUnitsUseCase(settingsRepository: SettingsRepository): ToggleUnitsUseCase {
 		return ToggleUnitsUseCaseImpl(settingsRepository)
 	}
 
+	@Provides
+	@ViewModelScoped
+	fun provideToggleLocationPermissionStateUseCase(settingsRepository: SettingsRepository): ToggleLocationPermissionStateUseCase {
+		return ToggleLocationPermissionStateUseCaseImpl(settingsRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideGetLocationPermissionStateUseCase(settingsRepository: SettingsRepository): GetLocationPermissionStateUseCase {
+		return GetLocationPermissionStateUseCaseImpl(settingsRepository)
+	}
 }

@@ -1,5 +1,7 @@
 package ui.home
 
+import android.Manifest
+import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.DropdownMenu
@@ -37,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.weatherapp.R
 import model.city.City
@@ -57,6 +61,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 	val dropdownState by viewModel.dropdownState.collectAsState()
 	val twelveHourForecastState by viewModel.hourlyForecastState.collectAsState()
 	val currentConditionsState by viewModel.currentConditionsState.collectAsState()
+	val shouldRequestLocationPermissionState by viewModel.shouldRequestLocationPermissionState.collectAsState()
 	val dialogState by viewModel.dialogState.collectAsState()
 	val screenState by viewModel.screenState.collectAsState()
 	val context = LocalContext.current
@@ -65,7 +70,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 		contract = ActivityResultContracts.RequestPermission(),
 		onResult = viewModel::onNotificationPermissionResult
 	)*/
-	
+
 	val launcherLocation = rememberLauncherForActivityResult(
 		contract = ActivityResultContracts.RequestPermission(),
 		onResult = viewModel::onLocationPermissionRequestResult
@@ -74,12 +79,6 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 	/*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
 		if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
 			launcherNotifications.launch(Manifest.permission.POST_NOTIFICATIONS)
-		}
-	}*/
-
-	/*LaunchedEffect(launcherLocation) {
-		if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			launcherLocation.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
 		}
 	}*/
 
@@ -98,6 +97,30 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 			)
 		}
 	)
+
+	if (shouldRequestLocationPermissionState) {
+		AlertDialog(
+			onDismissRequest = viewModel::dismissDialog,
+			title = { Text(text = "Permission Needed") },
+			text = { Text("Permission is needed to get forecast data based on location, since favourites are empty." +
+					              " To manage favourites, go to the favourite cities screen." +
+					              " Would you like to grant location permission?") },
+			confirmButton = {
+				Button(onClick = {
+					if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+						launcherLocation.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+					}
+				}) {
+					Text("Yes")
+				}
+			},
+			dismissButton = {
+				Button(onClick = viewModel::onLocationNoButtonClicked) {
+					Text("No")
+				}
+			}
+		)
+	}
 
 	dialog(dialogState, viewModel::dismissDialog)
 }

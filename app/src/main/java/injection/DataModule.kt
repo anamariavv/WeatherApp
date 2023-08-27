@@ -162,4 +162,16 @@ class DataModule {
 	fun provideGetUnitsInteractor(applicationStorage: ApplicationStorage) : GetUnitsInteractor {
 		return GetUnitsInteractorImpl(applicationStorage)
 	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideToggleLocationPermissionStateInteractor(applicationStorage: ApplicationStorage) : ToggleLocationPermissionStateInteractor {
+		return ToggleLocationPermissionStateInteractorImpl(applicationStorage)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideGetLocationPermissionStateInteractor(applicationStorage: ApplicationStorage) : GetLocationPermissionStateInteractor {
+		return GetLocationPermissionStateInteractorImpl(applicationStorage)
+	}
 }

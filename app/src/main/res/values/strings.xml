@@ -32,6 +32,7 @@
     <string name="an_error_occurred_while_getting_weekly_forecast">An error occurred while getting weekly forecast</string>
     <string name="an_unexpected_error_occurred">An unexpected error occurred</string>
     <string name="five_day_forecast">5 day forecast</string>
+    <string name="location_permission_is_necessary_for_retrieving_forecast_information">Location permission is necessary for retrieving forecast information</string>
 
     <!--Common -->
     <string name="dialog_dismiss_button" translatable="false">@string/dismiss</string>
@@ -55,6 +56,8 @@
     <string name="home_screen_get_favourites_error_message" translatable="false">@string/an_error_occurred_while_getting_favourite_cities</string>
     <string name="home_screen_get_forecast_message" translatable="false">@string/an_error_occurred_while_getting_forecast_information</string>
     <string name="home_screen_city_list_info_message" translatable="false">@string/since_your_favourites_list_is_empty_message</string>
+    <string name ="home_screen_location_permission_title" translatable="false">@string/permission_necessary</string>
+    <string name ="home_screen_location_permission_message" translatable="false">@string/location_permission_is_necessary_for_retrieving_forecast_information</string>
 
     <!--Settings screen-->
     <string name="settings_screen_title">@string/settings</string>

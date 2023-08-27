@@ -1,5 +1,6 @@
 package ui.home
 
+import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -7,7 +8,6 @@ import kotlinx.coroutines.flow.update
 import model.city.City
 import model.common.ErrorData
 import ui.base.BaseViewModel
-import ui.cities.model.CityScreenMessages
 import ui.common.model.CommonMessages
 import ui.common.mapper.UiForecastMapper
 import ui.home.model.DropdownState
@@ -30,6 +30,8 @@ import usecase.forecast.GetTwelveHourForecastUseCase.GetTwelveHourForecastError
 import usecase.location.GetCurrentCityUseCase
 import usecase.location.GetCurrentCityUseCase.GetCurrentCityUseCaseResponse
 import usecase.location.GetCurrentCityUseCase.GetCurrentCityUseCaseError
+import usecase.settings.GetLocationPermissionStateUseCase
+import usecase.settings.ToggleLocationPermissionStateUseCase
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,6 +44,8 @@ class HomeViewModel @Inject constructor(
 	private val getSelectedCityLocationKeyUseCase: GetSelectedCityLocationKeyUseCase,
 	private val addFavouriteCityUseCase: AddFavouriteCityUseCase,
 	private val uiForecastMapper: UiForecastMapper,
+	private val toggleLocationPermissionStateUseCase: ToggleLocationPermissionStateUseCase,
+	private val getLocationPermissionStateUseCase: GetLocationPermissionStateUseCase
 ) : BaseViewModel() {
 	private lateinit var currentLocationKey: String
 
@@ -54,17 +58,12 @@ class HomeViewModel @Inject constructor(
 	private val _currentConditionsState = MutableStateFlow(UiCurrentConditions())
 	val currentConditionsState = _currentConditionsState.asStateFlow()
 
+	private val _shouldRequestLocationPermissionState = MutableStateFlow(false)
+	val shouldRequestLocationPermissionState = _shouldRequestLocationPermissionState.asStateFlow()
+
 	init {
 		showScreenLoading()
 		runSuspend { getFavouriteCities() }
-	}
-
-	fun onLocationPermissionRequestResult(isGranted: Boolean) {
-		if (isGranted) {
-			runSuspend { getFavouriteCities() }
-		} else {
-			showInfo(CityScreenMessages.LocationPermissionNeeded)
-		}
 	}
 
 	private suspend fun getFavouriteCities() {
@@ -76,10 +75,44 @@ class HomeViewModel @Inject constructor(
 			_dropdownState.update { it.copy(list = response.list, selectedIndex = 0, selectedValue = response.list[0]) }
 			runSuspend { getSelectedCityLocationKey() }
 		} else {
-			//check permission granted status, if granted get current location, if not granted pokazati poruku
-			runSuspend { getCurrentCity() }
+			runSuspend { getLocationPermissionState() }
 		}
 	}
+
+	private suspend fun getLocationPermissionState() {
+		getLocationPermissionStateUseCase().onFinished(this::updatePermissionState, this::handleErrors)
+	}
+
+	private fun updatePermissionState(isGranted: Boolean) {
+		if (isGranted) {
+			runSuspend { getCurrentCity() }
+			_shouldRequestLocationPermissionState.update { false }
+		} else {
+			_shouldRequestLocationPermissionState.update { true }
+		}
+	}
+
+	fun onLocationNoButtonClicked() {
+		runSuspend { toggleLocationPermissionState(false) }
+	}
+
+	private suspend fun toggleLocationPermissionState(isGranted: Boolean) {
+		toggleLocationPermissionStateUseCase(isGranted).onFinished(this::toggleLocationPermissionStateSuccess, this::handleErrors)
+	}
+
+	private fun toggleLocationPermissionStateSuccess() {
+		_shouldRequestLocationPermissionState.update { false }
+	}
+
+	fun onLocationPermissionRequestResult(isGranted: Boolean) {
+		if (isGranted) {
+			runSuspend { toggleLocationPermissionState(true) }
+			runSuspend { getCurrentCity() }
+		} else {
+			showScreenNoContent()
+		}
+	}
+
 
 	private suspend fun getSelectedCityLocationKey() {
 		getSelectedCityLocationKeyUseCase().onFinished(this::getSelectedCityLocationKeySuccess, this::handleErrors)

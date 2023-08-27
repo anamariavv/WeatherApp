@@ -7,6 +7,8 @@ sealed class DialogState(val message: Message?) {
 
 	class Loading : DialogState(message = null)
 
+	class PermissionRequest(message: Message) : DialogState(message = message)
+
 	class Info(message: Message) : DialogState(message = message)
 
 	class Error(message: Message) : DialogState(message = message)
