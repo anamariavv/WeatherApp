@@ -1,4 +1,4 @@
-package notification.impl
+package notification
 
 import android.app.NotificationManager
 import android.app.PendingIntent

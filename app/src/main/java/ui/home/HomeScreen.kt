@@ -1,7 +1,12 @@
 package ui.home
 
 import android.Manifest
+import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
+import android.util.Log
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -28,8 +33,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.Center
@@ -41,6 +49,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.weatherapp.R
@@ -50,6 +60,7 @@ import ui.common.component.dialog
 import ui.home.model.DropdownState
 import ui.home.model.UiCurrentConditions
 import ui.home.model.UiHourlyForecast
+import ui.main.MainActivity
 import ui.theme.Blue
 import ui.theme.Shapes
 import ui.theme.Typography
@@ -66,21 +77,18 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 	val screenState by viewModel.screenState.collectAsState()
 	val context = LocalContext.current
 
-	/*val launcherNotifications = rememberLauncherForActivityResult(
+	val launcherNotifications = rememberLauncherForActivityResult(
 		contract = ActivityResultContracts.RequestPermission(),
 		onResult = viewModel::onNotificationPermissionResult
-	)*/
-
-	val launcherLocation = rememberLauncherForActivityResult(
-		contract = ActivityResultContracts.RequestPermission(),
-		onResult = viewModel::onLocationPermissionRequestResult
 	)
 
-	/*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-		if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-			launcherNotifications.launch(Manifest.permission.POST_NOTIFICATIONS)
+	LaunchedEffect(null) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+			if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+				launcherNotifications.launch(Manifest.permission.POST_NOTIFICATIONS)
+			}
 		}
-	}*/
+	}
 
 	baseScreen(
 		state = screenState,
@@ -97,32 +105,6 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 			)
 		}
 	)
-
-	if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && dropdownState.list.isEmpty()) {
-		AlertDialog(
-			onDismissRequest = viewModel::dismissDialog,
-			properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true),
-			title = { Text(text = "Permission Needed") },
-			text = {
-				Text(
-					"Permission is needed to get forecast data based on location" + " Would you like to grant location permission?"
-				)
-			},
-			confirmButton = {
-				Button(onClick = {
-					launcherLocation.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-				}) {
-					Text("Yes")
-				}
-			},
-			dismissButton = {
-				Button(onClick = viewModel::dismissDialog) {
-					Text("No")
-				}
-			}
-		)
-
-	}
 
 	dialog(dialogState, viewModel::dismissDialog)
 }

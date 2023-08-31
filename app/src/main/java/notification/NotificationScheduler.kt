@@ -1,4 +1,4 @@
-package notification.impl
+package notification
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -13,7 +13,7 @@ class NotificationScheduler private constructor() {
 
 		fun getInstance(): NotificationScheduler {
 			synchronized(this) {
-				if (!::instance.isInitialized) {
+				if (!Companion::instance.isInitialized) {
 					instance = NotificationScheduler()
 				}
 				return instance

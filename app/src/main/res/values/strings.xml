@@ -15,6 +15,7 @@
     <string name="dismiss">Dismiss</string>
     <string name="favourite_cities">Favourite Cities</string>
     <string name="error">Error</string>
+    <string name="ok">Ok</string>
     <string name="an_error_occurred_while_adding_city_to_favourites">An error occurred while adding city to favourites</string>
     <string name="an_error_occurred_while_removing_city_from_favourites">An error occurred while removing city from favourites</string>
     <string name="an_error_occurred_while_getting_favourite_cities">An error occurred while getting favourite cities</string>
@@ -27,7 +28,7 @@
     <string name="daily_weather">Daily weather</string>
     <string name="cities_info">Cities info</string>
     <string name="an_error_occurred_while_getting_forecast_information">An error occurred while getting forecast information</string>
-    <string name="since_your_favourites_list_is_empty_message">Since your favourites list is empty, forecast information will be displayed for your current location, which will be automatically added to your favourites list! To manage favourites, go to the cities screen.</string>
+    <string name="since_your_favourites_list_is_empty_message">To see forecast information, go to the cities screen to add some cities to favourites.</string>
     <string name="this_permission_is_necessary_in_order_for_notifications_to_work">This permission is necessary in order for notifications to work</string>
     <string name="an_error_occurred_while_getting_weekly_forecast">An error occurred while getting weekly forecast</string>
     <string name="an_unexpected_error_occurred">An unexpected error occurred</string>
@@ -35,7 +36,7 @@
     <string name="location_permission_is_necessary_for_retrieving_forecast_information">Location permission is necessary for retrieving forecast information</string>
 
     <!--Common -->
-    <string name="dialog_dismiss_button" translatable="false">@string/dismiss</string>
+    <string name="dialog_dismiss_button" translatable="false">@string/ok</string>
     <string name="common_error_getting_location_title" translatable="false">@string/error</string>
     <string name="common_error_getting_location_message" translatable="false">@string/an_error_occurred_while_getting_your_location</string>
     <string name="common_unexpected_error_title" translatable="false">@string/error</string>

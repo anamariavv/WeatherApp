@@ -26,11 +26,7 @@ import usecase.forecast.GetCurrentConditionsUseCase.GetCurrentConditionsError
 import usecase.forecast.GetTwelveHourForecastUseCase
 import usecase.forecast.GetTwelveHourForecastUseCase.GetTwelveHourForecastUseCaseResponse
 import usecase.forecast.GetTwelveHourForecastUseCase.GetTwelveHourForecastError
-import usecase.location.GetCurrentCityUseCase
-import usecase.location.GetCurrentCityUseCase.GetCurrentCityUseCaseResponse
 import usecase.location.GetCurrentCityUseCase.GetCurrentCityUseCaseError
-import usecase.settings.GetLocationPermissionStateUseCase
-import usecase.settings.ToggleLocationPermissionStateUseCase
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,13 +34,9 @@ class HomeViewModel @Inject constructor(
 	private val getFavouriteCitiesUseCase: GetFavouriteCitiesUseCase,
 	private val getTwelveHourForecastUseCase: GetTwelveHourForecastUseCase,
 	private val getCurrentConditionsUseCase: GetCurrentConditionsUseCase,
-	private val getCurrentCityUseCase: GetCurrentCityUseCase,
 	private val setSelectedCityLocationKeyUseCase: SetSelectedCityLocationKeyUseCase,
 	private val getSelectedCityLocationKeyUseCase: GetSelectedCityLocationKeyUseCase,
-	private val addFavouriteCityUseCase: AddFavouriteCityUseCase,
 	private val uiForecastMapper: UiForecastMapper,
-	private val toggleLocationPermissionStateUseCase: ToggleLocationPermissionStateUseCase,
-	private val getLocationPermissionStateUseCase: GetLocationPermissionStateUseCase
 ) : BaseViewModel() {
 	private lateinit var currentLocationKey: String
 
@@ -71,30 +63,10 @@ class HomeViewModel @Inject constructor(
 			_dropdownState.update { it.copy(list = response.list, selectedIndex = 0, selectedValue = response.list[0]) }
 			runSuspend { getSelectedCityLocationKey() }
 		} else {
-			runSuspend { getLocationPermissionState() }
-		}
-	}
-
-	private suspend fun getLocationPermissionState() {
-		getLocationPermissionStateUseCase().onFinished(this::updatePermissionState, this::handleErrors)
-	}
-
-	private fun updatePermissionState(isGranted: Boolean) {
-		if (isGranted) {
-			runSuspend { getCurrentCity() }
-		} else {
+			showInfoDialog(HomeScreenMessages.CityListInfo)
 			showScreenNoContent()
 		}
 	}
-
-	fun onLocationPermissionRequestResult(isGranted: Boolean) {
-		if (isGranted) {
-			runSuspend { getCurrentCity() }
-		} else {
-			showScreenNoContent()
-		}
-	}
-
 
 	private suspend fun getSelectedCityLocationKey() {
 		getSelectedCityLocationKeyUseCase().onFinished(this::getSelectedCityLocationKeySuccess, this::handleErrors)
@@ -116,19 +88,6 @@ class HomeViewModel @Inject constructor(
 
 		_dropdownState.update { it.copy(selectedIndex = selectedIndex, selectedValue = selectedCity) }
 		updateForecastInformation(response.locationKey)
-	}
-
-	private suspend fun getCurrentCity() {
-		getCurrentCityUseCase().onFinished(this::getCurrentCitySuccess, this::handleErrors)
-	}
-
-	private fun getCurrentCitySuccess(response: GetCurrentCityUseCaseResponse) {
-		currentLocationKey = response.city.locationKey
-		_dropdownState.update { it.copy(list = listOf(response.city), selectedIndex = 0, selectedValue = response.city) }
-		runSuspend { updateForecastInformation(response.city.locationKey) }
-		runSuspend { setSelectedCityLocationKey(response.city.locationKey) }
-		runSuspend { addFavouriteCityUseCase(response.city) }
-		showInfo(HomeScreenMessages.CityListInfo)
 	}
 
 	fun closeDropdown() {
@@ -178,16 +137,16 @@ class HomeViewModel @Inject constructor(
 
 	fun onNotificationPermissionResult(isGranted: Boolean) {
 		if (!isGranted) {
-			showInfo(HomeScreenMessages.NotificationPermissionInfo)
+			showInfoDialog(HomeScreenMessages.NotificationPermissionInfo)
 		}
 	}
 
 	private fun handleErrors(errorData: ErrorData) {
 		when (errorData.errorType) {
-			GetFavouriteCitiesError.GET_FAVOURITES_ERROR -> showError(HomeScreenMessages.GetFavouriteCitiesError)
-			GetTwelveHourForecastError.GET_TWELVE_HOUR_FORECAST_ERROR -> showError(HomeScreenMessages.GetForecastError)
-			GetCurrentConditionsError.GET_CONDITIONS_ERROR -> showError(HomeScreenMessages.GetForecastError)
-			GetCurrentCityUseCaseError.GET_LOCATION_ERROR -> showError(CommonMessages.GetLocationError)
+			GetFavouriteCitiesError.GET_FAVOURITES_ERROR -> showErrorDialog(HomeScreenMessages.GetFavouriteCitiesError)
+			GetTwelveHourForecastError.GET_TWELVE_HOUR_FORECAST_ERROR -> showErrorDialog(HomeScreenMessages.GetForecastError)
+			GetCurrentConditionsError.GET_CONDITIONS_ERROR -> showErrorDialog(HomeScreenMessages.GetForecastError)
+			GetCurrentCityUseCaseError.GET_LOCATION_ERROR -> showErrorDialog(CommonMessages.GetLocationError)
 		}
 
 		showScreenNoContent()

@@ -107,12 +107,16 @@ class CitiesViewModel @Inject constructor(
 		if (isGranted) {
 			getCurrentCity()
 		} else {
-			showInfo(CityScreenMessages.LocationPermissionNeeded)
+
 		}
 	}
 
+	fun showLocationDeniedDialog() {
+		showInfoDialog(CityScreenMessages.LocationPermissionNeeded)
+	}
+
 	fun getCurrentCity() {
-		showLoading()
+		showLoadingDialog()
 		runSuspend { getCurrentCityInternal() }
 	}
 
@@ -121,7 +125,7 @@ class CitiesViewModel @Inject constructor(
 	}
 
 	private fun onGetCurrentCitySuccess(response: GetCurrentCityUseCaseResponse) {
-		showInfo(CityScreenMessages.LocationResultInfo(response.city.localizedName, response.city.countryLocalizedName))
+		showInfoDialog(CityScreenMessages.LocationResultInfo(response.city.localizedName, response.city.countryLocalizedName))
 	}
 
 	fun removeFavouriteCity(city: City, index: Int) {
@@ -135,11 +139,11 @@ class CitiesViewModel @Inject constructor(
 
 	private fun handleErrors(errorData: ErrorData) {
 		when (errorData.errorType) {
-			ToggleFavouriteCitiesError.ADD_FAVOURITE_CITY_ERROR -> showError(CityScreenMessages.AddFavouriteCityError)
-			ToggleFavouriteCitiesError.REMOVE_FAVOURITE_CITY_ERROR -> showError(CityScreenMessages.RemoveFavouriteCityError)
-			GetFavouriteCitiesError.GET_FAVOURITES_ERROR -> showError(CityScreenMessages.GetFavouritesError)
-			QueryCitiesError.QUERY_CITIES_ERROR -> showError(CityScreenMessages.QueryCitiesError)
-			GetCurrentCityUseCaseError.GET_LOCATION_ERROR -> showError(CommonMessages.GetLocationError)
+			ToggleFavouriteCitiesError.ADD_FAVOURITE_CITY_ERROR -> showErrorDialog(CityScreenMessages.AddFavouriteCityError)
+			ToggleFavouriteCitiesError.REMOVE_FAVOURITE_CITY_ERROR -> showErrorDialog(CityScreenMessages.RemoveFavouriteCityError)
+			GetFavouriteCitiesError.GET_FAVOURITES_ERROR -> showErrorDialog(CityScreenMessages.GetFavouritesError)
+			QueryCitiesError.QUERY_CITIES_ERROR -> showErrorDialog(CityScreenMessages.QueryCitiesError)
+			GetCurrentCityUseCaseError.GET_LOCATION_ERROR -> showErrorDialog(CommonMessages.GetLocationError)
 		}
 	}
 }

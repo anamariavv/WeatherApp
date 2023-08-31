@@ -27,15 +27,15 @@ abstract class BaseViewModel : ViewModel() {
 		viewModelScope.launch { job() }
 	}
 
-	protected fun showError(message: Message) {
+	protected fun showErrorDialog(message: Message) {
 		_dialogState.update { DialogState.Error(message = message) }
 	}
 
-	protected fun showInfo(message: Message) {
+	protected fun showInfoDialog(message: Message) {
 		_dialogState.update { DialogState.Info(message = message) }
 	}
 
-	protected fun showLoading() {
+	protected fun showLoadingDialog() {
 		_dialogState.update { DialogState.Loading() }
 	}
 

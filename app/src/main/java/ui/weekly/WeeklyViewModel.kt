@@ -41,7 +41,7 @@ class WeeklyViewModel @Inject constructor(
 
 	private fun getWeeklyForecastError(errorData: ErrorData) {
 		when (errorData.errorType) {
-			GetWeeklyForecastError.GET_WEEKLY_FORECAST_ERROR -> showError(WeeklyScreenMessages.GetWeeklyForecastError)
+			GetWeeklyForecastError.GET_WEEKLY_FORECAST_ERROR -> showErrorDialog(WeeklyScreenMessages.GetWeeklyForecastError)
 		}
 
 		showScreenNoContent()

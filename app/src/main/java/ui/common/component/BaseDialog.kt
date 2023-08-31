@@ -1,5 +1,7 @@
 package ui.common.component
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -34,20 +36,20 @@ fun dialog(
 			Surface(shape = Shapes.medium) {
 				Column(
 					Modifier
-							.padding(20.dp)
-							.fillMaxWidth()
+						.padding(20.dp)
+						.fillMaxWidth()
 				) {
 					Text(text = state.message?.getTitleId()?.let { stringResource(id = it) } ?: String.empty(),
-						 style = Typography.titleMedium,
-						 modifier = Modifier.padding(bottom = 20.dp)
+					     style = Typography.titleMedium,
+					     modifier = Modifier.padding(bottom = 20.dp)
 					)
 					Text(text = state.message?.getMessageId()?.let { messageId ->
 						state.message.getArguments()?.let {
 							stringResource(id = messageId, *it.toTypedArray())
 						} ?: stringResource(id = messageId)
 					} ?: String.empty(),
-						 style = Typography.bodyMedium,
-						 modifier = Modifier.padding(bottom = 20.dp)
+					     style = Typography.bodyMedium,
+					     modifier = Modifier.padding(bottom = 20.dp)
 					)
 
 					if (state is DialogState.Loading) {

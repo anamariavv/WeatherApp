@@ -4,7 +4,7 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import dagger.hilt.android.HiltAndroidApp
-import notification.impl.NotificationScheduler
+import notification.NotificationScheduler
 
 @HiltAndroidApp
 class BaseApplication : Application() {

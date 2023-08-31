@@ -14,7 +14,8 @@ import navigation.NavigationDelegate
 import navigation.impl.NavigationDelegateImpl
 import navigation.Router
 import navigation.impl.RouterImpl
-import notification.impl.ScheduledNotificationReceiver
+import notification.BootReceiver
+import notification.ScheduledNotificationReceiver
 import source.local.LocationDatabase
 import source.local.impl.LocationDatabaseImpl
 import ui.common.mapper.UiForecastMapper
@@ -58,5 +59,11 @@ class AppModule {
     @Singleton
     fun provideScheduledNotificationReceiver(): ScheduledNotificationReceiver {
         return ScheduledNotificationReceiver()
+    }
+
+    @Provides
+    @Singleton
+    fun provideBootReceiver(): BootReceiver {
+        return BootReceiver()
     }
 }
