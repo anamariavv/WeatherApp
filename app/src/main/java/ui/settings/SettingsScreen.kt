@@ -16,6 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,7 +24,6 @@ import com.example.weatherapp.R
 import ui.base.baseScreen
 import ui.common.component.dialog
 import ui.settings.model.RadioGroupState
-
 
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
@@ -63,6 +63,6 @@ fun SettingsScreenContent(unitRadioGroupState: RadioGroupState, onItemSelected: 
 
 			}
 		}
-		Text("Data by Accuweather", modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 20.dp))
+		Text(stringResource(id = R.string.settings_screen_data_info_text), modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 20.dp))
 	}
 }

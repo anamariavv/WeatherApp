@@ -14,7 +14,7 @@ object NavigationDirection {
 	}
 
 	object Weekly {
-		const val KEY = "locationKey"
+		private const val KEY = "locationKey"
 		const val destination: String = "location/{$KEY}"
 
 		val weeklyArguments: List<NamedNavArgument> = listOf(navArgument(KEY) {
@@ -35,6 +35,7 @@ object NavigationDirection {
 		override val destination: String
 			get() = "route_settings"
 	}
+
 	object Cities : NavigationCommand {
 		override val arguments: List<NamedNavArgument>
 			get() = emptyList()

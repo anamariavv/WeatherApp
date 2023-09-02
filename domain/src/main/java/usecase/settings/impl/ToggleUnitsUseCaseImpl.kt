@@ -4,7 +4,7 @@ import model.common.EmptyResource
 import model.common.Resource
 import repository.SettingsRepository
 import usecase.settings.ToggleUnitsUseCase
-import usecase.settings.ToggleUnitsUseCase.ToggleMetricUnitsUseCaseError
+import usecase.settings.ToggleUnitsUseCase.ToggleUnitsUseCaseError
 
 
 class ToggleUnitsUseCaseImpl(private val settingsRepository: SettingsRepository) : ToggleUnitsUseCase {
@@ -14,7 +14,7 @@ class ToggleUnitsUseCaseImpl(private val settingsRepository: SettingsRepository)
 			settingsRepository.toggleUnits(isMetric)
 			Resource.Success.empty()
 		} catch (throwable: Throwable) {
-			return Resource.Error(ToggleMetricUnitsUseCaseError.TOGGLE_UNITS_ERROR, throwable)
+			return Resource.Error(ToggleUnitsUseCaseError.TOGGLE_UNITS_ERROR, throwable)
 		}
 	}
 }

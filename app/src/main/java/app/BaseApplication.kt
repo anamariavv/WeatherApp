@@ -3,12 +3,13 @@ package app
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import config.Config
 import dagger.hilt.android.HiltAndroidApp
 import notification.NotificationScheduler
 
 @HiltAndroidApp
 class BaseApplication : Application() {
-	var notificationScheduler = NotificationScheduler.getInstance()
+	private var notificationScheduler = NotificationScheduler.getInstance()
 
 	override fun onCreate() {
 		super.onCreate()
@@ -17,8 +18,8 @@ class BaseApplication : Application() {
 	}
 
 	private fun createNotificationChannel() {
-		val notificationChannel = NotificationChannel("forecastNotificationChannel", "forecast", NotificationManager.IMPORTANCE_LOW)
-		notificationChannel.description = "A notification channel for weather updates"
+		val notificationChannel = NotificationChannel(Config.notificationChannelId, Config.notificationChannelName, NotificationManager.IMPORTANCE_LOW)
+		notificationChannel.description = Config.notificationChannelDescription
 
 		val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 		notificationManager.createNotificationChannel(notificationChannel)

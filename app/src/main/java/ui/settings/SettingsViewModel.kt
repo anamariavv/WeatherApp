@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import model.common.ErrorData
 import ui.base.BaseViewModel
+import ui.common.model.CommonMessages
 import ui.settings.model.RadioGroupState
 import ui.settings.model.RadioItem
 import usecase.settings.GetUnitsUseCase
@@ -51,6 +52,8 @@ class SettingsViewModel @Inject constructor(
 	}
 
 	private fun handleErrors(errorData: ErrorData) {
-		//todo
+		when (errorData.errorType) {
+			ToggleUnitsUseCase.ToggleUnitsUseCaseError.TOGGLE_UNITS_ERROR -> showErrorDialog(CommonMessages.UnexpectedError)
+		}
 	}
 }

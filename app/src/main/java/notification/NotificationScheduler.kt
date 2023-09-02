@@ -8,6 +8,11 @@ import java.util.*
 
 class NotificationScheduler private constructor() {
 	companion object {
+		private const val time = "8:00"
+		const val REMINDER_NOTIFICATION_REQUEST_CODE = 1
+		private const val REMINDER_TIME = time
+		private const val flags = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+
 		@Volatile
 		private lateinit var instance: NotificationScheduler
 
@@ -19,10 +24,6 @@ class NotificationScheduler private constructor() {
 				return instance
 			}
 		}
-
-		private const val REMINDER_NOTIFICATION_REQUEST_CODE = 1
-		private const val REMINDER_TIME = "8:00"
-		private const val flags = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 	}
 
 	fun startReminder(context: Context) {

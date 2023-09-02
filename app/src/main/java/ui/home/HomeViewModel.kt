@@ -13,7 +13,6 @@ import ui.home.model.DropdownState
 import ui.home.model.HomeScreenMessages
 import ui.home.model.UiCurrentConditions
 import ui.home.model.UiHourlyForecast
-import usecase.city.AddFavouriteCityUseCase
 import usecase.city.GetFavouriteCitiesUseCase
 import usecase.city.GetFavouriteCitiesUseCase.GetFavouriteCitiesUseCaseResponse
 import usecase.city.GetFavouriteCitiesUseCase.GetFavouriteCitiesError
@@ -61,7 +60,14 @@ class HomeViewModel @Inject constructor(
 	private fun getFavouriteCitiesSuccess(response: GetFavouriteCitiesUseCaseResponse) {
 		if (response.list.isNotEmpty()) {
 			_dropdownState.update { it.copy(list = response.list, selectedIndex = 0, selectedValue = response.list[0]) }
-			runSuspend { getSelectedCityLocationKey() }
+			if(response.list.size == 1) {
+				currentLocationKey = response.list[0].locationKey
+				showScreenLoading()
+				runSuspend { updateForecastInformation(currentLocationKey) }
+				runSuspend { setSelectedCityLocationKey(currentLocationKey) }
+			} else {
+				runSuspend { getSelectedCityLocationKey() }
+			}
 		} else {
 			showInfoDialog(HomeScreenMessages.CityListInfo)
 			showScreenNoContent()

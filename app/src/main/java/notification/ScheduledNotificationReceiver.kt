@@ -6,14 +6,16 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.example.weatherapp.R
+import config.Config
 import dagger.hilt.android.AndroidEntryPoint
 import ui.main.MainActivity
 
 
 @AndroidEntryPoint
 class ScheduledNotificationReceiver : BroadcastReceiver() {
-	var notificationScheduler = NotificationScheduler.getInstance()
+	private var notificationScheduler = NotificationScheduler.getInstance()
 
 	private val flags = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 
@@ -33,16 +35,16 @@ class ScheduledNotificationReceiver : BroadcastReceiver() {
 		)
 		val pendingIntent = PendingIntent.getActivity(
 			applicationContext,
-			1,
+			NotificationScheduler.REMINDER_NOTIFICATION_REQUEST_CODE,
 			contentIntent,
 			flags
 		)
-		val builder = NotificationCompat.Builder(applicationContext, "forecastNotificationChannel")
-			.setContentTitle("Good Morning!")
-			.setContentText("Click here to view the current weather")
+		val builder = NotificationCompat.Builder(applicationContext, Config.notificationChannelId)
+			.setContentTitle(ContextCompat.getString(applicationContext, R.string.notification_title))
+			.setContentText(ContextCompat.getString(applicationContext, R.string.notification_text))
 			.setSmallIcon(R.drawable.sunny)
 			.setContentIntent(pendingIntent)
 
-		notify(1, builder.build())
+		notify(NotificationScheduler.REMINDER_NOTIFICATION_REQUEST_CODE, builder.build())
 	}
 }

@@ -3,7 +3,7 @@ package usecase.settings.impl
 import model.common.Resource
 import repository.SettingsRepository
 import usecase.settings.GetUnitsUseCase
-import usecase.settings.GetUnitsUseCase.GetMetricUnitsUseCaseError
+import usecase.settings.GetUnitsUseCase.GetUnitsUseCaseError
 
 class GetUnitsUseCaseImpl(private val settingsRepository: SettingsRepository) : GetUnitsUseCase {
 
@@ -12,7 +12,7 @@ class GetUnitsUseCaseImpl(private val settingsRepository: SettingsRepository) : 
 			val data = settingsRepository.getUnits()
 			Resource.Success(data)
 		} catch (throwable: Throwable) {
-			return Resource.Error(GetMetricUnitsUseCaseError.GET_UNITS_ERROR, throwable)
+			return Resource.Error(GetUnitsUseCaseError.GET_UNITS_ERROR, throwable)
 		}
 	}
 }

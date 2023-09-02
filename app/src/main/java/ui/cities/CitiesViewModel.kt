@@ -103,14 +103,6 @@ class CitiesViewModel @Inject constructor(
 		toggleFavouriteCityUseCase(city).onFinished(this::getFavouriteCityList, this::handleErrors)
 	}
 
-	fun onLocationPermissionRequestResult(isGranted: Boolean) {
-		if (isGranted) {
-			getCurrentCity()
-		} else {
-
-		}
-	}
-
 	fun showLocationDeniedDialog() {
 		showInfoDialog(CityScreenMessages.LocationPermissionNeeded)
 	}

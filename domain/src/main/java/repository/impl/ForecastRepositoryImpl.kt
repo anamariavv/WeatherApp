@@ -1,10 +1,10 @@
 package repository.impl
 
-import interactor.GetCurrentConditionsInteractor
-import interactor.GetDailyForecastInteractor
-import interactor.GetTwelveHourForecastInteractor
-import interactor.GetUnitsInteractor
-import interactor.GetWeeklyForecastInteractor
+import interactor.forecast.GetCurrentConditionsInteractor
+import interactor.forecast.GetDailyForecastInteractor
+import interactor.forecast.GetTwelveHourForecastInteractor
+import interactor.settings.GetUnitsInteractor
+import interactor.forecast.GetWeeklyForecastInteractor
 import mapper.ForecastMapper
 import model.forecast.CurrentConditions
 import model.forecast.Forecast

@@ -7,7 +7,7 @@ interface ToggleUnitsUseCase {
 
 	suspend operator fun invoke(isMetric: Boolean): EmptyResource
 
-	enum class ToggleMetricUnitsUseCaseError : ErrorType {
+	enum class ToggleUnitsUseCaseError : ErrorType {
 		TOGGLE_UNITS_ERROR
 	}
 }

@@ -4,7 +4,7 @@ import mapper.CityMapper
 import model.network.city.ApiCity
 import model.network.city.ApiCountry
 import model.city.City
-import model.local.FavouriteCity
+import model.local.city.FavouriteCity
 
 class CityMapperImpl : CityMapper {
 

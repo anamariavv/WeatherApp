@@ -5,7 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
-import model.local.FavouriteCity
+import model.local.city.FavouriteCity
 
 @Dao
 interface FavouriteCityDao {

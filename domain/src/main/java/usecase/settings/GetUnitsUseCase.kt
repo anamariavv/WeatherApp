@@ -7,7 +7,7 @@ interface GetUnitsUseCase {
 
 	suspend operator fun invoke(): Resource<Boolean>
 
-	enum class GetMetricUnitsUseCaseError : ErrorType {
+	enum class GetUnitsUseCaseError : ErrorType {
 		GET_UNITS_ERROR
 	}
 }

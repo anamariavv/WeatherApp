@@ -1,9 +1,9 @@
 package repository.impl
 
-import interactor.GetLocationPermissionStateInteractor
-import interactor.GetUnitsInteractor
-import interactor.ToggleLocationPermissionStateInteractor
-import interactor.ToggleUnitsInteractor
+import interactor.settings.GetLocationPermissionStateInteractor
+import interactor.settings.GetUnitsInteractor
+import interactor.settings.ToggleLocationPermissionStateInteractor
+import interactor.settings.ToggleUnitsInteractor
 import repository.SettingsRepository
 
 class SettingsRepositoryImpl(
