@@ -5,32 +5,17 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import java.util.*
+import javax.inject.Inject
 
-class NotificationScheduler private constructor() {
+class NotificationScheduler @Inject constructor() {
 	companion object {
-		private const val time = "8:00"
+		private const val time = "08:00"
 		const val REMINDER_NOTIFICATION_REQUEST_CODE = 1
 		private const val REMINDER_TIME = time
 		private const val flags = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-
-		@Volatile
-		private lateinit var instance: NotificationScheduler
-
-		fun getInstance(): NotificationScheduler {
-			synchronized(this) {
-				if (!Companion::instance.isInitialized) {
-					instance = NotificationScheduler()
-				}
-				return instance
-			}
-		}
 	}
 
 	fun startReminder(context: Context) {
-		instance.startReminderInternal(context)
-	}
-
-	private fun startReminderInternal(context: Context) {
 		val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
 		val (hours, min) = REMINDER_TIME.split(":").map { it.toInt() }

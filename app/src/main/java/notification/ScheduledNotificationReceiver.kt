@@ -11,11 +11,13 @@ import com.example.weatherapp.R
 import config.Config
 import dagger.hilt.android.AndroidEntryPoint
 import ui.main.MainActivity
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class ScheduledNotificationReceiver : BroadcastReceiver() {
-	private var notificationScheduler = NotificationScheduler.getInstance()
+	@Inject
+	lateinit var notificationScheduler: NotificationScheduler
 
 	private val flags = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 

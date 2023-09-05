@@ -6,10 +6,12 @@ import android.app.NotificationManager
 import config.Config
 import dagger.hilt.android.HiltAndroidApp
 import notification.NotificationScheduler
+import javax.inject.Inject
 
 @HiltAndroidApp
 class BaseApplication : Application() {
-	private var notificationScheduler = NotificationScheduler.getInstance()
+	@Inject
+	lateinit var notificationScheduler: NotificationScheduler
 
 	override fun onCreate() {
 		super.onCreate()

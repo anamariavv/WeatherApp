@@ -15,6 +15,7 @@ import navigation.impl.NavigationDelegateImpl
 import navigation.Router
 import navigation.impl.RouterImpl
 import notification.BootReceiver
+import notification.NotificationScheduler
 import notification.ScheduledNotificationReceiver
 import source.local.LocationDatabase
 import source.local.impl.LocationDatabaseImpl
@@ -28,12 +29,12 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideRouter(navigationDelegate: NavigationDelegate): Router =
-        RouterImpl(navigationDelegate)
+    fun provideNavigationDelegate(): NavigationDelegate = NavigationDelegateImpl()
 
     @Provides
     @Singleton
-    fun provideNavigationDelegate(): NavigationDelegate = NavigationDelegateImpl()
+    fun provideRouter(navigationDelegate: NavigationDelegate): Router =
+        RouterImpl(navigationDelegate)
 
     @Provides
     @Singleton
@@ -66,4 +67,8 @@ class AppModule {
     fun provideBootReceiver(): BootReceiver {
         return BootReceiver()
     }
+
+    @Provides
+    @Singleton
+    fun provideNotificationScheduler(): NotificationScheduler = NotificationScheduler()
 }

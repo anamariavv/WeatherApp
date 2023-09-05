@@ -36,7 +36,6 @@ import interactor.forecast.impl.GetCurrentConditionsInteractorImpl
 import interactor.forecast.impl.GetDailyForecastInteractorImpl
 import interactor.forecast.impl.GetTwelveHourForecastInteractorImpl
 import interactor.forecast.impl.GetWeeklyForecastInteractorImpl
-import interactor.impl.*
 import interactor.settings.GetLocationPermissionStateInteractor
 import interactor.settings.GetUnitsInteractor
 import interactor.settings.ToggleLocationPermissionStateInteractor

@@ -1,7 +1,7 @@
 package model.network.forecast.daily
 
 
-import com.google.gson.annotations.SerializedName
+import com.google.  gson.annotations.SerializedName
 
 data class ApiDailyForecast(
 	@SerializedName("Date")

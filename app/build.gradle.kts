@@ -40,6 +40,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_15
         targetCompatibility = JavaVersion.VERSION_15
     }
+
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
+    }
 }
 
 dependencies {
