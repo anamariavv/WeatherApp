@@ -28,6 +28,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -39,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -55,7 +57,6 @@ import ui.theme.Typography
 import ui.theme.White
 import utils.empty
 
-
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 
@@ -66,14 +67,16 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 	val screenState by viewModel.screenState.collectAsState()
 	val context = LocalContext.current
 
-	val launcher = rememberLauncherForActivityResult(
+	val launcherNotifications = rememberLauncherForActivityResult(
 		contract = ActivityResultContracts.RequestPermission(),
 		onResult = viewModel::onNotificationPermissionResult
 	)
 
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-		if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-			launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+	LaunchedEffect(null) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+			if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+				launcherNotifications.launch(Manifest.permission.POST_NOTIFICATIONS)
+			}
 		}
 	}
 
@@ -124,8 +127,8 @@ fun HomeScreenContent(
 		twelveHourForecastSummary(twelveHourForecastState)
 
 		Button(onClick = navigateToWeeklyScreen, modifier = Modifier.padding(10.dp).align(CenterHorizontally)) {
-			Text(text = "5 day forecast")
-			Icon(Icons.Filled.KeyboardArrowRight, "View 5 day forecast")
+			Text(text = stringResource(id = R.string.home_screen_five_day_forecast_button_text))
+			Icon(Icons.Filled.KeyboardArrowRight, stringResource(id = R.string.home_screen_five_day_forecast_button_content_description))
 		}
 	}
 }
@@ -153,7 +156,7 @@ fun favouritesDropdown(
 		}
 
 		IconButton(onClick = { onIconClicked(isExpanded) }) {
-			Icon(Icons.Filled.KeyboardArrowDown, "Toggle dropdown")
+			Icon(Icons.Filled.KeyboardArrowDown, stringResource(id = R.string.toggle_dropdown))
 		}
 	}
 }
@@ -164,7 +167,7 @@ fun ColumnScope.currentConditionSummary(currentConditionsState: UiCurrentConditi
 		Box {
 			Icon(
 				painterResource(id = currentConditionsState.weatherIconId),
-				contentDescription = "Weather icon",
+				contentDescription = stringResource(id = R.string.home_screen_weather_icon_content_description),
 				tint = Color.Unspecified,
 				modifier = Modifier.align(TopCenter)
 			)
@@ -183,28 +186,28 @@ fun ColumnScope.currentConditionDetails(currentConditionsState: UiCurrentConditi
 	Row(Modifier.fillMaxWidth().weight(0.10f).padding(horizontal = 10.dp), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
 		if (currentConditionsState.hasWind) {
 			CurrentConditionItem(
-				labelText = "Wind",
+				labelText = stringResource(id = R.string.home_screen_wind_label),
 				valueText = currentConditionsState.windSpeed!!,
 				iconId = R.drawable.wind,
-				iconContentDescription = "Wind"
+				iconContentDescription = stringResource(id = R.string.home_screen_wind_label)
 			)
 		}
 
 		if (currentConditionsState.hasHumidity) {
 			CurrentConditionItem(
-				labelText = "Humidity",
+				labelText = stringResource(id = R.string.home_screen_humidity_label),
 				valueText = currentConditionsState.humidity!!,
 				iconId = R.drawable.raindrop,
-				iconContentDescription = "Humidity"
+				iconContentDescription = stringResource(id = R.string.home_screen_humidity_label)
 			)
 		}
 
 		if (currentConditionsState.hasUvIndex) {
 			CurrentConditionItem(
-				labelText = "UV",
+				labelText = stringResource(id = R.string.home_screen_uv_index_label),
 				valueText = currentConditionsState.uvIndex!!,
 				iconId = R.drawable.sunny,
-				iconContentDescription = "UV index"
+				iconContentDescription = stringResource(id = R.string.home_screen_uv_index_label)
 			)
 		}
 	}
@@ -226,8 +229,8 @@ fun ColumnScope.twelveHourForecastSummary(twelveHourForecastState: UiHourlyForec
 	Surface(modifier = Modifier.fillMaxWidth().weight(0.20f).padding(10.dp).align(CenterHorizontally), shape = Shapes.medium) {
 		Column(horizontalAlignment = Alignment.Start) {
 			Row(modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)) {
-				Icon(painterResource(id = R.drawable.time), contentDescription = "12 hour forecast")
-				Text("12 hour forecast", style = Typography.titleLarge)
+				Icon(painterResource(id = R.drawable.time), contentDescription = stringResource(id = R.string.home_screen_twelve_hour_forecast_section_title))
+				Text(stringResource(id = R.string.home_screen_twelve_hour_forecast_section_title), style = Typography.titleLarge)
 			}
 			LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
 				items(twelveHourForecastState.hours) {
@@ -248,7 +251,12 @@ fun hourlyForecastItem(temperatureText: String, timeText: String, iconId: Int, m
 	Card {
 		Box(modifier = modifier) {
 			Text(temperatureText, style = Typography.labelLarge, modifier = Modifier.align(TopCenter), color = White)
-			Icon(painterResource(id = iconId), contentDescription = "Sunny", modifier = Modifier.align(Center), tint = Color.Unspecified)
+			Icon(
+				painterResource(id = iconId),
+				contentDescription = stringResource(id = R.string.home_screen_weather_icon_content_description),
+				modifier = Modifier.align(Center),
+				tint = Color.Unspecified
+			)
 			Text(timeText, style = Typography.labelLarge, modifier = Modifier.align(BottomCenter), color = White)
 		}
 	}

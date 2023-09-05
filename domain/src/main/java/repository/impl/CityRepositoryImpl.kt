@@ -1,13 +1,13 @@
 package repository.impl
 
-import interactor.AddFavouriteCityInteractor
-import interactor.GetCityBasedOnCoordinatesInteractor
-import interactor.GetCurrentGeoLocationInteractor
-import interactor.GetFavouriteCitiesInteractor
-import interactor.GetSelectedCityLocationKeyInteractor
-import interactor.QueryCitiesInteractor
-import interactor.RemoveFavouriteCityInteractor
-import interactor.SetSelectedCityLocationKeyInteractor
+import interactor.city.AddFavouriteCityInteractor
+import interactor.city.GetCityBasedOnCoordinatesInteractor
+import interactor.city.GetCurrentGeoLocationInteractor
+import interactor.city.GetFavouriteCitiesInteractor
+import interactor.city.GetSelectedCityLocationKeyInteractor
+import interactor.city.QueryCitiesInteractor
+import interactor.city.RemoveFavouriteCityInteractor
+import interactor.city.SetSelectedCityLocationKeyInteractor
 import mapper.CityMapper
 import model.city.City
 import model.network.city.ApiCity

@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.weatherapp.R
 import ui.base.model.BaseScreenState
 import ui.theme.Typography
 
@@ -41,5 +42,5 @@ fun loadingIndicator() {
 
 @Composable
 fun emptyContent() {
-	Text("No data to display", style = Typography.titleMedium, color = Color.LightGray)
+	Text(stringResource(id = R.string.base_screen_no_data), style = Typography.titleMedium, color = Color.LightGray)
 }

@@ -1,9 +1,9 @@
 package ui.base.model
 
-sealed class BaseScreenState() {
-	class Content : BaseScreenState()
+sealed class BaseScreenState {
+	object Content : BaseScreenState()
 
-	class Loading : BaseScreenState()
+	object Loading : BaseScreenState()
 
-	class NoContent : BaseScreenState()
+	object NoContent : BaseScreenState()
 }

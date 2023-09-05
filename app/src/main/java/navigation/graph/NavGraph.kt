@@ -13,21 +13,21 @@ import ui.weekly.WeeklyScreen
 @Composable
 fun NavGraph(navController: NavHostController) {
 
-    NavHost(navController = navController, startDestination = "route_home") {
-        composable(NavigationDirection.Home.destination) {
-            HomeScreen()
-        }
+	NavHost(navController = navController, startDestination = "route_home") {
+		composable(NavigationDirection.Home.destination) {
+			HomeScreen()
+		}
 
-        composable(NavigationDirection.Settings.destination) {
-            SettingsScreen()
-        }
+		composable(NavigationDirection.Settings.destination) {
+			SettingsScreen()
+		}
 
-        composable(NavigationDirection.Weekly.destination, arguments = NavigationDirection.Weekly.weeklyArguments) {
-            WeeklyScreen()
-        }
+		composable(NavigationDirection.Weekly.destination, arguments = NavigationDirection.Weekly.weeklyArguments) {
+			WeeklyScreen()
+		}
 
-        composable(NavigationDirection.Cities.destination) {
-            CitiesScreen()
-        }
-    }
+		composable(NavigationDirection.Cities.destination) {
+			CitiesScreen()
+		}
+	}
 }

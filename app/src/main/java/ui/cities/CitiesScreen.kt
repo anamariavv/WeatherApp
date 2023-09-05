@@ -62,9 +62,16 @@ import ui.theme.Typography
 	val context = LocalContext.current
 
 	val launcher = rememberLauncherForActivityResult(
-		contract = ActivityResultContracts.RequestPermission(),
-		onResult = viewModel::onLocationPermissionRequestResult
-	)
+		ActivityResultContracts.RequestMultiplePermissions()
+	) { permissions ->
+		if (permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false)) {
+			viewModel.getCurrentCity()
+		} else if (permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false)) {
+			viewModel.getCurrentCity()
+		} else {
+			viewModel.showLocationDeniedDialog()
+		}
+	}
 
 	baseScreen(
 		state = screenState,
@@ -99,7 +106,7 @@ fun CitiesScreenContent(
 	favouriteCityListState: FavouriteCityListState,
 	removeFavouriteCity: (City, Int) -> Unit,
 	context: Context,
-	launcher: ManagedActivityResultLauncher<String, Boolean>,
+	launcher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>,
 	getCurrentCity: () -> Unit
 ) {
 	Column(Modifier.fillMaxWidth(), Arrangement.Center, Alignment.CenterHorizontally) {
@@ -230,12 +237,15 @@ fun CitiesScreenContent(
 	}
 }
 
-@Composable fun locationButton(context: Context, launcher: ManagedActivityResultLauncher<String, Boolean>, onPermissionGranted: () -> Unit) {
+@Composable fun locationButton(context: Context, launcher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>, onPermissionGranted: () -> Unit) {
 	Button(onClick = {
-		if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+		if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+			|| ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 			onPermissionGranted()
 		} else {
-			launcher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+			launcher.launch(arrayOf(
+				Manifest.permission.ACCESS_FINE_LOCATION,
+				Manifest.permission.ACCESS_COARSE_LOCATION))
 		}
 	}, modifier = Modifier.padding(10.dp)) {
 		Text(stringResource(id = R.string.cities_screen_get_city_by_location_button_text))

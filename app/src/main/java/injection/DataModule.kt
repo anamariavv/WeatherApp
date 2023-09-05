@@ -12,7 +12,38 @@ import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
 import interactor.*
-import interactor.impl.*
+import interactor.city.AddFavouriteCityInteractor
+import interactor.city.GetCityBasedOnCoordinatesInteractor
+import interactor.city.GetCurrentGeoLocationInteractor
+import interactor.city.GetFavouriteCitiesInteractor
+import interactor.city.GetSelectedCityLocationKeyInteractor
+import interactor.city.QueryCitiesInteractor
+import interactor.city.RemoveFavouriteCityInteractor
+import interactor.city.SetSelectedCityLocationKeyInteractor
+import interactor.city.impl.AddFavouriteCityInteractorImpl
+import interactor.city.impl.GetCityBasedOnCoordinatesInteractorImpl
+import interactor.city.impl.GetCurrentGeoLocationInteractorImpl
+import interactor.city.impl.GetFavouriteCitiesInteractorImpl
+import interactor.city.impl.GetSelectedCityLocationKeyInteractorImpl
+import interactor.city.impl.QueryCitiesInteractorImpl
+import interactor.city.impl.RemoveFavouriteCityInteractorImpl
+import interactor.city.impl.SetSelectedCityLocationKeyInteractorImpl
+import interactor.forecast.GetCurrentConditionsInteractor
+import interactor.forecast.GetDailyForecastInteractor
+import interactor.forecast.GetTwelveHourForecastInteractor
+import interactor.forecast.GetWeeklyForecastInteractor
+import interactor.forecast.impl.GetCurrentConditionsInteractorImpl
+import interactor.forecast.impl.GetDailyForecastInteractorImpl
+import interactor.forecast.impl.GetTwelveHourForecastInteractorImpl
+import interactor.forecast.impl.GetWeeklyForecastInteractorImpl
+import interactor.settings.GetLocationPermissionStateInteractor
+import interactor.settings.GetUnitsInteractor
+import interactor.settings.ToggleLocationPermissionStateInteractor
+import interactor.settings.ToggleUnitsInteractor
+import interactor.settings.impl.GetLocationPermissionStateInteractorImpl
+import interactor.settings.impl.GetUnitsInteractorImpl
+import interactor.settings.impl.ToggleLocationPermissionStateInteractorImpl
+import interactor.settings.impl.ToggleUnitsInteractorImpl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -26,7 +57,7 @@ import source.local.impl.GeoLocationProviderImpl
 import source.network.ForecastService
 import source.network.LocationsService
 
-val Context.dataStore by preferencesDataStore(Config.DATA_STORE_NAME)
+val Context.dataStore by preferencesDataStore(Config.dataStoreName)
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -42,10 +73,10 @@ class DataModule {
 	@ViewModelScoped
 	fun provideRetrofit(gsonConverterFactory: GsonConverterFactory): Retrofit {
 		val okHttpClient = OkHttpClient.Builder()
-				.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-				.build()
+			.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+			.build()
 		return Retrofit.Builder().baseUrl(Config.retrofitBaseUrl)
-				.addConverterFactory(gsonConverterFactory).client(okHttpClient).build()
+			.addConverterFactory(gsonConverterFactory).client(okHttpClient).build()
 	}
 
 	@Provides
@@ -141,14 +172,37 @@ class DataModule {
 
 	@Provides
 	@ViewModelScoped
-	fun provideSetSelectedCityLocationKeyInteractor(applicationStorage: ApplicationStorage) : SetSelectedCityLocationKeyInteractor {
+	fun provideSetSelectedCityLocationKeyInteractor(applicationStorage: ApplicationStorage): SetSelectedCityLocationKeyInteractor {
 		return SetSelectedCityLocationKeyInteractorImpl(applicationStorage)
 	}
 
 	@Provides
 	@ViewModelScoped
-	fun providGetSelectedCityLocationKeyInteractor(applicationStorage: ApplicationStorage) : GetSelectedCityLocationKeyInteractor {
+	fun provideGetSelectedCityLocationKeyInteractor(applicationStorage: ApplicationStorage): GetSelectedCityLocationKeyInteractor {
 		return GetSelectedCityLocationKeyInteractorImpl(applicationStorage)
 	}
 
+	@Provides
+	@ViewModelScoped
+	fun provideToggleUnitsInteractor(applicationStorage: ApplicationStorage): ToggleUnitsInteractor {
+		return ToggleUnitsInteractorImpl(applicationStorage)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideGetUnitsInteractor(applicationStorage: ApplicationStorage): GetUnitsInteractor {
+		return GetUnitsInteractorImpl(applicationStorage)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideToggleLocationPermissionStateInteractor(applicationStorage: ApplicationStorage): ToggleLocationPermissionStateInteractor {
+		return ToggleLocationPermissionStateInteractorImpl(applicationStorage)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideGetLocationPermissionStateInteractor(@ApplicationContext context: Context, applicationStorage: ApplicationStorage): GetLocationPermissionStateInteractor {
+		return GetLocationPermissionStateInteractorImpl(context, applicationStorage)
+	}
 }

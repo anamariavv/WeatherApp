@@ -6,14 +6,32 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import interactor.*
+import interactor.city.AddFavouriteCityInteractor
+import interactor.city.GetCityBasedOnCoordinatesInteractor
+import interactor.city.GetCurrentGeoLocationInteractor
+import interactor.city.GetFavouriteCitiesInteractor
+import interactor.city.GetSelectedCityLocationKeyInteractor
+import interactor.city.QueryCitiesInteractor
+import interactor.city.RemoveFavouriteCityInteractor
+import interactor.city.SetSelectedCityLocationKeyInteractor
+import interactor.forecast.GetCurrentConditionsInteractor
+import interactor.forecast.GetDailyForecastInteractor
+import interactor.forecast.GetTwelveHourForecastInteractor
+import interactor.forecast.GetWeeklyForecastInteractor
+import interactor.settings.GetLocationPermissionStateInteractor
+import interactor.settings.GetUnitsInteractor
+import interactor.settings.ToggleLocationPermissionStateInteractor
+import interactor.settings.ToggleUnitsInteractor
 import mapper.CityMapper
 import mapper.ForecastMapper
 import mapper.impl.CityMapperImpl
 import mapper.impl.ForecastMapperImpl
 import repository.CityRepository
 import repository.ForecastRepository
+import repository.SettingsRepository
 import repository.impl.CityRepositoryImpl
 import repository.impl.ForecastRepositoryImpl
+import repository.impl.SettingsRepositoryImpl
 import usecase.city.AddFavouriteCityUseCase
 import usecase.city.impl.AddFavouriteCityUseCaseImpl
 import usecase.city.GetFavouriteCitiesUseCase
@@ -38,6 +56,14 @@ import usecase.forecast.impl.GetTwelveHourForecastUseCaseImpl
 import usecase.forecast.impl.GetWeeklyForecastUseCaseImpl
 import usecase.location.GetCurrentCityUseCase
 import usecase.location.impl.GetCurrentCityUseCaseImpl
+import usecase.settings.GetLocationPermissionStateUseCase
+import usecase.settings.GetUnitsUseCase
+import usecase.settings.ToggleLocationPermissionStateUseCase
+import usecase.settings.ToggleUnitsUseCase
+import usecase.settings.impl.GetLocationPermissionStateUseCaseImpl
+import usecase.settings.impl.GetUnitsUseCaseImpl
+import usecase.settings.impl.ToggleLocationPermissionStateUseCaseImpl
+import usecase.settings.impl.ToggleUnitsUseCaseImpl
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -130,14 +156,34 @@ class DomainModule {
 	}
 
 	@Provides
+	@ViewModelScoped
 	fun provideForecastRepository(
 		getDailyForecastInteractor: GetDailyForecastInteractor,
 		getCurrentConditionsInteractor: GetCurrentConditionsInteractor,
 		getWeeklyForecastInteractor: GetWeeklyForecastInteractor,
 		getTwelveHourForecastInteractor: GetTwelveHourForecastInteractor,
+		getUnitsInteractor: GetUnitsInteractor,
 		forecastMapper: ForecastMapper
 	): ForecastRepository {
-		return ForecastRepositoryImpl(getDailyForecastInteractor, getCurrentConditionsInteractor, getWeeklyForecastInteractor, getTwelveHourForecastInteractor, forecastMapper)
+		return ForecastRepositoryImpl(
+			getDailyForecastInteractor,
+			getCurrentConditionsInteractor,
+			getWeeklyForecastInteractor,
+			getTwelveHourForecastInteractor,
+			getUnitsInteractor,
+			forecastMapper
+		)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideSettingsRepository(
+		toggleUnitsInteractor: ToggleUnitsInteractor,
+		getUnitsInteractor: GetUnitsInteractor,
+		toggleLocationPermissionStateInteractor: ToggleLocationPermissionStateInteractor,
+		getLocationPermissionStateInteractor: GetLocationPermissionStateInteractor
+	): SettingsRepository {
+		return SettingsRepositoryImpl(toggleUnitsInteractor, getUnitsInteractor, toggleLocationPermissionStateInteractor, getLocationPermissionStateInteractor)
 	}
 
 	@Provides
@@ -164,4 +210,27 @@ class DomainModule {
 		return GetSelectedCityLocationKeyUseCaseImpl(cityRepository)
 	}
 
+	@Provides
+	@ViewModelScoped
+	fun provideGetUnitsUseCase(settingsRepository: SettingsRepository): GetUnitsUseCase {
+		return GetUnitsUseCaseImpl(settingsRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideToggleUnitsUseCase(settingsRepository: SettingsRepository): ToggleUnitsUseCase {
+		return ToggleUnitsUseCaseImpl(settingsRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideToggleLocationPermissionStateUseCase(settingsRepository: SettingsRepository): ToggleLocationPermissionStateUseCase {
+		return ToggleLocationPermissionStateUseCaseImpl(settingsRepository)
+	}
+
+	@Provides
+	@ViewModelScoped
+	fun provideGetLocationPermissionStateUseCase(settingsRepository: SettingsRepository): GetLocationPermissionStateUseCase {
+		return GetLocationPermissionStateUseCaseImpl(settingsRepository)
+	}
 }

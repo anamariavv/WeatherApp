@@ -11,10 +11,11 @@
     <string name="add_to_favourites">Add to favourites</string>
     <string name="remove_from_favourites">Remove from favourites</string>
     <string name="close">Close</string>
-    <string name="where_am_i">Where am i <xliff:g>?</xliff:g></string>
+    <string name="where_am_i">Where am I <xliff:g>?</xliff:g></string>
     <string name="dismiss">Dismiss</string>
     <string name="favourite_cities">Favourite Cities</string>
     <string name="error">Error</string>
+    <string name="ok">Ok</string>
     <string name="an_error_occurred_while_adding_city_to_favourites">An error occurred while adding city to favourites</string>
     <string name="an_error_occurred_while_removing_city_from_favourites">An error occurred while removing city from favourites</string>
     <string name="an_error_occurred_while_getting_favourite_cities">An error occurred while getting favourite cities</string>
@@ -27,18 +28,35 @@
     <string name="daily_weather">Daily weather</string>
     <string name="cities_info">Cities info</string>
     <string name="an_error_occurred_while_getting_forecast_information">An error occurred while getting forecast information</string>
-    <string name="since_your_favourites_list_is_empty_message">Since your favourites list is empty, forecast information will be displayed for your current location, which will be automatically added to your favourites list! To manage favourites, go to the cities screen.</string>
+    <string name="since_your_favourites_list_is_empty_message">To see forecast information, go to the cities screen to add some cities to favourites.</string>
     <string name="this_permission_is_necessary_in_order_for_notifications_to_work">This permission is necessary in order for notifications to work</string>
     <string name="an_error_occurred_while_getting_weekly_forecast">An error occurred while getting weekly forecast</string>
     <string name="an_unexpected_error_occurred">An unexpected error occurred</string>
     <string name="five_day_forecast">5 day forecast</string>
+    <string name="location_permission_is_necessary_for_retrieving_forecast_information">Location permission is necessary for retrieving forecast information</string>
+    <string name="good_morning">"Good Morning!"</string>
+    <string name="click_here_to_view_the_current_weather">Click here to view the current weather</string>
+    <string name="no_data_to_display">No data to display</string>
+    <string name="view_five_day_forecast">View five day forecast</string>
+    <string name="toggle_dropdown">Toggle dropdown</string>
+    <string name="weather_icon">Weather icon</string>
+    <string name="wind">Wind</string>
+    <string name="humidity">Humidity</string>
+    <string name="uv_index">UV</string>
+    <string name="twelve_hour_forecast">12 hour forecast</string>
+    <string name="data_provided_by_accuweather">Data provided by accuweather</string>
 
     <!--Common -->
-    <string name="dialog_dismiss_button" translatable="false">@string/dismiss</string>
+    <string name="dialog_dismiss_button" translatable="false">@string/ok</string>
     <string name="common_error_getting_location_title" translatable="false">@string/error</string>
     <string name="common_error_getting_location_message" translatable="false">@string/an_error_occurred_while_getting_your_location</string>
     <string name="common_unexpected_error_title" translatable="false">@string/error</string>
     <string name="common_unexpected_error_message" translatable="false">@string/an_unexpected_error_occurred</string>
+    <string name="base_screen_no_data" translatable="false">@string/no_data_to_display</string>
+
+    <!-- Notification -->
+    <string name="notification_title" translatable="false">@string/good_morning</string>
+    <string name="notification_text" translatable="false">@string/click_here_to_view_the_current_weather</string>
 
     <!--Bottom navbar-->
     <string name="bottom_navbar_home_content_description" translatable="false">@string/home</string>
@@ -55,8 +73,21 @@
     <string name="home_screen_get_favourites_error_message" translatable="false">@string/an_error_occurred_while_getting_favourite_cities</string>
     <string name="home_screen_get_forecast_message" translatable="false">@string/an_error_occurred_while_getting_forecast_information</string>
     <string name="home_screen_city_list_info_message" translatable="false">@string/since_your_favourites_list_is_empty_message</string>
+    <string name ="home_screen_location_permission_title" translatable="false">@string/permission_necessary</string>
+    <string name ="home_screen_location_permission_message" translatable="false">@string/location_permission_is_necessary_for_retrieving_forecast_information</string>
+    <string name="home_screen_five_day_forecast_button_text" translatable="false">@string/five_day_forecast</string>
+    <string name="home_screen_five_day_forecast_button_content_description" translatable="false">@string/view_five_day_forecast</string>
+    <string name="home_screen_dropdown_button_content_description" translatable="false">@string/toggle_dropdown</string>
+    <string name="home_screen_weather_icon_content_description" translatable="false">@string/weather_icon</string>
+    <string name="home_screen_wind_label" translatable="false">@string/wind</string>
+    <string name="home_screen_humidity_label" translatable="false">@string/humidity</string>
+    <string name="home_screen_uv_index_label" translatable="false">@string/uv_index</string>
+    <string name="home_screen_twelve_hour_forecast_section_title" translatable="false">@string/twelve_hour_forecast</string>
 
     <!--Settings screen-->
+    <string name="settings_screen_title">@string/settings</string>
+    <string name="settings_screen_data_info_text">@string/data_provided_by_accuweather</string>
+
     <!--Weekly screen-->
     <string name="weekly_screen_title" translatable="false">@string/five_day_forecast</string>
     <string name="weekly_screen_forecast_error_title" translatable="false">@string/error</string>

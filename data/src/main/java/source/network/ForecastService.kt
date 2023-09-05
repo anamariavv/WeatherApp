@@ -8,7 +8,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ForecastService {
-	//todo: data reduction, nullability
 
 	@GET("/currentconditions/v1/{locationKey}")
 	suspend fun getCurrentConditions(

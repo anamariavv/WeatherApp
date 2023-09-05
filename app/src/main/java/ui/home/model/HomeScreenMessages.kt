@@ -30,5 +30,4 @@ sealed class HomeScreenMessages : Message {
 			is NotificationPermissionInfo -> R.string.home_screen_notification_permission_info_message
 		}
 	}
-
 }
